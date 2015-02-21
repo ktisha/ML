@@ -128,8 +128,8 @@
 \begin{frame}\frametitle{Разбор летучки}
 Приведите пример переобучения и недообучения.
 \begin{figure}[htbp]
-  \includegraphics[height=100pt, keepaspectratio = true]{overfitting}  
-    \includegraphics[height=100pt, keepaspectratio = true]{underfitting}  
+  \includegraphics[height=100pt, keepaspectratio = true]{images/overfitting}  
+  \includegraphics[height=100pt, keepaspectratio = true]{images/underfitting}  
 \end{figure}
 \end{frame}
 
@@ -186,7 +186,7 @@ $\Gamma_y(u)$ -- оценка близости объекта $u$ к класс�
       Что по оси ординат? \\
    \begin{minipage}[t]{0.35\linewidth}
 
-	\includegraphics[height=150px]{parzen}
+	\includegraphics[height=150px]{images/parzen}
    \end{minipage}
 \end{frame}
 
@@ -194,7 +194,7 @@ $\Gamma_y(u)$ -- оценка близости объекта $u$ к класс�
       Что по оси ординат? \\
    \begin{minipage}[t]{0.35\linewidth}
 
-	\includegraphics[height=150px]{parzen1}
+	\includegraphics[height=150px]{images/parzen1}
    \end{minipage}
 \end{frame}
 
@@ -278,7 +278,7 @@ ${LOO(k, X^l) = \sum\limits_{i=1}^l [a(x_i; X^l \backslash \left\{x_i\right\}, k
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[height=190pt]{Kdtree_2d}  
+\includegraphics[height=190pt]{images/Kdtree_2d}  
 \end{figure}
 \end{frame}
 
@@ -300,28 +300,130 @@ $\Vert u - v \Vert  \geq cR => p(h(u) = h(v)) \leq p_2$
 \end{frame}
 
 \begin{frame}\frametitle{Постановка задачи кластеризации}
+Кластеризация -- задача разделения объектов одной природы на несколько групп так, чтобы объекты в одной группе обладали одним и тем же свойством.\\
+\vspace{5mm}
+Кластеризация -- это обучение без учителя.
+\end{frame}
+
+\begin{frame}\frametitle{Постановка задачи кластеризации}
+$X$ -- пространство объектов\\
+$X^l$ = $\left\{ x\right\}_{i=1}^l$ -- обучающая выборка\\
+$\rho: X \times X \rightarrow [0, \infty)$ -- функция расстояния между объектами\\
+\vspace{5mm}
+Найти:\\
+$Y$ -- множество кластеров \\
+$a: X \rightarrow Y$ -- алгоритм кластеризации
+\vspace{5mm}
 
 \end{frame}
 
 \begin{frame}\frametitle{Степени свободы в постановке задачи}
 \end{frame}
 
+\begin{frame}\frametitle{Степени свободы в постановке задачи}
+	\begin{itemize}
+		\item[--] Критерий качества кластеризации
+		\item[--] Число кластеров неизвестно заранее
+		\item[--] Результат кластеризации существенно зависит от метрики
+	\end{itemize}
+\end{frame}
+
 \begin{frame}\frametitle{Цели кластеризации}
 \end{frame}
 
-\begin{frame}\frametitle{Типы кластерных структур}
+\begin{frame}\frametitle{Цели кластеризации}
+	\begin{itemize}
+		\item[--] Сократить объём хранимых данных
+		\item[--] Выделить нетипичные объекты
+		\item[--] Упростить дальнейшую обработку данных
+		\item[--] Построить иерархию множества объектов				
+	\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Какие бывают кластеры?}
+\end{frame}
+
+\begin{frame}\frametitle{Типы кластерных структур. Сгущения}
+\begin{figure}[htbp]
+  \includegraphics[height=130pt, keepaspectratio = true]{images/cluster1}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Типы кластерных структур. Ленты}
+\begin{figure}[htbp]
+  \includegraphics[height=130pt, keepaspectratio = true]{images/cluster2}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Типы кластерных структур. С центром}
+\begin{figure}[htbp]
+  \includegraphics[height=130pt, keepaspectratio = true]{images/cluster3}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Типы кластерных структур. С перемычками}
+\begin{figure}[htbp]
+  \includegraphics[height=130pt, keepaspectratio = true]{images/cluster4}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Типы кластерных структур. На фоне}
+\begin{figure}[htbp]
+  \includegraphics[height=130pt, keepaspectratio = true]{images/cluster5}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Типы кластерных структур. Перекрывающиеся}
+\begin{figure}[htbp]
+  \includegraphics[height=130pt, keepaspectratio = true]{images/cluster6}  
+\end{figure}
 \end{frame}
 
 \begin{frame}\frametitle{Чувствительность к выбору метрики}
+\begin{figure}[htbp]
+  \includegraphics[height=160pt, keepaspectratio = true]{images/students}  
+\end{figure}
 \end{frame}
 
-\begin{frame}\frametitle{Функционал качества кластеризации}
+\begin{frame}\frametitle{Чувствительность к выбору метрики}
+\begin{figure}[htbp]
+  \includegraphics[height=160pt, keepaspectratio = true]{images/students1}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Оценка качества кластеризации}
+Есть несколько разбиений на кластеры. Как их сравнить?
+\end{frame}
+
+\begin{frame}\frametitle{Оценка качества кластеризации}
+\begin{itemize}
+\item[--] Минимизировать среднее внутрикластерное расстояние\\
+\vspace{5mm}
+${\frac{\sum_{a(x_i) = a(x_j)} \rho(x_i, x_j)}{\sum_{a(x_i) = a(x_j)} 1} \rightarrow \min}$
+\item[--] Максимизировать среднее межкластерное расстояние\\
+\vspace{5mm}
+${\frac{\sum_{a(x_i) \neq a(x_j)} \rho(x_i, x_j)}{\sum_{a(x_i) \neq a(x_j)} 1} \rightarrow \max}$
+\end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Методы кластеризации}
+\begin{itemize}
+\item[--] Иерархические
+\item[--] Графовые 
+\item[--] Статистические 
+\end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Иерархическая кластеризация}
+
+\end{frame}
+
+\begin{frame}\frametitle{Графовые алгоритмы}
+Очевидные:\\
+\begin{itemize}
+\item[--] Выделение связных компонент
+\item[--] Минимальное покрывающее дерево
+\end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Расстояние между кластерами. Формула Ланса-Уильямса}
