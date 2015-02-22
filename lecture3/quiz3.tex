@@ -28,37 +28,51 @@
 \clearpage
 \thispagestyle{empty}
 \begin{enumerate}
-\item Что такое cross-fold validation? 
+\item Что такое k-fold cross validation? 
 \vspace{10mm}
-\item Какой гипотезой мы руководствуемся, чтобы построить метрический классификатор? Сформулировать.
-\vspace{10mm}
-\item ${a(u, X^l) = \arg\max_{y \in Y} \underbrace{\sum\limits_{i=1}^l [y_u^i = y]w(i, u)}_{\Gamma_y(u)} }$\\
-\\ Смысл параметров $w$, $i$, $u$, $\Gamma_y(u)$
-\vspace{10mm}
-\item Мотивация для использования Парзеновского окна. В чем минусы зависимости веса объекта только от его порядкового номера?
-\vspace{10mm}
-\item Какими свойствами должна обладать функция $K$, чтобы использовать ее в качестве ядра?
-\vspace{10mm}
+
 \item 
 \begin{minipage}[t]{0.65\linewidth}
-      Что по оси ординат? 
+      Что отложено по оси ординат? 
    \end{minipage}%
    \hfill
    \begin{minipage}[t]{0.35\linewidth}
      %\centering
      \vspace{-9.5ex}
-	\includegraphics[width=.9\textwidth]{parzen}
+	\includegraphics[width=.9\textwidth]{images/parzen}
    \end{minipage}
-   
+
+\vspace{10mm}
+\item Чем эталонный объект отличается от надежно классифицируемого?   
+
+\vspace{10mm}
 \item \begin{minipage}[t]{0.65\linewidth}
       Как подбирать функцию расстояния? 
    \end{minipage}%
 \vspace{10mm}
-\item Что такое проклятие размерности?
+
+\item ${a(u, X^l) = \arg\max_{y \in Y} \underbrace{\sum\limits_{i=1}^l [y_u^i = y]w(i, u)}_{\Gamma_y(u)} }$\\
+\\ Смысл параметров $w$, $i$, $u$, $\Gamma_y(u)$
 \vspace{10mm}
-\item Жадное добавление признаков -- как определить, что признаков уже достаточно?
+\item Мотивация для использования Парзеновского окна. В чем минусы зависимости веса объекта только от его порядкового номера?
+
 \vspace{10mm}
-\item Чем эталонный объект отличается от надежно классифицируемого?
+\item 
+\begin{minipage}[t]{0.55\linewidth}
+      На графике показана зависимость рост-вес для группы студентов (девочки отмечены крестиком, мальчики -- кружком). Выполняются ли предположения метрического классификатора?
+   \end{minipage}%
+   \hfill
+   \begin{minipage}[t]{0.40\linewidth}
+     %\centering
+     \vspace{-5.5ex}
+	\includegraphics[width=\textwidth]{images/students1}
+   \end{minipage}
+
+\vspace{10mm}
+\item Какие проблемы могут встретиться при использовании метода k-nn на реальных данных? Какие решения этих проблем вам известны?
+
+\vspace{10mm}
+\item Какими свойствами должна обладать функция $K$, чтобы использовать ее в качестве ядра?
 
 \end{enumerate}
 
