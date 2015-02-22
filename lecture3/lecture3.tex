@@ -391,6 +391,12 @@ $a: X \rightarrow Y$ -- алгоритм кластеризации
 \end{figure}
 \end{frame}
 
+\begin{frame}\frametitle{Чувствительность к выбору метрики}
+\begin{figure}[htbp]
+  \includegraphics[height=160pt, keepaspectratio = true]{images/students2}  
+\end{figure}
+\end{frame}
+
 \begin{frame}\frametitle{Оценка качества кластеризации}
 Есть несколько разбиений на кластеры. Как их сравнить?
 \end{frame}
@@ -414,8 +420,132 @@ ${\frac{\sum_{a(x_i) \neq a(x_j)} \rho(x_i, x_j)}{\sum_{a(x_i) \neq a(x_j)} 1} \
 \end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{Иерархическая кластеризация}
+%\begin{frame}\frametitle{Иерархическая кластеризация}
+%\begin{itemize}
+%\item[--] Агломеративные
+%\item[--] Дивизимные
+%\end{itemize}
+%\end{frame}
 
+\begin{frame}\frametitle{Агломеративный алгоритм Ланса-Уильямса}
+Идея:\\
+\begin{itemize}
+\item[--] Считаем каждую точку кластером. 
+\item[--] Затем объединяем ближайшие точки в новый кластер. 
+\item[--] Повторяем.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}\frametitle{Алгоритм Ланса-Уильямса}
+
+${C_1 = \left\{ \left\{ x_1\right\}, \left\{x_2 \right\}, \dots, \left\{x_l \right\} \right\}}$\\
+for ${t=2, \dots, l }$:\\
+\hspace{5mm} ${(U, V) = \arg\min_{U \neq V} R(U, V)}$\\
+\hspace{5mm} $W = U \cup V$\\
+\hspace{5mm} ${C_t = C_{t-1} \cup \left\{ W \right\}\setminus \left\{U, V \right\} }$\\
+\hspace{5mm} foreach ${S \in C_t}$\\
+\hspace{10mm}   вычислить $R(W, S)$\\
+
+\end{frame}
+
+\begin{frame}\frametitle{Алгоритм Ланса-Уильямса}
+
+${C_1 = \left\{ \left\{ x_1\right\}, \left\{x_2 \right\}, \dots, \left\{x_l \right\} \right\}}$\\
+for ${t=2, \dots, l }$:\\
+\hspace{5mm} ${(U, V) = \arg\min_{U \neq V} R(U, V)}$\\
+\hspace{5mm} $W = U \cup V$\\
+\hspace{5mm} ${C_t = C_{t-1} \cup \left\{ W \right\}\setminus \left\{U, V \right\} }$\\
+\hspace{5mm} foreach ${S \in C_t}$\\
+\hspace{10mm}   вычислить $R(W, S)$\\
+
+\end{frame}
+
+\begin{frame}\frametitle{Алгоритм Ланса-Уильямса}
+Чего не хватает?
+\end{frame}
+
+\begin{frame}\frametitle{Формула Ланса-Уильямса}
+Расстояние $R(W, S)$?\\
+${ W = \left\{ U \cup V \right\} }$\\
+\vspace{5mm}
+Знаем:\\
+${R(U, S), R(V, S), R(U, V)}$
+\end{frame}
+
+\begin{frame}\frametitle{Формула Ланса-Уильямса}
+Расстояние $R(W, S)$?\\
+${ W = \left\{ U \cup V \right\} }$\\
+\vspace{5mm}
+Знаем:\\
+${R(U, S), R(V, S), R(U, V)}$\\
+\vspace{5mm}
+${R(U \cup V, S) = \alpha_U R(U, S) + \alpha_V R(V, S) + }$ \\
+\hspace{30mm} ${ + \beta R(U, V) + \gamma \vert R(U, S) - R(V, S)\vert}$\\
+\vspace{5mm}
+${\alpha_U, \alpha_V, \beta, \gamma}$ -- числовые параметры
+\end{frame}
+
+\begin{frame}\frametitle{Формула Ланса-Уильямса}
+Значения параметров
+${\alpha_U, \alpha_V, \beta, \gamma}$ ?
+\end{frame}
+
+\begin{frame}\frametitle{Формула Ланса-Уильямса}
+Расстояние ближнего соседа:\\
+\begin{figure}[htbp]
+  \includegraphics[height=100pt, keepaspectratio = true]{images/lans1}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Формула Ланса-Уильямса}
+Расстояние ближнего соседа:\\
+\begin{figure}[htbp]
+  \includegraphics[height=100pt, keepaspectratio = true]{images/lans1}  
+\end{figure}
+${\alpha_U = \alpha_V = \frac{1}{2}}$ \\${\beta = 0}$ \\${\gamma = -\frac{1}{2}}$
+\end{frame}
+
+\begin{frame}\frametitle{Формула Ланса-Уильямса}
+Расстояние дальнего соседа:\\
+\begin{figure}[htbp]
+  \includegraphics[height=100pt, keepaspectratio = true]{images/lans2}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Формула Ланса-Уильямса}
+Расстояние дальнего соседа:\\
+\begin{figure}[htbp]
+  \includegraphics[height=100pt, keepaspectratio = true]{images/lans2}  
+\end{figure}
+${\alpha_U = \alpha_V = \frac{1}{2}}$ \\${\beta = 0}$ \\${\gamma = \frac{1}{2}}$
+\end{frame}
+
+\begin{frame}\frametitle{Формула Ланса-Уильямса}
+Групповое среднее:\\
+\begin{figure}[htbp]
+  \includegraphics[height=100pt, keepaspectratio = true]{images/lans3}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Формула Ланса-Уильямса}
+Групповое среднее:\\
+\begin{figure}[htbp]
+  \includegraphics[height=100pt, keepaspectratio = true]{images/lans3}  
+\end{figure}
+${\alpha_U = \frac{\vert U \vert}{\vert W \vert}}$\\${\alpha_V = \frac{\vert V \vert}{\vert W \vert}}$ \\${\beta = \gamma = 0}$
+\end{frame}
+
+%\begin{frame}\frametitle{Визуализация кластеров. Дендрограмма}
+%\end{frame}
+
+%\begin{frame}\frametitle{Визуализация кластеров. Диаграмма вложения}
+%\end{frame}
+%\begin{frame}\frametitle{Свойство монотонности}
+%\end{frame}
+
+\begin{frame}\frametitle{Графовые алгоритмы}
+Какие есть две очевидные идеи?
 \end{frame}
 
 \begin{frame}\frametitle{Графовые алгоритмы}
@@ -426,35 +556,89 @@ ${\frac{\sum_{a(x_i) \neq a(x_j)} \rho(x_i, x_j)}{\sum_{a(x_i) \neq a(x_j)} 1} \
 \end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{Расстояние между кластерами. Формула Ланса-Уильямса}
+\begin{frame}\frametitle{Выделение связных компонент}
+\begin{itemize}
+\item[--] Рисуем полный граф с весами, равными расстоянию между объектами
+\item[--] Выбираем лимит расстояния $r$ и выкидываем все ребра длиннее $r$
+\item[--] Компоненты связности полученного графа -- наши кластеры
+\end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{Увеличение эффективности Ланса-Уильямса}
+\begin{frame}\frametitle{Выделение связных компонент}
+Как искать компоненты связности?
 \end{frame}
 
-\begin{frame}\frametitle{Визуализация кластеров. Дендрограмма}
+\begin{frame}\frametitle{Минимальное покрывающее дерево}
+Минимальное остовное дерево -- дерево, содержащее все вершины графа и имеющее минимальный суммарный вес ребер.\\
+\vspace{5mm}
+Как найти?
 \end{frame}
 
-\begin{frame}\frametitle{Визуализация кластеров. Диаграмма вложения}
+\begin{frame}\frametitle{Минимальное покрывающее дерево}
+Как использовать минимальное остовное дерево для разбиения на кластеры?
+\end{frame}
+\begin{frame}\frametitle{Минимальное покрывающее дерево}
+Строим минимальное остовное дерево, а потом выкидываем из него ребра максимального веса.\\
+\vspace{5mm}
+Сколько ребер выбросим -- столько кластеров получим.
 \end{frame}
 
-\begin{frame}\frametitle{Свойство монотонности}
-\end{frame}
+\begin{frame}\frametitle{Алгоритм FOREL}
 
-\begin{frame}\frametitle{Визуализация кластеров. Диаграмма вложения}
+${U = X, C = 0}$\\\vspace{2mm}
+while ${U \neq 0}$:\\
+\hspace{5mm} выбрать случайную точку $x_0$\\
+\vspace{2mm}
+\hspace{5mm} Повторять пока $x_0$ не стабилизируется:\\
+\vspace{2mm}
+\hspace{10mm} ${c = \left\{ x \in X \vert \rho(x, x_0 < R) \right\}}$ \\
+\vspace{2mm}
+\hspace{10mm} $x_0 = \frac{1}{\vert c \vert} \sum_{x \in c} x$\\
+\vspace{2mm}
+\hspace{5mm} ${U = U \setminus c}$, ${C = C \cup \left\{ c \right\}}$
 \end{frame}
 
 \begin{frame}\frametitle{Метод $k$-средних}
+Идея:\\  минимизировать меру ошибки\\
+\vspace{5mm}${E(X, C) = \sum_{i = 1}^n \Vert x_i -\mu_i \Vert^2}$\\
+\vspace{5mm}
+$\mu_i$ -- ближайший к $x_i$ центр кластера
 \end{frame}
 
-\begin{frame}\frametitle{Модификации метода $k$-средних}
+\begin{frame}\frametitle{Метод $k$-средних}
+Инициализировать центры $k$ кластеров \\
+\vspace{2mm}
+Пока $c_i$ не перестанет меняться:\\
+\hspace{5mm} $c_i = \arg\min_{c \in C} \rho(x_i, \mu_c)$ \hspace{5mm} $i = 1,\dots, l$\\
+\vspace{2mm}\hspace{5mm} ${\mu_c = \frac{\sum_{c_i = c} f_j(x_i)}{\sum_{c_i = c} 1} }$ \hspace{10mm} $j = 1,\dots, n$, $c \in C$\\
+\vspace{2mm}
+$\mu_c$ -- новое положение центров кластеров\\
+$c_i$ -- принадлежность $x_i$ к кластеру\\
+$\rho(x_i, \mu_c)$ -- расстояние от $x_i$ до центра кластера $\mu_c$
 \end{frame}
 
-\begin{frame}\frametitle{Плюсы и минусы метода $k$-средних}
+\begin{frame}\frametitle{Особенности метода $k$-средних}
+\begin{itemize}
+\item[--] Чувствительность к начальному выбору $\mu_c$
+\item[--] Необходимость задавать $k$
+\end{itemize}
+Как устранить эти недостатки?
 \end{frame}
 
-%\begin{frame}\frametitle{Карты Кохонена}
-% нельзя без нейросетей
-%\end{frame}
+\begin{frame}\frametitle{Устранение недостатков}
+\begin{itemize}
+\item[--] Несколько случайных кластеризаций
+\item[--] Постепенное наращивание числа $k$
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{На следующей лекции}
+\begin{itemize}
+\item[--] Линейные методы классификации
+\item[--] Метод опорных векторов
+\item[--] Выбор ядра для метода опорных векторов
+\item[--] Мультиклассовый классификатор
+\end{itemize}
+\end{frame}
 
 \end{document}
