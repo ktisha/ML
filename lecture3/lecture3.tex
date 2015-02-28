@@ -27,6 +27,7 @@
 \begin{document}
 \frame{\titlepage}
 
+
 \begin{frame}\frametitle{Разбор летучки}
 	Что такое прецедент?
 \end{frame}
@@ -177,12 +178,12 @@ $X$ разбивается на $k$ частей. Затем на ${k-1}$ час
 
 
 \begin{frame}\frametitle{Разбор летучки 2}
-${a(u, X^l) = \arg\max_{y \in Y} \underbrace{\sum\limits_{i=1}^l [y_u^i = y]w(i, u)}_{\Gamma_y(u)} }$\\
+${a(u, X^l) = \arg\max\limits_{y \in Y} \underbrace{\sum\limits_{i=1}^l [y_u^i = y]w(i, u)}_{\Gamma_y(u)} }$\\
 Смысл параметров $w$, $i$, $u$, $\Gamma_y(u)$
 \end{frame}
 
 \begin{frame}\frametitle{Разбор летучки 2}
-${a(u, X^l) = \arg\max_{y \in Y} \underbrace{\sum\limits_{i=1}^l [y_u^i = y]w(i, u)}_{\Gamma_y(u)} }$\\
+${a(u, X^l) = \arg\max\limits_{y \in Y} \underbrace{\sum\limits_{i=1}^l [y_u^i = y]w(i, u)}_{\Gamma_y(u)} }$\\
 $w(i, u)$ - вес $i$-го соседа $u$ \\
 $i$ - порядковый номер соседа $u$ в упорядоченном множестве\\
 $u$ -- объект, для которого проводится классификация\\
@@ -235,6 +236,50 @@ $\Gamma_y(u)$ -- оценка близости объекта $u$ к класс�
 \end{frame}
 
 
+\begin{frame}\frametitle{Общие вопросы по домашке}
+
+$$\operatorname{Precision} = \frac{TP}{TP + FP}
+\qquad
+\operatorname{Recall} = \frac{TP}{TP + FN}$$
+\begin{itemize}
+\item[--] $TP$ --- это количество элементов, которые классификатор верно отнёс к классу $c$,
+\item[--] $FP$ --- количество элементов, которые классификатор неверно отнёс к классу $c$,
+\item[--] $FN$ --- количество элементов, которые классификатор неверно отнёс к классу, отличному от $c$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Общие вопросы по домашке}
+\begin{itemize}
+\item[--] Нужна ли нормировка признаков?
+\item[--] В чем минус поиска ближайших соседей с помощью сортировки?
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Общие вопросы по домашке}
+\begin{figure}[htbp]
+  \includegraphics[height=35pt, keepaspectratio = true]{images/hw}  
+\end{figure}
+
+\vspace{5mm}
+Как выбрать ratio?
+\end{frame}
+
+\begin{frame}\frametitle{Общие вопросы по домашке}
+\begin{itemize}
+\item[--] Надо ли было брать $k = 1$ в функции loocv?
+\item[--] Можно ли не перебирать $k$ от $1$ до $n$?
+\item[--] Можно ли остановиться при выборе $k$ как только начнет увеличиваться LOO?
+\item[--] Надо ли было использовать тестовые данные в функции loocv?
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Пример зависимости $k$}
+\begin{figure}[htbp]
+  \includegraphics[height=180pt, keepaspectratio = true]{images/breast_cancer}  
+\end{figure}
+\textcolor{gray}{картинка с machinelearning.ru}
+\end{frame}
+
 \begin{frame}\frametitle{Быстрый поиск ближайшего соседа}
 \end{frame}
 
@@ -271,11 +316,47 @@ $\Gamma_y(u)$ -- оценка близости объекта $u$ к класс�
 \end{frame}
 
 \begin{frame}\frametitle{Locality Sensitive Hash}
-R-соседи -- соседи в радиусе R от объекта.\\
+Задача: Найти похожие документы в интернете\\
 \vspace{5mm}
-Хэш-функция $h(R, cR, p1, p2)$:\\
-$\Vert u - v \Vert  \leq R => p(h(u) = h(v)) \geq p_1$ \\
-$\Vert u - v \Vert  \geq cR => p(h(u) = h(v)) \leq p_2$ 
+\end{frame}
+
+\begin{frame}\frametitle{Locality Sensitive Hash}
+Проблема: Сколько сравнений нам понадобится  для того, чтобы найти похожие среди $N$ документов?\\
+\vspace{5mm}
+\end{frame}
+
+\begin{frame}\frametitle{Locality Sensitive Hash}
+Проблема: Сколько сравнений нам понадобится  для того, чтобы найти похожие среди $N$ документов?\\
+\vspace{5mm}
+$C = \frac{N(N-1)}{2}$\\
+\vspace{5mm}
+$N = 10^6 \Rightarrow C = 5*10^{11}$
+\end{frame}
+
+\begin{frame}\frametitle{Locality Sensitive Hash}
+Идея:\\
+Давайте от каждого документа (строки из нулей и единиц) возьмем хэш $h$:\\
+\begin{itemize}
+\item[--] Если документы $C_1$ и $C_2$ похожи, то с большой вероятностью $h(C1) == h(C2)$\\
+\item[--] Иначе -- с большой вероятностью $h(C1) \neq h(C2)$
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Locality Sensitive Hash}
+Идея: \\
+\begin{itemize}
+\item[--] Разбить документ на n-граммы
+\item[--] Взять от каждого n-грамма хэш
+\item[--] Получим представление документа в виде строки из нулей и единиц. Длина такого вектора = количество всевозможных n-грамм.
+\item[--] Посчитаем документы похожими, если у них много совпадающих n-грамм
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Locality Sensitive Hash}
+\begin{figure}[htbp]
+\centering
+\includegraphics[height=190pt]{images/min-hash1}  
+\end{figure}
 \end{frame}
 
 \begin{frame}\frametitle{Задача кластеризации}
@@ -386,10 +467,10 @@ $a: X \rightarrow Y$ -- алгоритм кластеризации
 \begin{itemize}
 \item[--] Минимизировать среднее внутрикластерное расстояние\\
 \vspace{5mm}
-${\frac{\sum_{a(x_i) = a(x_j)} \rho(x_i, x_j)}{\sum_{a(x_i) = a(x_j)} 1} \rightarrow \min}$
+${\frac{\sum\limits_{a(x_i) = a(x_j)} \rho(x_i, x_j)}{\sum\limits_{a(x_i) = a(x_j)} 1} \rightarrow \min}$
 \item[--] Максимизировать среднее межкластерное расстояние\\
 \vspace{5mm}
-${\frac{\sum_{a(x_i) \neq a(x_j)} \rho(x_i, x_j)}{\sum_{a(x_i) \neq a(x_j)} 1} \rightarrow \max}$
+${\frac{\sum\limits_{a(x_i) \neq a(x_j)} \rho(x_i, x_j)}{\sum\limits_{a(x_i) \neq a(x_j)} 1} \rightarrow \max}$
 \end{itemize}
 \end{frame}
 
@@ -418,7 +499,7 @@ ${\frac{\sum_{a(x_i) \neq a(x_j)} \rho(x_i, x_j)}{\sum_{a(x_i) \neq a(x_j)} 1} \
 
 ${C_1 = \left\{ \left\{ x_1\right\}, \left\{x_2 \right\}, \dots, \left\{x_l \right\} \right\}}$\\
 for ${t=2, \dots, l }$:\\
-\hspace{5mm} ${(U, V) = \arg\min_{U \neq V} \rho(U, V)}$\\
+\hspace{5mm} ${(U, V) = \arg\min\limits_{U \neq V} \rho(U, V)}$\\
 \hspace{5mm} $W = U \cup V$\\
 \hspace{5mm} ${C_t = C_{t-1} \cup \left\{ W \right\}\setminus \left\{U, V \right\} }$\\
 \hspace{5mm} foreach ${S \in C_t}$\\
@@ -433,11 +514,11 @@ for ${t=2, \dots, l }$:\\
 
 \begin{frame}\frametitle{Формула Ланса-Уильямса}
 \begin{minipage}[t]{0.55\linewidth}
-Расстояние $R(W, S)$?\\
+Расстояние $\rho(W, S)$?\\
 ${ W = \left\{ U \cup V \right\} }$\\
-\vspace{5mm}
+
 Знаем:\\
-${R(U, S), R(V, S), R(U, V)}$
+${\rho(U, S), \rho(V, S), \rho(U, V)}$
 
 \end{minipage}%
 \begin{minipage}[t]{0.45\linewidth}
@@ -449,14 +530,14 @@ ${R(U, S), R(V, S), R(U, V)}$
 \end{frame}
 
 \begin{frame}\frametitle{Формула Ланса-Уильямса}
-Расстояние $R(W, S)$?\\
+Расстояние $\rho(W, S)$?\\
 ${ W = \left\{ U \cup V \right\} }$\\
 \vspace{5mm}
 Знаем:\\
-${R(U, S), R(V, S), R(U, V)}$\\
+${\rho(U, S), \rho(V, S), \rho(U, V)}$\\
 \vspace{5mm}
-${R(U \cup V, S) = \alpha_U R(U, S) + \alpha_V R(V, S) + }$ \\
-\hspace{30mm} ${ + \beta R(U, V) + \gamma \vert R(U, S) - R(V, S)\vert}$\\
+${\rho(U \cup V, S) = \alpha_U \rho(U, S) + \alpha_V \rho(V, S) + }$ \\
+\hspace{30mm} ${ + \beta \rho(U, V) + \gamma \vert \rho(U, S) - \rho(V, S)\vert}$\\
 \vspace{5mm}
 ${\alpha_U, \alpha_V, \beta, \gamma}$ -- числовые параметры
 \end{frame}
@@ -511,156 +592,51 @@ ${\alpha_U = \alpha_V = \frac{1}{2}}$ \\${\beta = 0}$ \\${\gamma = \frac{1}{2}}$
 ${\alpha_U = \frac{\vert U \vert}{\vert W \vert}}$\\${\alpha_V = \frac{\vert V \vert}{\vert W \vert}}$ \\${\beta = \gamma = 0}$
 \end{frame}
 
-%\begin{frame}\frametitle{Визуализация кластеров. Дендрограмма}
-%\end{frame}
+\begin{frame}\frametitle{Формула Ланса-Уильямса}
+Расстояние Уорда:\\
+\begin{figure}[htbp]
+  \includegraphics[height=100pt, keepaspectratio = true]{images/lans4}  
+\end{figure}
 
-%\begin{frame}\frametitle{Визуализация кластеров. Диаграмма вложения}
-%\end{frame}
-%\begin{frame}\frametitle{Свойство монотонности}
-%\end{frame}
-
-\begin{frame}\frametitle{Графовые алгоритмы}
-Какие есть две очевидные идеи?
+${\alpha_U = \frac{\vert S \vert + \vert U \vert}{\vert S \vert + \vert W \vert}}$\\${\alpha_V = \frac{\vert S \vert + \vert V \vert}{\vert S \vert + \vert W \vert}}$ \\${\beta = \frac{ -\vert S \vert}{\vert S \vert + \vert W \vert}}$ \\${\gamma = 0}$
 \end{frame}
 
-\begin{frame}\frametitle{Графовые алгоритмы}
-Очевидные:\\
-\begin{itemize}
-\item[--] Выделение связных компонент
-\item[--] Минимальное покрывающее дерево
-\end{itemize}
+\begin{frame}\frametitle{Визуализация кластеров}
 \end{frame}
 
-\begin{frame}\frametitle{Выделение связных компонент}
-\begin{itemize}
-\item[--] Рисуем полный граф с весами, равными расстоянию между объектами
-\item[--] Выбираем лимит расстояния $r$ и выкидываем все ребра длиннее $r$
-\item[--] Компоненты связности полученного графа -- наши кластеры
-\end{itemize}
+\begin{frame}\frametitle{Диаграмма вложения}
+\begin{figure}[htbp]
+  \includegraphics[height=170pt, keepaspectratio = true]{images/diagram}  
+\end{figure}
 \end{frame}
 
-\begin{frame}\frametitle{Выделение связных компонент}
-Как искать компоненты связности?
+\begin{frame}\frametitle{Дендрограмма}
+\begin{figure}[htbp]
+  \includegraphics[height=170pt, keepaspectratio = true]{images/dendrogram}  
+\end{figure}
 \end{frame}
 
-\begin{frame}\frametitle{Минимальное покрывающее дерево}
-Минимальное остовное дерево -- дерево, содержащее все вершины графа и имеющее минимальный суммарный вес ребер.\\
+\begin{frame}\frametitle{Дендрограмма}
+Может ли так случиться, что дендрограмма имеет самопересечения?
+\end{frame}
+
+
+\begin{frame}\frametitle{Дендрограмма}
+Может ли так случиться, что дендрограмма имеет самопересечения?\\
 \vspace{5mm}
-Как найти?
+Как избежать?
 \end{frame}
 
-\begin{frame}\frametitle{Минимальное покрывающее дерево}
-Как использовать минимальное остовное дерево для разбиения на кластеры?
-\end{frame}
-\begin{frame}\frametitle{Минимальное покрывающее дерево}
-Строим минимальное остовное дерево, а потом выкидываем из него ребра максимального веса.\\
-\vspace{5mm}
-Сколько ребер выбросим -- столько кластеров получим.
-\end{frame}
-
-\begin{frame}\frametitle{Статистические алгоритмы}
-\end{frame}
-
-\begin{frame}\frametitle{Алгоритм FOREL}
-
-${U = X, C = 0}$\\\vspace{2mm}
-while ${U \neq 0}$:\\
-\hspace{5mm} выбрать случайную точку $x_0$\\
-\vspace{2mm}
-\hspace{5mm} Повторять пока $x_0$ не стабилизируется:\\
-\vspace{2mm}
-\hspace{10mm} ${c = \left\{ x \in X \vert \rho(x, x_0) < R \right\}}$ \\
-\vspace{2mm}
-\hspace{10mm} $x_0 = \frac{1}{\vert c \vert} \sum_{x \in c} x$\\
-\vspace{2mm}
-\hspace{5mm} ${U = U \setminus c}$, ${C = C \cup \left\{ c \right\}}$
-\end{frame}
-
-\begin{frame}\frametitle{Метод $k$-средних}
-Идея:\\  минимизировать меру ошибки\\
-\vspace{5mm}${E(X, C) = \sum_{i = 1}^n \Vert x_i -\mu_i \Vert^2}$\\
-\vspace{5mm}
-$\mu_i$ -- ближайший к $x_i$ центр кластера
-\end{frame}
-
-\begin{frame}\frametitle{Метод $k$-средних}
-Инициализировать центры $k$ кластеров \\
-\vspace{2mm}
-Пока $c_i$ не перестанет меняться:\\
-\hspace{5mm} $c_i = \arg\min_{c \in C} \rho(x_i, \mu_c)$ \hspace{5mm} $i = 1,\dots, l$\\
-\vspace{2mm}\hspace{5mm} ${\mu_c = \frac{\sum_{c_i = c} f_j(x_i)}{\sum_{c_i = c} 1} }$ \hspace{10mm} $j = 1,\dots, n$, $c \in C$\\
-\vspace{2mm}
-$\mu_c$ -- новое положение центров кластеров\\
-$c_i$ -- принадлежность $x_i$ к кластеру\\
-$\rho(x_i, \mu_c)$ -- расстояние от $x_i$ до центра кластера $\mu_c$
-\end{frame}
-
-\begin{frame}\frametitle{Особенности метода $k$-средних}
-\begin{itemize}
-\item[--] Чувствительность к начальному выбору $\mu_c$
-\item[--] Необходимость задавать $k$
-\end{itemize}
-Как устранить эти недостатки?
-\end{frame}
-
-\begin{frame}\frametitle{Чувствительность к начальному выбору $\mu_c$}
-\begin{figure}[htbp]
-  \includegraphics[height=180pt, keepaspectratio = true]{images/K-means_convergence}  
-\end{figure}
-\end{frame}
-
-\begin{frame}\frametitle{Необходимость задавать $k$}
-\begin{figure}[htbp]
-  \includegraphics[height=180pt, keepaspectratio = true]{images/K-means_k}  
-\end{figure}
-\end{frame}
-
-\begin{frame}\frametitle{Устранение недостатков}
-\begin{itemize}
-\item[--] Несколько случайных кластеризаций
-\item[--] Постепенное наращивание числа $k$
-\end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{Недостатки k-means}
-\end{frame}
-
-\begin{frame}\frametitle{"Не сферические данные"}
-\begin{figure}[htbp]
-  \includegraphics[height=180pt, keepaspectratio = true]{images/non_spherical-1}  
-\end{figure}
-\end{frame}
-
-\begin{frame}\frametitle{"Не сферические данные"}
-\begin{figure}[htbp]
-  \includegraphics[height=180pt, keepaspectratio = true]{images/non_spherical-2}  
-\end{figure}
-\end{frame}
-
-\begin{frame}\frametitle{"Не сферические данные"}
-\begin{figure}[htbp]
-  \includegraphics[height=180pt, keepaspectratio = true]{images/non_spherical-2}  
-\end{figure}
-\end{frame}
-
-\begin{frame}\frametitle{Разноразмерные кластеры}
-\begin{figure}[htbp]
-  \includegraphics[height=180pt, keepaspectratio = true]{images/different_sizes-1}  
-\end{figure}
-\end{frame}
-
-\begin{frame}\frametitle{Разноразмерные кластеры}
-\begin{figure}[htbp]
-  \includegraphics[height=180pt, keepaspectratio = true]{images/different_sizes-2}  
-\end{figure}
+\begin{frame}\frametitle{Свойство монотонности}
+Кластеризация монотонна, если на каждом шаге расстояние $\rho$ между объединяемыми кластерами не уменьшается.\\
+$\rho_2 \leq \rho_3 \leq \dots \leq \rho_l$
 \end{frame}
 
 \begin{frame}\frametitle{На следующей лекции}
 \begin{itemize}
-\item[--] Линейные методы классификации
-\item[--] Метод опорных векторов
-\item[--] Выбор ядра для метода опорных векторов
-\item[--] Мультиклассовый классификатор
+\item[--] Задача кластеризации
+\item[--] Графовые алгоритмы кластеризации
+\item[--] Статистические алгоритмы кластеризации
 \end{itemize}
 \end{frame}
 

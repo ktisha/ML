@@ -193,7 +193,7 @@ ${y_u^i}$ -- ответ на $i$-м соседе объекта $u$
 \end{frame}
 
 \begin{frame}\frametitle{Метрический алгоритм классификации}
-${a(u, X^l) = \arg\max_{y \in Y} \underbrace{\sum\limits_{i=1}^l [y_u^i = y]w(i, u)}_{\Gamma_y(u)} }$\\
+${a(u, X^l) = \arg\max\limits_{y \in Y} \underbrace{\sum\limits_{i=1}^l [y_u^i = y]w(i, u)}_{\Gamma_y(u)} }$\\
 \vspace{5mm}
 $w(i, u)$ - вес $i$-го соседа $u$, неотрицателен\\
 $\Gamma_y(u)$ - оценка близости объекта $u$ к классу ${y}$
@@ -249,7 +249,7 @@ ${w(i, u) = [i \leq k]}$\\
 \end{frame}
 \begin{frame}\frametitle{Как выбрать $k$}
 Функционал скользящего контроля (leave-one-out):\\
-${LOO(k, X^l) = \sum\limits_{i=1}^l [a(x_i; X^l \backslash \left\{x_i\right\}, k) \neq y] \rightarrow \min_k}$\\
+${LOO(k, X^l) = \sum\limits_{i=1}^l [a(x_i; X^l \backslash \left\{x_i\right\}, k) \neq y] \rightarrow \min\limits_k}$\\
 \vspace{5mm}
 
 \end{frame}
@@ -286,11 +286,11 @@ ${w_i = K(\frac{\rho(u, x_u^i)}{h})}$\\
 $K(r)$ -- ядро, невозрастающее, положительное на [0, 1]\\
 \vspace{8mm} 
 Фиксированной ширины:\\
-${a(u, X^l, h, K) = \arg\max_{y \in Y} \sum\limits_{i=1}^l [y_u^i = y] K(\frac{\rho(u, x_u^i)}{h})}$\\
+${a(u, X^l, h, K) = \arg\max\limits_{y \in Y} \sum\limits_{i=1}^l [y_u^i = y] K(\frac{\rho(u, x_u^i)}{h})}$\\
 $h$ -- ширина окна\\
 \vspace{5mm}
 Переменной ширины:\\
-${a(u, X^l, k, K) = \arg\max_{y \in Y} \sum\limits_{i=1}^l [y_u^i = y] K(\frac{\rho(u, x_u^i)}{\rho(u, x_u^{k+1})})}$
+${a(u, X^l, k, K) = \arg\max\limits_{y \in Y} \sum\limits_{i=1}^l [y_u^i = y] K(\frac{\rho(u, x_u^i)}{\rho(u, x_u^{k+1})})}$
 
 \end{frame}
 
@@ -311,10 +311,10 @@ ${a(u, X^l, k, K) = \arg\max_{y \in Y} \sum\limits_{i=1}^l [y_u^i = y] K(\frac{\
 при этом сохраняя сумму расстояний между объектами одного класса небольшой.\\
 \vspace{8mm}
 %${\max_{M\in \mathbb{S^d}} \sum_{x_i, x_j \in D} d_M(x_i, x_j) }$\\
-${\max \sum_{x_i, x_j \in D} \rho(x_i, x_j) }$\\
+${\max \sum\limits_{x_i, x_j \in D} \rho(x_i, x_j) }$\\
 \vspace{8mm}
 %${\sum_{x_i, x_j \in S} d_M^2(x_i, x_j) \leq 1 }$
-${\sum_{x_i, x_j \in S} \rho^2(x_i, x_j) \leq 1 }$
+${\sum\limits_{x_i, x_j \in S} \rho^2(x_i, x_j) \leq 1 }$
 %http://arxiv.org/pdf/1306.6709v4.pdf
 \end{frame}
 
@@ -370,7 +370,7 @@ ${\rho'(u, x_i) = \rho(u, x_i) - w_k\rho_k(u, x_i) + w_j\rho_j(u, x_i)}$\\
 Отступ показывает степень "типичности объекта".\\
 \vspace{5mm}
 Отступом объекта ${x_i \in X^l}$ относительно классификатора $a$ называется величина\\
-${M(x_i) = \Gamma_{y_i}(x_i) - \max_{y \in Y\backslash y_i} \Gamma_y(x_i)}$
+${M(x_i) = \Gamma_{y_i}(x_i) - \max\limits_{y \in Y\backslash y_i} \Gamma_y(x_i)}$
 
 \end{frame}
 
@@ -399,7 +399,7 @@ ${M(x_i) = \Gamma_{y_i}(x_i) - \max_{y \in Y\backslash y_i} \Gamma_y(x_i)}$
 выбрать оптимальное подмножество эталонов $\Omega\subseteq X^l$\\ 
 \vspace{5mm}
 Классификатор будет иметь вид:\\
-${a(u, \Omega) = \arg\max_{y \in Y} \sum\limits_{x_i \in \Omega} [y_u^i = y]w(i, u) }$\\
+${a(u, \Omega) = \arg\max\limits_{y \in Y} \sum\limits_{x_i \in \Omega} [y_u^i = y]w(i, u) }$\\
 \end{frame}
 
 \begin{frame}\frametitle{Алгоритм STOLP}
