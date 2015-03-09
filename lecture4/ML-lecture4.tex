@@ -21,7 +21,7 @@
 
 \author{Катя Тузова}
 \title{Машинное обучение}
-\subtitle{Лекция 3. Методы кластеризации}
+\subtitle{Лекция 4. Методы кластеризации}
 \date{}
 
 \begin{document}
@@ -29,6 +29,194 @@
 
 
 \begin{frame}\frametitle{Разбор летучки}
+Какая в худшем случае сложность поиска в kd-дереве из n элементов? \\
+Какой случай является “худшим”?
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+$O(n)$\\
+На каждом шаге сфера радиуса $R$ пересекает разделяющую поверхность. 
+\end{frame}
+
+
+\begin{frame}\frametitle{Разбор летучки}
+\begin{figure}[htbp]
+\centering
+\includegraphics[height=170pt]{images/kd-nn}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+\begin{figure}[htbp]
+\centering
+\includegraphics[height=170pt]{images/kd-nn1}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+\begin{figure}[htbp]
+\centering
+\includegraphics[height=170pt]{images/kd-nn2}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Что важнее для алгоритма классификации: точность или полнота? Почему?
+\end{frame}
+
+
+\begin{frame}\frametitle{Разбор летучки}
+$$\operatorname{Precision} = \frac{TP}{TP + FP}$$\\
+\begin{itemize}
+\item[--] $TP$ --- это количество элементов, которые классификатор верно отнёс к классу $c$,
+\item[--] $FP$ --- количество элементов, которые классификатор неверно отнёс к классу $c$,
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+$$\operatorname{Precision} = \frac{TP}{TP + FP}$$\\
+\vspace{5mm}
+Характеризует, сколько полученных от классификатора положительных ответов являются правильными. Чем больше точность, тем меньше число ложных попаданий.
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+$$\operatorname{Precision} = \frac{TP}{TP + FP}$$\\
+\vspace{5mm}
+Что остается неизвестным?
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+$$\operatorname{Precision} = \frac{TP}{TP + FP}$$\\
+\vspace{5mm}
+Мера точности не дает представления о том, все ли правильные ответы вернул классификатор.
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+$$\operatorname{Recall} = \frac{TP}{TP + FN}$$\\
+\begin{itemize}
+\item[--] $TP$ --- это количество элементов, которые классификатор верно отнёс к классу $c$,
+\item[--] $FN$ --- количество элементов, которые классификатор неверно отнёс к классу, отличному от $c$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+$$\operatorname{Recall} = \frac{TP}{TP + FN}$$\\
+\vspace{5mm}
+Мера полноты характеризует способность классификатора «угадывать» как можно большее число положительных ответов из ожидаемых. 
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+\begin{figure}[htbp]
+\centering
+\includegraphics[height=170pt]{images/precision-recall}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+\begin{figure}[htbp]
+\centering
+\includegraphics[height=170pt]{images/precision-recall-1}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+\begin{figure}[htbp]
+\centering
+\includegraphics[height=170pt]{images/precision-recall-2}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+\begin{figure}[htbp]
+\centering
+\includegraphics[height=170pt]{images/precision-recall-3}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+$F_1 = 2 \frac{P R}{P + R}$\\
+\vspace{5mm}
+F-мера представляет собой гармоническое среднее между точностью и полнотой. Она стремится к нулю, если точность или полнота стремится к нулю.
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Кратко опишите основную идею locality-sensitive hashing.
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Найти такую хэш-функцию $h$, что:\\
+\begin{itemize}
+\item[--] Если объекты $C_1$ и $C_2$ похожи, то с большой вероятностью $h(C1) == h(C2)$\\
+\item[--] Иначе -- с большой вероятностью $h(C1) \neq h(C2)$
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Приведите пример кластерной структуры на которой алгоритм Ланса-Уильямса с
+параметрами, соответствующими групповому среднему, будет работать плохо.
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Сгущения\\
+\vspace{5mm}
+\begin{figure}[htbp]
+  \includegraphics[height=130pt, keepaspectratio = true]{images/cluster1}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Ленты\\
+\vspace{5mm}
+\begin{figure}[htbp]
+  \includegraphics[height=130pt, keepaspectratio = true]{images/cluster2}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+С центром\\
+\vspace{5mm}
+\begin{figure}[htbp]
+  \includegraphics[height=130pt, keepaspectratio = true]{images/cluster3}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+С перемычками\\
+\vspace{5mm}
+\begin{figure}[htbp]
+  \includegraphics[height=130pt, keepaspectratio = true]{images/cluster4}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+На фоне\\
+\vspace{5mm}
+\begin{figure}[htbp]
+  \includegraphics[height=130pt, keepaspectratio = true]{images/cluster5}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Перекрывающиеся\\
+\vspace{5mm}
+\begin{figure}[htbp]
+  \includegraphics[height=130pt, keepaspectratio = true]{images/cluster6}  
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Соответствует ли дендрограмма кластеризации точек a, b, c, d алгоритмом Ланса-Уильямса с параметрами, соответствующими групповому среднему? \\
+Если нет, то приведите вариант, который считаете правильным.
+\end{frame}
+
+\begin{frame}\frametitle{Дендрограмма}
+Может ли так случиться, что дендрограмма имеет самопересечения?\\
+\vspace{5mm}
+\end{frame}
+
+\begin{frame}\frametitle{Свойство монотонности}
+Кластеризация монотонна, если на каждом шаге расстояние $\rho$ между объединяемыми кластерами не уменьшается.\\
+$\rho_2 \leq \rho_3 \leq \dots \leq \rho_l$
 \end{frame}
 
 \begin{frame}\frametitle{Постановка задачи кластеризации}
@@ -63,10 +251,6 @@ $a: X \rightarrow Y$ -- алгоритм кластеризации
 		\item[--] Упростить дальнейшую обработку данных
 		\item[--] Построить иерархию множества объектов				
 	\end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{Оценка качества кластеризации}
-Есть несколько разбиений на кластеры. Как их сравнить?
 \end{frame}
 
 \begin{frame}\frametitle{Оценка качества кластеризации}
@@ -131,6 +315,16 @@ ${\frac{\sum\limits_{a(x_i) \neq a(x_j)} \rho(x_i, x_j)}{\sum\limits_{a(x_i) \ne
 \end{frame}
 
 \begin{frame}\frametitle{Алгоритм FOREL}
+Идея:\\
+\begin{itemize}
+\item[--] Выделить все точки выборки $x_i$, попадающие внутрь сферы $\rho(x_i, x_0) \leq R$
+\item[--] Перенести $x_0$ в центр тяжести выделенных точек
+\item[--] Повторять пока $x_0$ не стабилизируется
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Алгоритм FOREL}
 Input: X, R\\
 ${U = X, C = 0}$\\\vspace{2mm}
 while ${U \neq 0}$:\\
@@ -148,7 +342,7 @@ while ${U \neq 0}$:\\
 \begin{frame}\frametitle{Алгоритм FOREL}
 
 \begin{itemize}
-\item+] Наглядность
+\item[+] Наглядность
 \item[+] Сходимость
 \item[--] Зависимость от выбора $x_0$
 \item[--] Плохо работает, если изначальная выборка плохо делится на кластеры
@@ -210,7 +404,6 @@ $\rho(x_i, \mu_c)$ -- расстояние от $x_i$ до центра клас
 \item[--] Чувствительность к начальному выбору $\mu_c$
 \item[--] Необходимость задавать $k$
 \end{itemize}
-Как устранить эти недостатки?
 \end{frame}
 
 \begin{frame}\frametitle{Чувствительность к начальному выбору $\mu_c$}
@@ -244,10 +437,53 @@ $\rho(x_i, \mu_c)$ -- расстояние от $x_i$ до центра клас
 \end{frame}
 
 \begin{frame}\frametitle{Устранение недостатков}
+\end{frame}
+
+\begin{frame}\frametitle{Устранение недостатков}
 \begin{itemize}
 \item[--] Несколько случайных кластеризаций
 \item[--] Постепенное наращивание числа $k$
+\item[--] Использование k-means++
 \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{k-means++}
+\begin{itemize}
+\item[--] Выбрать первый центроид случайным образом
+\item[--] Для каждой точки найти значение квадрата расстояния до ближайшего центроида.
+\item[--] Выбрать из этих точек следующий центроид так, чтобы вероятность выбора точки была пропорциональна вычисленному для неё квадрату расстояния
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{X-means}
+Идея:\\
+\begin{itemize}
+\item[--] Получать на вход не k, а диапазон, в котором может находиться k.
+\item[--] Запустить k-means на самом маленьком значении из диапазона.
+\item[--] Разбивать пополам полученные кластеры и проверять, не улучшилась ли кластеризация.
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{X-means}
+
+\begin{figure}[htbp]
+  \includegraphics[height=140pt, keepaspectratio = true]{images/x-means}  
+    \includegraphics[height=140pt, keepaspectratio = true]{images/x-means-1}
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{X-means}
+Как проверить, что кластеризация улучшилась?
+\end{frame}
+
+\begin{frame}\frametitle{Байесовский информационный критерий}
+$BIC = E(X, C)  + k d \log(n)$\\
+\vspace{5mm}
+$E$ -- внутрикластерная сумма квадратов расстояний\\
+$k$ -- количество кластеров\\
+$d$ -- длина вектора фич\\
+$n$ -- количество объектов в выборке\\
+
 \end{frame}
 
 \begin{frame}\frametitle{Недостатки k-means}
@@ -257,13 +493,7 @@ $\rho(x_i, \mu_c)$ -- расстояние от $x_i$ до центра клас
 \begin{figure}[htbp]
   \includegraphics[height=180pt, keepaspectratio = true]{images/non_spherical-1}  
 \end{figure}
-\end{frame}
-
-\begin{frame}\frametitle{"Не сферические данные"}
-\begin{figure}[htbp]
-  \includegraphics[height=180pt, keepaspectratio = true]{images/non_spherical-2}  
-\end{figure}
-\end{frame}
+\end{frame}	
 
 \begin{frame}\frametitle{"Не сферические данные"}
 \begin{figure}[htbp]
@@ -289,7 +519,6 @@ $\rho(x_i, \mu_c)$ -- расстояние от $x_i$ до центра клас
 \item[--] Минимизация эмпирического риска
 \item[--] Метод градиентного спуска
 \item[--] Принцип максимума правдоподобия
-\item[--] Балансировка ошибок и ROC-кривая
 \end{itemize}
 \end{frame}
 
