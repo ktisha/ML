@@ -139,10 +139,11 @@ $w$ -- вектор параметров, $w \in \mathbb{R}^l$
 
 
 \begin{frame}\frametitle{Линейный классификатор}
-$f_j: X \rightarrow \mathbb{R}$, $j = 1,\dots, n$\\
-\vspace{3mm}
+$f_j: X \rightarrow \mathbb{R}$, $j = 1,\dots, n$ \hspace{5mm} $w_j \in \mathbb{R}$\\
+$g(x, w) = w_jf_j(x) - w_0$\\
+\vspace{5mm}
 $a(x, w) = sign(\sum\limits_{j=1}^n w_jf_j(x) - w_0)$\\
-$w_j \in \mathbb{R}$ -- веса признаков\\
+
 \vspace{7mm}
 Введём константный признак $f_0 \equiv -1$:\\
 $a(x, w) = sign(\sum\limits_{j=0}^n w_jf_j(x))$\\
@@ -175,8 +176,8 @@ $a(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w}, \mathbf{x}\rangle)$\\
 
 \begin{frame}\frametitle{Определение отступа}
 ${g(\mathbf{x}, \mathbf{w}) = \langle \mathbf{w}, \mathbf{x}\rangle = 0}$ -- разделяющая поверхность\\
-$M_i(\mathbf{w}) = \langle \mathbf{w}, \mathbf{x_i}\rangle y_i$ -- отступ объекта $\mathbf{x_i}$\\
-${M_i(\mathbf{w})<0}$ $\Rightarrow$ алгоритм $a(\mathbf{x},\mathbf{w})$ ошибается на $\mathbf{x_i}$
+$M_i(\mathbf{w}) = \langle \mathbf{w}, \mathbf{x_i}\rangle y_i$ -- отступ объекта $x_i$\\
+${M_i(\mathbf{w})<0}$ $\Rightarrow$ алгоритм $a(\mathbf{x},\mathbf{w})$ ошибается на $x_i$
 \end{frame}
 
 \begin{frame}\frametitle{Минимизация эмпирического риска}
@@ -430,6 +431,13 @@ $\lambda = \frac{1}{k}$, где $k$ -- количество объектов, п
 \end{frame}
 
 \begin{frame}\frametitle{Проблема переобучения}
+$a(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w}, \mathbf{x}\rangle)$\\
+Линейная зависимость признаков:\\
+$\forall \mathbf{x} \exists \mathbf{u}: \langle \mathbf{u}, \mathbf{x}\rangle = 0$\\
+$\Rightarrow \forall \gamma: a(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w} + \gamma \mathbf{u}, \mathbf{x}\rangle)$
+\end{frame}
+
+\begin{frame}\frametitle{Проблема переобучения}
 \begin{itemize}
 \item[--] Слишком мало объектов
 \item[--] Слишком много признаков
@@ -490,6 +498,13 @@ $\mathbf{w} = \mathbf{w}(1-\eta \tau) - \eta \bigtriangledown Q(\mathbf{w})$
 \end{frame}
 
 \begin{frame}\frametitle{Резюме лекции}
+\begin{itemize}
+\item[--] Построение выпуклых оболочек
+\item[--] Определение линейного классификатора
+\item[--] Минимизация эмпирического риска
+\item[--] Метод градиентного спуска
+\item[--] Метод стохастического градиентного спуска
+\end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{На следующей лекции}
