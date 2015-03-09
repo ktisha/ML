@@ -18,10 +18,11 @@
 \usepackage[english,russian]{babel}
 \usepackage{graphicx}
 \usepackage{listings}
+\DeclareMathOperator{\sign}{sign}
 
 \author{Катя Тузова}
 \title{Машинное обучение}
-\subtitle{Лекция 4. Линейные методы классификации.}
+\subtitle{Лекция 5. Линейные методы классификации.}
 \date{}
 
 \begin{document}	
@@ -52,8 +53,28 @@ $(n-1)$-мерную гиперплоскость, которая разделя
 Два разделенных класса должны лежать как можно дальше от разделяющей гиперплоскости.\\
 \end{frame}
 
+%\begin{frame}\frametitle{Опорная гиперплоскость}
+%\end{frame}
+
+%\begin{frame}\frametitle{Опорная гиперплоскость}
+%Гиперплоскость называется опорной для множества точек
+%$X$, если все точки из $X$ лежат по одну сторону от этой гиперплоскости.\\\vspace{5mm}
+%${f(x,w) = \langle x, w\rangle - w_0 = 0}$\\
+%\vspace{5mm}
+%Как посчитать расстояние от точки до гиперплоскости?
+%\end{frame}
+
+%\begin{frame}\frametitle{Опорная гиперплоскость}
+%Гиперплоскость называется опорной для множества точек
+%$X$, если все точки из $X$ лежат по одну сторону от этой гиперплоскости.\\\vspace{5mm}
+%${f(x,w) = \langle x, w\rangle - w_0 = 0}$\\
+%\vspace{5mm}
+%Расстояние от точки до гиперплоскости:
+%$\frac{\vert f(x,w) \vert}{\Vert w \Vert}$
+%\end{frame}
+
 \begin{frame}\frametitle{Вопрос}
-Какие есть идеи?
+Как построить такую гиперплоскость?
 \end{frame}
 
 \begin{frame}\frametitle{Пример}
@@ -76,125 +97,65 @@ $(n-1)$-мерную гиперплоскость, которая разделя
 \end{frame}
 
 \begin{frame}\frametitle{Выпуклая оболочка}
+\begin{figure}[htbp]
+	\begin{minipage}{.5\textwidth}
+	  \includegraphics[height=130pt, keepaspectratio = true]{images/convex} \\
+	  \centering Выпуклая оболочка
+    \end{minipage}%
+    \begin{minipage}{.5\textwidth}
+		\includegraphics[height=130pt, keepaspectratio = true]{images/non-convex}   \\
+		\centering Невыпуклая оболочка
+	\end{minipage}%
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Выпуклая оболочка}
 Найти две ближайшие точки в выпуклых
 оболочках данных, а затем провести разделяющую
 гиперплоскость через середину отрезка.
 \end{frame}
 
-%\begin{frame}\frametitle{Выпуклая оболочка}
-%$\min\limits_\alpha \Vert c - d \Vert^2$, где $c = \sum\limits_{y_i = 1} \alpha_ix_i$,  $d = \sum\limits_{y_i = -1} \alpha_ix_i$\\
-%\vspace{5mm}
-%$\sum\limits_{y_i = 1}\alpha_i = \sum\limits_{y_i = -1}\alpha_i = 1$, $\alpha_i \geq 0$\\
-%\vspace{5mm}
-%Задачу можно решать общими оптимизационными алгоритмами.
-%\end{frame}
-
-\begin{frame}\frametitle{Опорная гиперплоскость}
+\begin{frame}\frametitle{Выпуклая оболочка}
+$\min\limits_w \Vert c - d \Vert^2$, где $c = \sum\limits_{y_i = 1} w_ix_i$,  $d = \sum\limits_{y_i = -1} w_ix_i$\\
+\vspace{5mm}
+$\sum\limits_{y_i = 1}w_i = \sum\limits_{y_i = -1}w_i = 1$, $w_i \geq 0$\\
+\vspace{5mm}
+Задачу можно решать общими оптимизационными алгоритмами.
 \end{frame}
+
+\begin{frame}\frametitle{Построение разделяющей поверхности}
+\end{frame}
+
 
 \begin{frame}\frametitle{Построение разделяющей поверхности}
 ${X^l = (x_i,y_i)_{i = 1}^l}$ -- обучающая выборка\\ 
 ${Y=\left\{-1,+1\right\}}$\\
 \vspace{5mm}
 Задача:\\
-Построить алгоритм классификации ${a(x,w) = sign f(x,w)}$\\\vspace{5mm}
-${f(x,w)}$ -- разделяющая функция\\
+Построить алгоритм классификации ${a(x,w) = \sign g(x,w)}$\\\vspace{5mm}
+${g(x,w)}$ -- разделяющая функция\\
 $w$ -- вектор параметров, $w \in \mathbb{R}^l$
 \end{frame}
 
-\begin{frame}\frametitle{Опорная гиперплоскость}
-Гиперплоскость называется опорной для множества точек
-$X$, если все точки из $X$ лежат по одну сторону от этой гиперплоскости.\\\vspace{5mm}
-${f(x,w) = \langle x, w\rangle - w_0 = 0}$\\
-\vspace{5mm}
-Расстояние от точки до гиперплоскости:
-$\frac{\vert f(x,w) \vert}{\Vert w \Vert}$
-\end{frame}
-
-
-\begin{frame}\frametitle{Построение разделяющей поверхности}
-Как оценить надежность классификатора?
-\end{frame}
-
-\begin{frame}\frametitle{Минимизация зазора}
-${f(x,w) = 0}$ -- разделяющая поверхность\\
-${M_i(w) =y_if(x_i,w)}$ -- отступ объекта $x_i$\\
-${M_i(w)<0}$ $\Rightarrow$ алгоритм $a(x,w)$ ошибается на $x_i$
-\end{frame}
-
-%\begin{frame}\frametitle{Максимизиция отступа}
-%Идея:\\
-%Максимизировать отступ между
-%двумя параллельными опорными плоскостями, а затем
-%провести параллельную им плоскость на равных расстояниях.\\
-%\vspace{5mm}
-%Как посчитать расстояние от точки до гиперплоскости?
-%\end{frame}
-
-%\begin{frame}\frametitle{Постановка задачи}
-%Задача классификации:
-%$X = \mathbb{R}^n$, ${Y = \left\{ -1, +1\right\}}$\\
-%${X^l = (x_i, y_i)_{i = 1}^l}$ -- обучающая выборка\\
-%\vspace{5mm}
-%Найти:\\
-%$w \in \mathbb{R}^n, w_0 \in \mathbb{R}$ -- параметры алгоритма классификации\\
-%${a(x, w) = sign(\langle x, w\rangle + w_0) }$
-%\end{frame}
-
-\begin{frame}\frametitle{Минимизация эмпирического риска}
-Число ошибок на обучающей выборке:\\
-\vspace{5mm}
-${Q(w) = \sum\limits_{i=1}^l \left[ M_i(w) < 0 \right] \rightarrow \min\limits_w }$\\
-\vspace{3mm}
-${Q(w)}$ -- функционал качества\\
-\vspace{5mm}
-Но так мы учитываем только результат классификации и теряем информацию насколько ${i}$-й объект был надежен.\\
-\vspace{3mm}
-Как сохранить информацию?
-
-\end{frame}
-
-\begin{frame}\frametitle{Минимизация эмпирического риска}
-${Q(w) = \sum\limits_{i=1}^l \left[ M_i(w) < 0 \right] \leq}$\\ \vspace{3mm}
-${\leq \widetilde{Q}(w) = \sum\limits_{i=1}^l \mathcal{L}(M_i(w)) \rightarrow \min\limits_w }$\\\vspace{3mm}
-$\mathcal{L}$ -- функция потерь, невозрастающая, неотрицательная.\\ 
-\end{frame}
-
-\begin{frame}\frametitle{Примеры $\mathcal{L}$}
-\begin{figure}[htbp]
-  \includegraphics[height=160pt, keepaspectratio = true]{images/l1}   
-\end{figure}
-\end{frame}
-
-\begin{frame}\frametitle{Примеры $\mathcal{L}$}
-\begin{figure}[htbp]
-  \includegraphics[height=160pt, keepaspectratio = true]{images/l}   
-\end{figure}
-\begin{enumerate}
-\item $V(M) = (1-M)_+$ -- кусочно-линейная
-\item $L(M) = \log_2(1+e^{-M})$ -- логарифмическая
-\item $H(M) = (-M)_+$ -- кусочно-линейная
-\item $S(M) = 2(1+e^M)^{-1}$ -- сигмоидная
-\end{enumerate}
-\end{frame}
 
 \begin{frame}\frametitle{Линейный классификатор}
 $f_j: X \rightarrow \mathbb{R}$, $j = 1,\dots, n$\\
 \vspace{3mm}
 $a(x, w) = sign(\sum\limits_{j=1}^n w_jf_j(x) - w_0)$\\
-\vspace{3mm}
 $w_j \in \mathbb{R}$ -- веса признаков\\
+\vspace{7mm}
+Введём константный признак $f_0 \equiv -1$:\\
+$a(x, w) = sign(\sum\limits_{j=0}^n w_jf_j(x))$\\
 \end{frame}
 
 \begin{frame}\frametitle{Линейный классификатор}
-$a(x, w) = sign(\sum\limits_{j=1}^n w_jf_j(x) - w_0)$\\
+$a(x, w) = sign(\sum\limits_{j=1}^n w_jf_j(x))$\\
+
 \vspace{3mm}
-Введем константный признак $f_0 \equiv -1$:\\
+Перейдём к векторной записи:\\
+$\mathbf{x} = (f_1, f_2, \dots, f_n)$\\
 \vspace{3mm}
-$a(x, w) = sign(\langle w, x\rangle)$\\
-\vspace{3mm}
-Отступ:\\
-$M_i(w) = \langle w, x_i\rangle y_i$
+$a(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w}, \mathbf{x}\rangle)$\\
 \end{frame}
 
 
@@ -204,31 +165,156 @@ $M_i(w) = \langle w, x_i\rangle y_i$
 \end{figure}
 \end{frame}
 
+\begin{frame}\frametitle{Линейный классификатор}
+Как подбирать $w_j$?
+\end{frame}
+
+\begin{frame}\frametitle{Построение разделяющей поверхности}
+Как оценить качество классификации?
+\end{frame}
+
+\begin{frame}\frametitle{Определение отступа}
+${g(\mathbf{x}, \mathbf{w}) = \langle \mathbf{w}, \mathbf{x}\rangle = 0}$ -- разделяющая поверхность\\
+$M_i(\mathbf{w}) = \langle \mathbf{w}, \mathbf{x_i}\rangle y_i$ -- отступ объекта $\mathbf{x_i}$\\
+${M_i(\mathbf{w})<0}$ $\Rightarrow$ алгоритм $a(\mathbf{x},\mathbf{w})$ ошибается на $\mathbf{x_i}$
+\end{frame}
+
+\begin{frame}\frametitle{Минимизация эмпирического риска}
+Число ошибок на обучающей выборке:\\
+\vspace{5mm}
+${Q(\mathbf{w}) = \sum\limits_{i=1}^l \left[ M_i(\mathbf{w}) < 0 \right] \rightarrow \min\limits_{\mathbf{w}} }$\\
+\vspace{3mm}
+${Q(\mathbf{w})}$ -- функционал качества\\
+\vspace{5mm}
+Но так мы учитываем только результат классификации и теряем информацию насколько ${i}$-й объект был надежен.\\
+\vspace{3mm}
+Как сохранить информацию?
+
+\end{frame}
+
+\begin{frame}\frametitle{Отступ}
+\begin{figure}[htbp]
+  \includegraphics[height=190pt, keepaspectratio = true]{images/margin1}   
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Отступ}
+\begin{figure}[htbp]
+  \includegraphics[height=190pt, keepaspectratio = true]{images/margin2}   
+\end{figure}
+\end{frame}
+
+
+\begin{frame}\frametitle{Функция $[M<0]$}
+\begin{figure}[htbp]
+  \includegraphics[height=160pt, keepaspectratio = true]{images/l1}   
+\end{figure}
+\end{frame}
+
+
+\begin{frame}\frametitle{Минимизация эмпирического риска}
+${Q(\mathbf{w}) = \sum\limits_{i=1}^l \left[ M_i(\mathbf{w}) < 0 \right] \leq}$\\ \vspace{3mm}
+${\leq \widetilde{Q}(\mathbf{w}) = \sum\limits_{i=1}^l \mathcal{L}(M_i(\mathbf{w})) \rightarrow \min\limits_{\mathbf{w}} }$\\\vspace{3mm}
+$\mathcal{L}$ -- функция потерь, невозрастающая, неотрицательная.\\ 
+\end{frame}
+
+\begin{frame}\frametitle{Примеры $\mathcal{L}$}
+\begin{figure}[htbp]
+  \includegraphics[height=160pt, keepaspectratio = true]{images/l}   
+\end{figure}
+\begin{enumerate}
+\item $V(M) = (1-M)_+$ -- кусочно-линейная
+\item $L(M) = \log_2(1+e^{-M})$ -- логарифмическая
+\item $S(M) = 2(1+e^M)^{-1}$ -- сигмоидная
+\end{enumerate}
+\end{frame}
+
+\begin{frame}\frametitle{Градиент}
+Что такое градиент?
+\end{frame}
+
+\begin{frame}\frametitle{Градиент}
+\begin{figure}[htbp]
+  \includegraphics[height=160pt, keepaspectratio = true]{images/gradient}   
+\end{figure}
+\end{frame}
+
 %Численный метод оптимизации
 \begin{frame}\frametitle{Метод градиентного спуска}
-$w^{(0)} $ -- начальное приближение\\
-\vspace{3mm}
-$w^{(t+1)} =  w^{(t)} - \eta \bigtriangledown Q(w^{(t)})$\\
-\vspace{3mm}
-$\bigtriangledown Q(w) = (\frac{\partial Q(w)}{\partial w_j})_{j=0}^n$\\
-\vspace{3mm}
-$\eta$ -- градиентный шаг (темп обучения)\\
-\vspace{3mm}
-$w^{(t+1)} =  w^{(t)} - \eta \sum\limits_{i=1}^l \mathcal{L}'(\langle w^{(t)}, x_i\rangle y_i)x_iy_i$\\
+Input: $\eta$ -- градиентный шаг (темп обучения)\\
+Output: $w_0, w_1, \dots, w_n$\\
+\vspace{3mm}	
+Инициализировать: $w_j$, $j=0,\dots, n$\\
+Повторить пока $\mathbf{w}$ не стабилизируются:\\
+\hspace{10mm} $\mathbf{w} =  \mathbf{w} - \eta \bigtriangledown Q(\mathbf{w})$\\
+
+\vspace{10mm}
+$\bigtriangledown Q(\mathbf{w}) = (\frac{\partial Q(\mathbf{w})}{\partial w_j})_{j=0}^n$\\
+\end{frame}
+
+\begin{frame}\frametitle{Градиентный спуск}
+\begin{figure}[htbp]
+  \includegraphics[height=160pt, keepaspectratio = true]{images/gradient_descent}   
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Метод градиентного спуска}
+Случай двух признаков.\\
+Input: $\eta$ -- градиентный шаг (темп обучения)\\
+Output: $w_0, w_1$\\
+\vspace{3mm}	
+Инициализировать: $w_0$, $w_1$\\
+Повторить пока $w_0$ и $w_1$ не стабилизируются:\\
+\hspace{10mm} $tmp_0 =  w_0 - \eta \frac{\partial Q(w)}{\partial w_0}$\\
+\hspace{10mm} $tmp_1 =  w_1 - \eta \frac{\partial Q(w)}{\partial w_1}$\\
+\hspace{10mm} $w_0 = tmp_0$\\
+\hspace{10mm} $w_1 = tmp_1$
+\end{frame}
+
+\begin{frame}\frametitle{Метод градиентного спуска}
+Почему важно обновить $w_0$ и $w_1$ одновременно?
+\end{frame}
+
+\begin{frame}\frametitle{Градиент функционала качества $Q$}
+$\bigtriangledown Q(\mathbf{w}) = (\frac{\partial Q(\mathbf{w})}{\partial w_j})_{j=0}^n = \sum\limits_{i=1}^l \mathcal{L}'(\langle \mathbf{w}, \mathbf{x_i} \rangle y_i) \mathbf{x_i} y_i$\\
+\end{frame}
+
+\begin{frame}\frametitle{Маленький градиентный шаг}
+\begin{figure}[htbp]
+  \includegraphics[height=160pt, keepaspectratio = true]{images/learning_rate_small}   
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Большой градиентный шаг}
+\begin{figure}[htbp]
+  \includegraphics[height=160pt, keepaspectratio = true]{images/learning_rate_large}   
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Выбор величины шага}
+\begin{itemize}
+\item[--] Для выпуклых функций:\\
+$\eta_t \rightarrow 0$\\
+$\sum\limits_{t = 1}^\infty \eta_t = \infty$\\
+$\sum\limits_{t = 1}^\infty \eta_t^2 < \infty$\\
+
+\item[--] Метод скорейшего градиентного спуска:\\
+$Q(w - \eta \bigtriangledown Q(w)) \rightarrow \min\limits_{\eta}$
+\item[--] Пробные случайные шаги
+\end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{В чем проблема?}
-$w^{(t+1)} =  w^{(t)} - \eta \sum\limits_{i=1}^l \mathcal{L}'(\langle w^{(t)}, x_i\rangle y_i)x_iy_i$\\
+
 \end{frame}
 
 \begin{frame}\frametitle{В чем проблема?}
-$w^{(t+1)} =  w^{(t)} - \eta \sum\limits_{i=1}^l \mathcal{L}'(\langle w^{(t)}, x_i\rangle y_i)x_iy_i$\\
+$\mathbf{w} =  \mathbf{w} - \eta \sum\limits_{i=1}^l \mathcal{L}'(\langle \mathbf{w}, \mathbf{x_i} \rangle y_i)\mathbf{x_i}y_i$\\
 \vspace{5mm}
-Очень медленно сходится.
 \end{frame}
 
 \begin{frame}\frametitle{Метод стохастического градиента}
-$w^{(t+1)} =  w^{(t)} - \eta \sum\limits_{i=1}^l \mathcal{L}'(\langle w^{(t)}, x_i\rangle y_i)x_iy_i$\\
+$\mathbf{w} =  \mathbf{w} - \eta \sum\limits_{i=1}^l \mathcal{L}'(\langle \mathbf{w}, \mathbf{x_i}\rangle y_i)\mathbf{x_i}y_i$\\
 \vspace{5mm}
 Давайте брать $(x_i, y_i)$ по одному и сразу обновлять вектор весов
 \end{frame}
@@ -239,12 +325,19 @@ Input: $X^l$, $\eta$, $\lambda$\\
 Output: $w_0, w_1, \dots, w_n$\\
 \vspace{3mm}
 Инициализировать: $w_j$, $j=0,\dots, n$\\
-\hspace{35mm} ${Q}(w) = \sum\limits_{i=1}^l \mathcal{L}(\langle w, x_i \rangle y_i)$\\
+\hspace{35mm} ${Q}(\mathbf{w}) = \sum\limits_{i=1}^l \mathcal{L}(\langle \mathbf{w}, \mathbf{x_i} \rangle y_i)$\\
 Повторить пока $Q$ и/или $w$ не стабилизируются:\\
 \hspace{5mm} выбрать $x_i$ из $X^l$ случайным образом\\
-\hspace{5mm} Потеря: $\varepsilon_i = \mathcal{L}(\langle w, x_i \rangle y_i)$\\
-\hspace{5mm} Градиентный шаг: $w =  w - \eta \mathcal{L}'(\langle w, x_i\rangle y_i)x_iy_i$\\
+\hspace{5mm} Потеря: $\varepsilon_i = \mathcal{L}(\langle \mathbf{w}, \mathbf{x_i} \rangle y_i)$\\
+\hspace{5mm} Градиентный шаг: $w =  w - \eta \mathcal{L}'(\langle \mathbf{w}, \mathbf{x_i}\rangle y_i)\mathbf{x_i}y_i$\\
 \hspace{5mm} Оценить $Q = (1-\lambda)Q + \lambda \varepsilon_i$
+\end{frame}
+
+
+\begin{frame}\frametitle{Градиентный спуск}
+\begin{figure}[htbp]
+  \includegraphics[height=160pt, keepaspectratio = true]{images/gradient_descent2}   
+\end{figure}
 \end{frame}
 
 
@@ -276,11 +369,16 @@ $\lambda = \frac{1}{k}$, где $k$ -- количество объектов, п
 \end{figure}
 \end{frame}
 
+\begin{frame}\frametitle{Зависимость $Q$ от номера итерации}
+\begin{figure}[htbp]
+  \includegraphics[height=160pt, keepaspectratio = true]{images/stochastic_gradient1}   
+\end{figure}
+\end{frame}
+
 \begin{frame}\frametitle{Актуальные вопросы}
 \begin{itemize}
 \item[--] Инициализация весов
 \item[--] Порядок предъявления объектов
-\item[--] Выбор величины шага
 \end{itemize}
 \end{frame}
 
@@ -312,24 +410,6 @@ $\lambda = \frac{1}{k}$, где $k$ -- количество объектов, п
 \end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{Выбор величины шага}
-
-\end{frame}
-
-\begin{frame}\frametitle{Выбор величины шага}
-Для выпуклых функций:
-\begin{itemize}
-\item[--] $\eta_t \rightarrow 0$
-\item[--] $\sum\limits_{t = 1}^\infty \eta_t = \infty$
-\item[--] $\sum\limits_{t = 1}^\infty \eta_t^2 < \infty$
-\end{itemize}
-Метод скорейшего градиентного спуска:
-\begin{itemize}
-\item[--] 
-$Q(w - \eta \bigtriangledown Q(w)) \rightarrow \min\limits_{\eta}$
-\end{itemize}
-Пробные случайные шаги
-\end{frame}
 
 \begin{frame}\frametitle{Плюсы и минусы}
 \begin{itemize}
@@ -351,44 +431,70 @@ $Q(w - \eta \bigtriangledown Q(w)) \rightarrow \min\limits_{\eta}$
 
 \begin{frame}\frametitle{Проблема переобучения}
 \begin{itemize}
-\item[--] Слишком мало объектов; слишком много признаков
+\item[--] Слишком мало объектов
+\item[--] Слишком много признаков
 \item[--] Линейная зависимость признаков
 \end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Как заподозрить?}
 \begin{itemize}
-\item[--] Слишком большие веса $\Vert w \Vert$
-\item[--] Неустойчивость $a(x,w)$
-\item[--] 
+\item[--] Слишком большие веса $\Vert \mathbf{w} \Vert$
+\item[--] Неустойчивость $a(\mathbf{x},\mathbf{w})$
+\item[--] Плохое качество классификации на контрольных данных
 \end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Решение}
 \begin{itemize}
 \item[--] Сокращение весов
-\item[--] Ранний останов
-\item[--] 
+\item[--] Ранняя остановка алгоритма
 \end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Сокращение весов}
+Как можно сокращать веса?
+\end{frame}
+
+\begin{frame}\frametitle{Сокращение весов}
+Штраф за увеличение нормы вектора весов:\\
+$Q_{\tau} = Q + \frac{\tau}{2}\Vert \mathbf{w} \Vert^2 \rightarrow \min\limits_{\mathbf{w}}$\\
+\vspace{5mm}
+Градиент:\\
+$\bigtriangledown Q_{\tau} = \bigtriangledown Q + \tau \mathbf{w}$\\
+\vspace{5mm}
+Градиентный шаг:\\
+$\mathbf{w} = \mathbf{w}(1-\eta \tau) - \eta \bigtriangledown Q(\mathbf{w})$
+\end{frame}
+
+\begin{frame}\frametitle{Вопрос}
+Как подобрать $\tau$?
+\end{frame}
+
+\begin{frame}\frametitle{Как подобрать $\tau$?}
+\begin{itemize}
+\item[--] Скользящий контроль
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Степени свободы}
 
 \end{frame}
 
-\begin{frame}\frametitle{Принцип максимума правдоподобия}
-
+\begin{frame}\frametitle{Степени свободы}
+\begin{itemize}
+\item[--] Вид разделяющей поверхности
+\item[--] Вид аппроксимации функции потерь $\mathcal{L}(M)$
+\item[--] Вид регуляризатора
+\end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{Регуляризация?}
-
+\begin{frame}\frametitle{Резюме лекции}
 \end{frame}
 
-\begin{frame}\frametitle{ROC-кривая}
-
-\end{frame}
-
-\begin{frame}\frametitle{Построение ROC-кривой}
-
+\begin{frame}\frametitle{На следующей лекции}
+\begin{itemize}
+\item[--] Метод опорных векторов
+\end{itemize}
 \end{frame}
 \end{document}
