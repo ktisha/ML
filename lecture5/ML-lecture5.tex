@@ -112,9 +112,9 @@ ${X^l = (x_i,y_i)_{i = 1}^l}$ -- обучающая выборка\\
 ${Y=\left\{-1,+1\right\}}$\\
 \vspace{5mm}
 Задача:\\
-Построить алгоритм классификации ${a(x,w) = \sign g(x,w)}$\\\vspace{5mm}
-${g(x,w)}$ -- разделяющая функция\\
-$w$ -- вектор параметров, $w \in \mathbb{R}^l$
+Построить алгоритм классификации ${a(x,\theta) = \sign g(x,\theta)}$\\\vspace{5mm}
+${g(x,\theta)}$ -- разделяющая функция\\
+$\theta$ -- вектор параметров, $\theta \in \mathbb{R}^l$
 \end{frame}
 
 
@@ -167,10 +167,11 @@ ${Q(\mathbf{w}) = \sum\limits_{i=1}^l \left[ M_i(\mathbf{w}) < 0 \right] \righta
 \vspace{3mm}
 ${Q(\mathbf{w})}$ -- функционал качества\\
 \vspace{5mm}
-Но так мы учитываем только результат классификации и теряем информацию насколько ${i}$-й объект был надежен.\\
-\vspace{3mm}
-Как сохранить информацию?
 
+\begin{itemize}
+\item[--] Индикаторную функцию сложно оптимизировать
+\item[--] Теряем информацию насколько ${i}$-й объект был надежен
+\end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Отступ}
@@ -195,8 +196,9 @@ ${Q(\mathbf{w})}$ -- функционал качества\\
 
 \begin{frame}\frametitle{Минимизация эмпирического риска}
 ${Q(\mathbf{w}) = \sum\limits_{i=1}^l \left[ M_i(\mathbf{w}) < 0 \right] \leq}$\\ \vspace{3mm}
-${\leq \widetilde{Q}(\mathbf{w}) = \sum\limits_{i=1}^l \mathcal{L}(M_i(\mathbf{w})) \rightarrow \min\limits_{\mathbf{w}} }$\\\vspace{3mm}
+\hspace{10mm} ${\leq \sum\limits_{i=1}^l \mathcal{L}(M_i(\mathbf{w})) \rightarrow \min\limits_{\mathbf{w}} }$\\\vspace{3mm}
 $\mathcal{L}$ -- функция потерь, невозрастающая, неотрицательная.\\ 
+$\mathcal{L}$ должна мажорировать $\left[M_i(\mathbf{w}) < 0 \right]$
 \end{frame}
 
 \begin{frame}\frametitle{Примеры $\mathcal{L}$}
@@ -204,9 +206,10 @@ $\mathcal{L}$ -- функция потерь, невозрастающая, не
   \includegraphics[height=160pt, keepaspectratio = true]{images/l}   
 \end{figure}
 \begin{enumerate}
-\item $V(M) = (1-M)_+$ -- кусочно-линейная
+\item $\left[M_i(\mathbf{w}) < 0 \right]$
 \item $L(M) = \log_2(1+e^{-M})$ -- логарифмическая
 \item $S(M) = 2(1+e^M)^{-1}$ -- сигмоидная
+\item $V(M) = (1-M)_+$ -- кусочно-линейная
 \end{enumerate}
 \end{frame}
 
@@ -274,11 +277,7 @@ $\bigtriangledown Q(\mathbf{w}) = (\frac{\partial Q(\mathbf{w})}{\partial w_j})_
 
 \begin{frame}\frametitle{Выбор величины шага}
 \begin{itemize}
-\item[--] Для выпуклых функций:\\
-$\eta_t \rightarrow 0$\\
-$\sum\limits_{t = 1}^\infty \eta_t = \infty$\\
-$\sum\limits_{t = 1}^\infty \eta_t^2 < \infty$\\
-
+\item[--] $\eta_t \rightarrow 0$\\
 \item[--] Метод скорейшего градиентного спуска:\\
 $Q(w - \eta \bigtriangledown Q(w)) \rightarrow \min\limits_{\eta}$
 \item[--] Пробные случайные шаги
@@ -305,10 +304,11 @@ $\mathbf{w} =  \mathbf{w} - \eta \sum\limits_{i=1}^l \mathcal{L}'(\langle \mathb
 Input: $X^l$, $\eta$, $\lambda$\\
 Output: $w_0, w_1, \dots, w_n$\\
 \vspace{3mm}
+Перемешать данные в $X^l$\\
 Инициализировать: $w_j$, $j=0,\dots, n$\\
 \hspace{35mm} ${Q}(\mathbf{w}) = \sum\limits_{i=1}^l \mathcal{L}(\langle \mathbf{w}, \mathbf{x_i} \rangle y_i)$\\
 Повторить пока $Q$ и/или $w$ не стабилизируются:\\
-\hspace{5mm} выбрать $x_i$ из $X^l$ случайным образом\\
+\hspace{5mm} Взять $x_i$ из $X^l$ \\
 \hspace{5mm} Потеря: $\varepsilon_i = \mathcal{L}(\langle \mathbf{w}, \mathbf{x_i} \rangle y_i)$\\
 \hspace{5mm} Градиентный шаг: $w =  w - \eta \mathcal{L}'(\langle \mathbf{w}, \mathbf{x_i}\rangle y_i)\mathbf{x_i}y_i$\\
 \hspace{5mm} Оценить $Q = (1-\lambda)Q + \lambda \varepsilon_i$
@@ -395,7 +395,7 @@ $\lambda = \frac{1}{k}$, где $k$ -- количество объектов, п
 \begin{frame}\frametitle{Плюсы и минусы}
 \begin{itemize}
 \item[+] Легко реализовать
-\item[+] Легко обобщить на разные $f$, $\mathcal{L}$
+\item[+] Легко обобщить на разные $g$, $\mathcal{L}$
 \item[+] Не обязательно брать все элементы выборки для обучения
 \end{itemize}
 \begin{itemize}
@@ -414,7 +414,10 @@ $\lambda = \frac{1}{k}$, где $k$ -- количество объектов, п
 $a(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w}, \mathbf{x}\rangle)$\\
 Линейная зависимость признаков:\\
 $\forall \mathbf{x} \exists \mathbf{u}: \langle \mathbf{u}, \mathbf{x}\rangle = 0$\\
-$\Rightarrow \forall \gamma: a(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w} + \gamma \mathbf{u}, \mathbf{x}\rangle)$
+$\Rightarrow \forall \gamma: a'(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w} + \gamma \mathbf{u}, \mathbf{x}\rangle)$\\
+\vspace{5mm}
+Алгоритм $a'$ работает точно также как исходный $a$.\\
+А значит мы можем получить любое решение из семейства $\mathbf{w} + \gamma \mathbf{u}$
 \end{frame}
 
 \begin{frame}\frametitle{Проблема переобучения}
@@ -472,7 +475,7 @@ $\mathbf{w} = \mathbf{w}(1-\eta \tau) - \eta \bigtriangledown Q(\mathbf{w})$
 \begin{frame}\frametitle{Степени свободы}
 \begin{itemize}
 \item[--] Вид разделяющей поверхности
-\item[--] Вид аппроксимации функции потерь $\mathcal{L}(M)$
+\item[--] Вид аппроксимации функционала качества $Q(\mathbf{w})$
 \item[--] Вид регуляризатора
 \end{itemize}
 \end{frame}
