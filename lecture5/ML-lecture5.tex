@@ -29,6 +29,81 @@
 \frame{\titlepage}
 
 \begin{frame}\frametitle{Разбор летучки}
+Какие проблемы могут возникнуть при использовании метода k-means? Как их избежать?
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+\begin{itemize}
+\item[--] Чувствительность к начальному выбору $\mu_c$
+\item[--] Необходимость задавать $k$
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+В чем заключается идея алгоритма Xmeans?
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Идея:\\
+\begin{itemize}
+\item[--] Получать на вход не k, а диапазон, в котором может находиться k.
+\item[--] Запустить k-means на самом маленьком значении из диапазона.
+\item[--] Разбивать пополам полученные кластеры и проверять, не улучшилась ли кластеризация.
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+\begin{itemize}
+\item[--] Несколько случайных кластеризаций
+\item[--] Постепенное наращивание числа $k$
+\item[--] Использование k-means++
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Как можно использовать минимальное остовное дерево для разбиения выборки на кластеры? Как найти минимальное остовное дерево?
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Построить минимальное остовное дерево, а потом выкидывать из него ребра максимального веса.\\
+\vspace{5mm}
+Сколько ребер выбросим -- столько кластеров получим.
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Для чего требуется свойство монотонности при иерархической кластеризации?
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Чтобы избежать самопересечений в постоенном дереве.
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Каким образом выбираются центры кластеров в алгоритме k-means++?
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+\begin{itemize}
+\item[--] Выбрать первый центроид случайным образом
+\item[--] Для каждой точки найти значение квадрата расстояния до ближайшего центроида.
+\item[--] Выбрать из этих точек следующий центроид так, чтобы вероятность выбора точки была пропорциональна вычисленному для неё квадрату расстояния
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Что такое отступ обобщенного метрического классификатора?
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Отступ показывает степень "типичности объекта".\\
+\vspace{5mm}
+Отступом объекта ${x_i \in X^l}$ относительно классификатора $a$ называется величина\\
+${M(x_i) = \Gamma_{y_i}(x_i) - \max\limits_{y \in Y\backslash y_i} \Gamma_y(x_i)}$
+
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+$\Gamma_y(u)$ - оценка близости объекта $u$ к классу ${y}$
 \end{frame}
 
 
@@ -112,7 +187,7 @@ ${X^l = (x_i,y_i)_{i = 1}^l}$ -- обучающая выборка\\
 ${Y=\left\{-1,+1\right\}}$\\
 \vspace{5mm}
 Задача:\\
-Построить алгоритм классификации ${a(x,\theta) = \sign g(x,\theta)}$\\\vspace{5mm}
+Построить алгоритм классификации ${a(x,w) = \sign g(x,\theta)}$\\\vspace{5mm}
 ${g(x,\theta)}$ -- разделяющая функция\\
 $\theta$ -- вектор параметров, $\theta \in \mathbb{R}^l$
 \end{frame}
@@ -155,7 +230,7 @@ $a(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w}, \mathbf{x}\rangle)$\\
 \end{frame}
 
 \begin{frame}\frametitle{Определение отступа}
-${g(\mathbf{x}, \mathbf{w}) = \langle \mathbf{w}, \mathbf{x}\rangle = 0}$ -- разделяющая поверхность\\
+${g = \langle \mathbf{w}, \mathbf{x}\rangle = 0}$ -- разделяющая поверхность\\
 $M_i(\mathbf{w}) = \langle \mathbf{w}, \mathbf{x_i}\rangle y_i$ -- отступ объекта $x_i$\\
 ${M_i(\mathbf{w})<0}$ $\Rightarrow$ алгоритм $a(\mathbf{x},\mathbf{w})$ ошибается на $x_i$
 \end{frame}
@@ -176,20 +251,20 @@ ${Q(\mathbf{w})}$ -- функционал качества\\
 
 \begin{frame}\frametitle{Отступ}
 \begin{figure}[htbp]
-  \includegraphics[height=190pt, keepaspectratio = true]{images/margin1}   
+  \includegraphics[height=190pt, keepaspectratio = true]{images/margin1}
 \end{figure}
 \end{frame}
 
 \begin{frame}\frametitle{Отступ}
 \begin{figure}[htbp]
-  \includegraphics[height=190pt, keepaspectratio = true]{images/margin2}   
+  \includegraphics[height=190pt, keepaspectratio = true]{images/margin2}
 \end{figure}
 \end{frame}
 
 
 \begin{frame}\frametitle{Функция $[M<0]$}
 \begin{figure}[htbp]
-  \includegraphics[height=160pt, keepaspectratio = true]{images/l1}   
+  \includegraphics[height=160pt, keepaspectratio = true]{images/l1}
 \end{figure}
 \end{frame}
 
@@ -197,13 +272,13 @@ ${Q(\mathbf{w})}$ -- функционал качества\\
 \begin{frame}\frametitle{Минимизация эмпирического риска}
 ${Q(\mathbf{w}) = \sum\limits_{i=1}^l \left[ M_i(\mathbf{w}) < 0 \right] \leq}$\\ \vspace{3mm}
 \hspace{10mm} ${\leq \sum\limits_{i=1}^l \mathcal{L}(M_i(\mathbf{w})) \rightarrow \min\limits_{\mathbf{w}} }$\\\vspace{3mm}
-$\mathcal{L}$ -- функция потерь, невозрастающая, неотрицательная.\\ 
+$\mathcal{L}$ -- функция потерь, невозрастающая, неотрицательная.\\
 $\mathcal{L}$ должна мажорировать $\left[M_i(\mathbf{w}) < 0 \right]$
 \end{frame}
 
 \begin{frame}\frametitle{Примеры $\mathcal{L}$}
 \begin{figure}[htbp]
-  \includegraphics[height=160pt, keepaspectratio = true]{images/l}   
+  \includegraphics[height=160pt, keepaspectratio = true]{images/l}
 \end{figure}
 \begin{enumerate}
 \item $\left[M_i(\mathbf{w}) < 0 \right]$
@@ -219,18 +294,18 @@ $\mathcal{L}$ должна мажорировать $\left[M_i(\mathbf{w}) < 0 \
 
 \begin{frame}\frametitle{Градиент}
 \begin{figure}[htbp]
-  \includegraphics[height=160pt, keepaspectratio = true]{images/gradient}   
+  \includegraphics[height=160pt, keepaspectratio = true]{images/gradient}
 \end{figure}
 \end{frame}
 
 %Численный метод оптимизации
 \begin{frame}\frametitle{Метод градиентного спуска}
-Input: $\eta$ -- градиентный шаг (темп обучения)\\
+Input: $\alpha$ -- градиентный шаг (темп обучения)\\
 Output: $w_0, w_1, \dots, w_n$\\
-\vspace{3mm}	
+\vspace{3mm}
 Инициализировать: $w_j$, $j=0,\dots, n$\\
 Повторить пока $\mathbf{w}$ не стабилизируются:\\
-\hspace{10mm} $\mathbf{w} =  \mathbf{w} - \eta \bigtriangledown Q(\mathbf{w})$\\
+\hspace{10mm} $\mathbf{w} =  \mathbf{w} - \alpha \bigtriangledown Q(\mathbf{w})$\\
 
 \vspace{10mm}
 $\bigtriangledown Q(\mathbf{w}) = (\frac{\partial Q(\mathbf{w})}{\partial w_j})_{j=0}^n$\\
@@ -238,19 +313,19 @@ $\bigtriangledown Q(\mathbf{w}) = (\frac{\partial Q(\mathbf{w})}{\partial w_j})_
 
 \begin{frame}\frametitle{Градиентный спуск}
 \begin{figure}[htbp]
-  \includegraphics[height=160pt, keepaspectratio = true]{images/gradient_descent}   
+  \includegraphics[height=160pt, keepaspectratio = true]{images/gradient_descent}
 \end{figure}
 \end{frame}
 
 \begin{frame}\frametitle{Метод градиентного спуска}
 Случай двух признаков.\\
-Input: $\eta$ -- градиентный шаг (темп обучения)\\
+Input: $\alpha$ -- градиентный шаг (темп обучения)\\
 Output: $w_0, w_1$\\
-\vspace{3mm}	
+\vspace{3mm}
 Инициализировать: $w_0$, $w_1$\\
 Повторить пока $w_0$ и $w_1$ не стабилизируются:\\
-\hspace{10mm} $tmp_0 =  w_0 - \eta \frac{\partial Q(w)}{\partial w_0}$\\
-\hspace{10mm} $tmp_1 =  w_1 - \eta \frac{\partial Q(w)}{\partial w_1}$\\
+\hspace{10mm} $tmp_0 =  w_0 - \alpha \frac{\partial Q(w)}{\partial w_0}$\\
+\hspace{10mm} $tmp_1 =  w_1 - \alpha \frac{\partial Q(w)}{\partial w_1}$\\
 \hspace{10mm} $w_0 = tmp_0$\\
 \hspace{10mm} $w_1 = tmp_1$
 \end{frame}
@@ -265,21 +340,21 @@ $\bigtriangledown Q(\mathbf{w}) = (\frac{\partial Q(\mathbf{w})}{\partial w_j})_
 
 \begin{frame}\frametitle{Маленький градиентный шаг}
 \begin{figure}[htbp]
-  \includegraphics[height=160pt, keepaspectratio = true]{images/learning_rate_small}   
+  \includegraphics[height=160pt, keepaspectratio = true]{images/learning_rate_small}
 \end{figure}
 \end{frame}
 
 \begin{frame}\frametitle{Большой градиентный шаг}
 \begin{figure}[htbp]
-  \includegraphics[height=160pt, keepaspectratio = true]{images/learning_rate_large}   
+  \includegraphics[height=160pt, keepaspectratio = true]{images/learning_rate_large}
 \end{figure}
 \end{frame}
 
 \begin{frame}\frametitle{Выбор величины шага}
 \begin{itemize}
-\item[--] $\eta_t \rightarrow 0$\\
+\item[--] $\alpha_t \rightarrow 0$\\
 \item[--] Метод скорейшего градиентного спуска:\\
-$Q(w - \eta \bigtriangledown Q(w)) \rightarrow \min\limits_{\eta}$
+$Q(w - \alpha \bigtriangledown Q(w)) \rightarrow \min\limits_{\alpha}$
 \item[--] Пробные случайные шаги
 \end{itemize}
 \end{frame}
@@ -289,42 +364,42 @@ $Q(w - \eta \bigtriangledown Q(w)) \rightarrow \min\limits_{\eta}$
 \end{frame}
 
 \begin{frame}\frametitle{В чем проблема?}
-$\mathbf{w} =  \mathbf{w} - \eta \sum\limits_{i=1}^l \mathcal{L}'(\langle \mathbf{w}, \mathbf{x_i} \rangle y_i)\mathbf{x_i}y_i$\\
+$\mathbf{w} =  \mathbf{w} - \alpha \sum\limits_{i=1}^l \mathcal{L}'(\langle \mathbf{w}, \mathbf{x_i} \rangle y_i)\mathbf{x_i}y_i$\\
 \vspace{5mm}
 \end{frame}
 
 \begin{frame}\frametitle{Метод стохастического градиента}
-$\mathbf{w} =  \mathbf{w} - \eta \sum\limits_{i=1}^l \mathcal{L}'(\langle \mathbf{w}, \mathbf{x_i}\rangle y_i)\mathbf{x_i}y_i$\\
+$\mathbf{w} =  \mathbf{w} - \alpha \sum\limits_{i=1}^l \mathcal{L}'(\langle \mathbf{w}, \mathbf{x_i}\rangle y_i)\mathbf{x_i}y_i$\\
 \vspace{5mm}
 Давайте брать $(x_i, y_i)$ по одному и сразу обновлять вектор весов
 \end{frame}
 
 
 \begin{frame}\frametitle{Алгоритм}
-Input: $X^l$, $\eta$, $\lambda$\\
+Input: $X^l$, $\alpha$, $\eta$\\
 Output: $w_0, w_1, \dots, w_n$\\
 \vspace{3mm}
 Перемешать данные в $X^l$\\
 Инициализировать: $w_j$, $j=0,\dots, n$\\
 \hspace{35mm} ${Q}(\mathbf{w}) = \sum\limits_{i=1}^l \mathcal{L}(\langle \mathbf{w}, \mathbf{x_i} \rangle y_i)$\\
 Повторить пока $Q$ и/или $w$ не стабилизируются:\\
-\hspace{5mm} Взять $x_i$ из $X^l$ \\
+\hspace{5mm} Взять $x_i$ из $X^l$\\
 \hspace{5mm} Потеря: $\varepsilon_i = \mathcal{L}(\langle \mathbf{w}, \mathbf{x_i} \rangle y_i)$\\
-\hspace{5mm} Градиентный шаг: $w =  w - \eta \mathcal{L}'(\langle \mathbf{w}, \mathbf{x_i}\rangle y_i)\mathbf{x_i}y_i$\\
-\hspace{5mm} Оценить $Q = (1-\lambda)Q + \lambda \varepsilon_i$
+\hspace{5mm} Градиентный шаг: $w =  w - \alpha \mathcal{L}'(\langle \mathbf{w}, \mathbf{x_i}\rangle y_i)\mathbf{x_i}y_i$\\
+\hspace{5mm} Оценить $Q = (1-\eta)Q + \eta \varepsilon_i$
 \end{frame}
 
 
 \begin{frame}\frametitle{Градиентный спуск}
 \begin{figure}[htbp]
-  \includegraphics[height=160pt, keepaspectratio = true]{images/gradient_descent2}   
+  \includegraphics[height=160pt, keepaspectratio = true]{images/gradient_descent2}
 \end{figure}
 \end{frame}
 
 
 \begin{frame}\frametitle{Учет ошибки $\varepsilon_i$ в алгоритме}
 \begin{figure}[htbp]
-  \includegraphics[height=160pt, keepaspectratio = true]{images/l2}   
+  \includegraphics[height=160pt, keepaspectratio = true]{images/l2}
 \end{figure}
 \end{frame}
 
@@ -332,13 +407,13 @@ Output: $w_0, w_1, \dots, w_n$\\
 Чего не хватает?
 \end{frame}
 
-\begin{frame}\frametitle{Вопрос}
-Как выбрать параметр $\lambda$?
-\end{frame}
+%\begin{frame}\frametitle{Вопрос}
+%Как выбрать параметр $\lambda$?
+%\end{frame}
 
-\begin{frame}\frametitle{Эмпирическое правило для выбора $\lambda$}
-$\lambda = \frac{1}{k}$, где $k$ -- количество объектов, по которым хотим усреднять функционал.
-\end{frame}
+%\begin{frame}\frametitle{Эмпирическое правило для выбора $\lambda$}
+%$\lambda = \frac{1}{k}$, где $k$ -- количество объектов, по которым хотим усреднять функционал.
+%\end{frame}
 
 \begin{frame}\frametitle{Вопрос}
 Что значит -- "пока $Q$ и/или $w$ не стабилизируются"?
@@ -346,13 +421,13 @@ $\lambda = \frac{1}{k}$, где $k$ -- количество объектов, п
 
 \begin{frame}\frametitle{Зависимость $Q$ от номера итерации}
 \begin{figure}[htbp]
-  \includegraphics[height=160pt, keepaspectratio = true]{images/stochastic_gradient}   
+  \includegraphics[height=160pt, keepaspectratio = true]{images/stochastic_gradient}
 \end{figure}
 \end{frame}
 
 \begin{frame}\frametitle{Зависимость $Q$ от номера итерации}
 \begin{figure}[htbp]
-  \includegraphics[height=160pt, keepaspectratio = true]{images/stochastic_gradient1}   
+  \includegraphics[height=160pt, keepaspectratio = true]{images/stochastic_gradient1}
 \end{figure}
 \end{frame}
 
@@ -371,7 +446,7 @@ $\lambda = \frac{1}{k}$, где $k$ -- количество объектов, п
 \begin{itemize}
 \item[--] $w_j = 0$, j = 1, \dots, n
 \item[--] $w_j = random(-\frac{1}{2n}, \frac{1}{2n})$ -- небольшие случайные значения
-\item[--] $w_j = \frac{\langle y, f_j \rangle}{\langle f_j, f_j \rangle}$, $f_j = (f_j(x_i))_{i = 1}^n$
+%\item[--] $w_j = \frac{\langle y, f_j \rangle}{\langle f_j, f_j \rangle}$, $f_j = (f_j(x_i))_{i = 1}^n$
 \item[--] Обучение по небольшой случайной подвыборке объектов
 \item[--] Многократный запуск из разных случайных начальных приближений
 \end{itemize}
@@ -414,7 +489,7 @@ $\lambda = \frac{1}{k}$, где $k$ -- количество объектов, п
 $a(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w}, \mathbf{x}\rangle)$\\
 Линейная зависимость признаков:\\
 $\forall \mathbf{x} \exists \mathbf{u}: \langle \mathbf{u}, \mathbf{x}\rangle = 0$\\
-$\Rightarrow \forall \gamma: a'(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w} + \gamma \mathbf{u}, \mathbf{x}\rangle)$\\
+$\Rightarrow \forall \gamma: a(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w} + \gamma \mathbf{u}, \mathbf{x}\rangle)$\\
 \vspace{5mm}
 Алгоритм $a'$ работает точно также как исходный $a$.\\
 А значит мы можем получить любое решение из семейства $\mathbf{w} + \gamma \mathbf{u}$
@@ -455,7 +530,8 @@ $Q_{\tau} = Q + \frac{\tau}{2}\Vert \mathbf{w} \Vert^2 \rightarrow \min\limits_{
 $\bigtriangledown Q_{\tau} = \bigtriangledown Q + \tau \mathbf{w}$\\
 \vspace{5mm}
 Градиентный шаг:\\
-$\mathbf{w} = \mathbf{w}(1-\eta \tau) - \eta \bigtriangledown Q(\mathbf{w})$
+$\mathbf{w} = \mathbf{w}(1-\alpha \tau) - \alpha \bigtriangledown Q(\mathbf{w})$\\
+$\tau$ -- параметр регуляризации
 \end{frame}
 
 \begin{frame}\frametitle{Вопрос}
