@@ -58,7 +58,7 @@ $(n-1)$-мерную гиперплоскость, которая разделя
 \begin{frame}\frametitle{Опорная гиперплоскость}
 Гиперплоскость называется опорной для множества точек
 $X$, если все точки из $X$ лежат по одну сторону от этой гиперплоскости.\\\vspace{5mm}
-${f(x,w) = \langle x, w\rangle - w_0 = 0}$\\
+${f(\mathbf{x},\mathbf{w}, w_0) = \langle \mathbf{x}, \mathbf{w}\rangle - w_0 = 0}$\\
 \vspace{5mm}
 Как посчитать расстояние от точки до гиперплоскости?
 \end{frame}
@@ -66,10 +66,10 @@ ${f(x,w) = \langle x, w\rangle - w_0 = 0}$\\
 \begin{frame}\frametitle{Опорная гиперплоскость}
 Гиперплоскость называется опорной для множества точек
 $X$, если все точки из $X$ лежат по одну сторону от этой гиперплоскости.\\\vspace{5mm}
-${f(x,w) = \langle x, w\rangle - w_0 = 0}$\\
+${f(\mathbf{x},\mathbf{w}, w_0) = \langle \mathbf{x}, \mathbf{w}\rangle - w_0 = 0}$\\
 \vspace{5mm}
 Расстояние от точки до гиперплоскости:
-$\frac{\vert f(x,w) \vert}{\Vert w \Vert}$
+$\frac{\vert f(\mathbf{x},\mathbf{w}, w_0) \vert}{\Vert \mathbf{w} \Vert}$
 \end{frame}
 
 \begin{frame}\frametitle{Максимизиция отступа}
@@ -81,7 +81,7 @@ $\frac{\vert f(x,w) \vert}{\Vert w \Vert}$
 ${X^l = (x_i,y_i)_{i = 1}^l}$\\ 
 ${Y=\left\{-1,+1\right\}}$\\
 \vspace{5mm}
-$a(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w}, \mathbf{x}\rangle)$\\
+$a(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w}, \mathbf{x}\rangle - w_0)$\\
 \end{frame}
 
 
@@ -89,7 +89,7 @@ $a(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w}, \mathbf{x}\rangle)$\\
 \end{frame}
 
 \begin{frame}\frametitle{Линейно разделимая выборка}
-$\exists \mathbf{w}: M_i(\mathbf{w}) = y_i(\mathbf{w}, \mathbf{x_i}) > 0$, i=1, \dots , l\\
+$\exists \mathbf{w}: M_i(\mathbf{w}, w_0) = y_i  (\langle \mathbf{w}, \mathbf{x_i} \rangle - w_0) > 0$, i=1, \dots , l\\
 \end{frame}
 
 \begin{frame}\frametitle{Линейно разделимая выборка}
@@ -105,7 +105,7 @@ $\exists \mathbf{w}: M_i(\mathbf{w}) = y_i(\mathbf{w}, \mathbf{x_i}) > 0$, i=1, 
 \end{frame}
 
 \begin{frame}\frametitle{Оптимальная разделяющая гиперплоскость}
-Нормировка: $\min\limits_{i = 1, \dots , l} M_i(\mathbf{w}) = 1$\\
+Нормировка: $\min\limits_{i = 1, \dots , l} M_i(\mathbf{w}, w_0) = 1$\\
 Как выглядит разделяющая полоса?
 \begin{figure}[htbp]
   \includegraphics[height=100pt, keepaspectratio = true]{images/linearly_separable3}   
@@ -114,15 +114,15 @@ $\exists \mathbf{w}: M_i(\mathbf{w}) = y_i(\mathbf{w}, \mathbf{x_i}) > 0$, i=1, 
 
 
 \begin{frame}\frametitle{Оптимальная разделяющая гиперплоскость}
-Нормировка: $\min\limits_{i = 1, \dots , l} M_i(\mathbf{w}) = 1$\\
-Разделяющая полоса: $\left\{\mathbf{x}: -1 \leq \langle \mathbf{w}, \mathbf{x}\rangle \leq 1\right\}$
+Нормировка: $\min\limits_{i = 1, \dots , l} M_i(\mathbf{w}, w_0) = 1$\\
+Разделяющая полоса: $\left\{\mathbf{x}: -1 \leq \langle \mathbf{w}, \mathbf{x}\rangle - w_0 \leq 1\right\}$
 \begin{figure}[htbp]
   \includegraphics[height=100pt, keepaspectratio = true]{images/linearly_separable3}   
 \end{figure}
 \end{frame}
 
 \begin{frame}\frametitle{Оптимальная разделяющая гиперплоскость}
-Разделяющая полоса: $\left\{\mathbf{x}: -1 \leq \langle \mathbf{w}, \mathbf{x}\rangle \leq 1\right\}$\\
+Разделяющая полоса: $\left\{\mathbf{x}: -1 \leq \langle \mathbf{w}, \mathbf{x}\rangle - w_0 \leq 1\right\}$\\
 Ширина разделяющей полосы?
 \begin{figure}[htbp]
   \includegraphics[height=100pt, keepaspectratio = true]{images/linearly_separable}   
@@ -130,11 +130,181 @@ $\exists \mathbf{w}: M_i(\mathbf{w}) = y_i(\mathbf{w}, \mathbf{x_i}) > 0$, i=1, 
 \end{frame}
 
 \begin{frame}\frametitle{Оптимальная разделяющая гиперплоскость}
-Разделяющая полоса: $\left\{\mathbf{x}: -1 \leq \langle \mathbf{w}, \mathbf{x}\rangle \leq 1\right\}$\\
-Ширина разделяющей полосы: $\frac{\langle \mathbf{x_{+}} - \mathbf{x_{-}, \mathbf{w}} \rangle}{\Vert \mathbf{w} \Vert} = \frac{2}{\Vert \mathbf{w} \Vert} \rightarrow \max$
+Разделяющая полоса: $\left\{\mathbf{x}: -1 \leq \langle \mathbf{w}, \mathbf{x}\rangle - w_0 \leq 1\right\}$\\
+Ширина разделяющей полосы: $\frac{\langle \mathbf{x_{+}}, \mathbf{w} \rangle - \langle \mathbf{x_{-}}, \mathbf{w} \rangle}{\Vert \mathbf{w} \Vert} = \frac{2}{\Vert \mathbf{w} \Vert} \rightarrow \max$\\
+${\Vert \mathbf{w} \Vert^2 \rightarrow \min}$
 \begin{figure}[htbp]
   \includegraphics[height=100pt, keepaspectratio = true]{images/linearly_separable}   
 \end{figure}
 \end{frame}
 
+\begin{frame}\frametitle{Оптимальная разделяющая гиперплоскость}
+Линейно разделимая выборка:\\
+$\begin{cases}
+{\Vert \mathbf{w} \Vert^2 \rightarrow \min\limits_{\mathbf{w}}}\\
+M_i(\mathbf{w}, w_0) \geq 1
+\end{cases}$\\
+Линейно неразделимая выборка -- надо ослабить имеющиеся условия.\\
+$\begin{cases}
+{\frac{1}{2}\Vert \mathbf{w} \Vert^2 + C \sum\limits_{i=1}^l \xi_i \rightarrow \min\limits_{\mathbf{w}, \xi}}\\
+M_i(\mathbf{w}, w_0) \geq 1 - \xi_i\\
+\xi_i \geq 0
+\end{cases}$\\
+\end{frame}
+
+\begin{frame}\frametitle{Оптимальная разделяющая гиперплоскость}
+$\begin{cases}
+\xi_i \geq 1 - M_i(\mathbf{w}, w_0) \\
+\xi_i \geq 0
+\end{cases} \Rightarrow \xi_i = 1 - M_i(\mathbf{w}, w_0) $\\
+
+\begin{figure}[htbp]
+  \includegraphics[height=100pt, keepaspectratio = true]{images/xi}   
+\end{figure}
+\end{frame}
+
+
+\begin{frame}\frametitle{Задача безусловной минимизации}
+$ C \sum\limits_{i=1}^l (1 - M_i(\mathbf{w}, w_0)) + \frac{1}{2}\Vert \mathbf{w} \Vert^2 \rightarrow \min\limits_{\mathbf{w}}$
+\end{frame}
+
+
+\begin{frame}\frametitle{Минимизация эмпирического риска}
+${Q(\mathbf{w}) = \sum\limits_{i=1}^l \left[ M_i(\mathbf{w}, w_0) < 0 \right] \leq\sum\limits_{i=1}^l \mathcal{L}(M_i(\mathbf{w}, w_0)) \rightarrow \min\limits_{\mathbf{w}} }$\\\vspace{3mm}
+Штраф за увеличение нормы вектора весов:\\
+$Q_{\tau} = Q + \frac{\tau}{2}\Vert \mathbf{w} \Vert^2 \rightarrow \min\limits_{\mathbf{w}}$\\
+\vspace{5mm}
+Метод опорных векторов:\\
+$ C\sum\limits_{i=1}^l (1 - M_i(\mathbf{w}, w_0)) + \frac{1}{2}\Vert \mathbf{w} \Vert^2 \rightarrow \min\limits_{\mathbf{w}}$
+
+\end{frame}
+
+\begin{frame}\frametitle{Примеры $\mathcal{L}$}
+\begin{figure}[htbp]
+  \includegraphics[height=160pt, keepaspectratio = true]{images/l}
+\end{figure}
+\begin{enumerate}
+\item $\left[M_i(\mathbf{w}, w_0) < 0 \right]$
+\item $L(M) = \log_2(1+e^{-M})$ -- логарифмическая
+\item $S(M) = 2(1+e^M)^{-1}$ -- сигмоидная
+\item $V(M) = (1-M)_+$ -- кусочно-линейная
+\end{enumerate}
+\end{frame}
+
+\begin{frame}\frametitle{Условие Каруша-Куна-Такера}
+$\begin{cases}
+f(x) \rightarrow \min\\
+g_i(x) \leq 0 , i = 1, \dots, m\\
+h_j(x) = 0 , j = 1, \dots, k\\
+\end{cases}$\\
+Двойственная задача:\\
+$\begin{cases}
+\mathcal{L}(x; \mu, \lambda) = f(x) + \sum\limits_{i = 1}^m \mu_ig_i(x) + \sum\limits_{j = 1}^k \lambda_jh_j(x)\\
+\frac{\partial \mathcal{L}}{\partial x} = 0\\
+g_i(x) \leq 0 , h_j(x) = 0\\
+\mu_i \geq 0\\
+\mu_ig_i(x) = 0
+\end{cases}$\\
+
+\end{frame}
+
+\begin{frame}\frametitle{Двойственная задача SVM}
+$\begin{cases}
+{\frac{1}{2}\Vert \mathbf{w} \Vert^2 + C \sum\limits_{i=1}^l \xi_i \rightarrow \min\limits_{\mathbf{w}, \xi}}\\
+M_i(\mathbf{w}, w_0) \geq 1 - \xi_i\\
+\xi_i \geq 0
+\end{cases}$\\
+\vspace{5mm}
+Двойственная задача:\\
+$\begin{cases}
+\mathcal{L} = \frac{1}{2} \Vert w \Vert^2 - \sum\limits_{i = 1}^l \lambda_i (M_i(\mathbf{w}, w_0) - 1) - \sum\limits_{i = 1}^l \xi_i (\lambda_i + \eta_i - C)\\
+\xi_i \geq 0,   \lambda_i \geq 0,    \eta_i \geq 0\\
+\lambda_i = 0$ либо $M_i(\mathbf{w}, w_0) = 1 - \xi_i , i = 1, \dots, l\\
+\eta_i = 0 $ либо $\xi_i = 0, i = 1, \dots, l
+\end{cases}$
+\end{frame}
+
+\begin{frame}\frametitle{Двойственная задача SVM}
+$\mathcal{L}(\mathbf{w}, w_0, \xi) = \frac{1}{2} \Vert \mathbf{w} \Vert^2 - \sum\limits_{i = 1}^l \lambda_i (M_i(\mathbf{w}, w_0) - 1) - \sum\limits_{i = 1}^l \xi_i (\lambda_i + \eta_i -C)$\\
+\vspace{5mm}
+$\frac{\partial \mathcal{L}}{\partial \mathbf{w}}  = \mathbf{w} - \sum\limits_{i=1}^l \lambda_iu_ix_i = 0 $ \hspace{5mm} $\Rightarrow \mathbf{w} = \sum\limits_{i=1}^l \lambda_iu_ix_i = 0$\\
+$\frac{\partial \mathcal{L}}{\partial w_0} = - \sum\limits_{i=1}^l \lambda_iy_i = 0$ \hspace{12mm} $\Rightarrow \sum\limits_{i=1}^l \lambda_iy_i = 0$\\
+$\frac{\partial \mathcal{L}}{\partial \xi_i} = -\lambda_i - \eta_i + C = 0$ \hspace{6mm}  $\Rightarrow \eta_i + \lambda_i = C$\\
+\end{frame}
+
+\begin{frame}\frametitle{Понятие опорного вектора}
+\begin{itemize}
+\item[--] $\lambda_i = 0$, $\eta_i = C$, $\xi_i = 0$, $M_i \geq 1$ -- неинформативные объекты
+\item[--] $0 < \lambda_i < C$, $0 < \eta_i < C$, $\xi_i = 0$, $M_i = 1$ -- опорные объекты
+\item[--] $\lambda_i = C$, $\eta_i = C$, $\xi_i > 0$, $M_i < 1$ -- опорные объекты-нарушители
+\end{itemize}
+TODO == картинка
+\end{frame}
+
+
+\begin{frame}\frametitle{Двойственная задача SVM}
+$\begin{cases}
+-\mathcal{L}(\lambda) = - \sum\limits_{i = 1}^l \lambda_i  + \frac{1}{2} \sum\limits_{i = 1}^l\sum\limits_{j = 1}^l \lambda_i \lambda_j y_iy_j \langle \mathbf{x_i}, \mathbf{x_j} \rangle \rightarrow \min\limits_{\lambda}\\
+0 \leq \lambda_i \leq C\\
+\sum\limits_{i=1}^l \lambda_iy_i = 0
+\end{cases}$\\
+\end{frame}
+
+\begin{frame}\frametitle{Двойственная задача SVM}
+
+Решение исходной задачи выражается через решение двойственной:\\
+$\begin{cases}
+\mathbf{w} = \sum\limits_{i = 1}^l \lambda_iy_ix_i\\
+w_0 = \langle \mathbf{w}, x_i \rangle y_i
+\end{cases}$\\
+\vspace{5mm}
+Линейный классификатор:\\
+$a(\mathbf{x}) = \sign(\sum\limits_{i=1}^l \lambda_iy_i \langle \mathbf{x_i}, \mathbf{x} \rangle - w_0)$
+
+\end{frame}
+
+\begin{frame}\frametitle{Переход к пространству более высокой размерности}
+$\langle \mathbf{x_i}, \mathbf{x} \rangle \rightarrow K(\mathbf{x_i}, \mathbf{x})$\\
+\vspace{5mm}
+$\psi: X \rightarrow H$\\
+$K(\mathbf{x_i}, \mathbf{x}) = \langle \mathbf{\psi(x_i)}, \mathbf{\psi(x)} \rangle_H$
+\begin{itemize}
+\item[--] $K(\mathbf{x_i}, \mathbf{x}) = K(\mathbf{x}, \mathbf{x_i})$
+\item[--] неотрицательно определена
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Примеры ядер}
+\end{frame}
+
+\begin{frame}\frametitle{Конструктивные методы получения ядер}
+\begin{itemize}
+\item[--] $K(\mathbf{x_i}, \mathbf{x}) = \langle \mathbf{x_i}, \mathbf{x} \rangle$
+\item[--] $K(\mathbf{x_i}, \mathbf{x}) = const$
+\item[--] $K(\mathbf{x_i}, \mathbf{x}) = K_1(\mathbf{x_i}, \mathbf{x}) K_2(\mathbf{x_i}, \mathbf{x})$
+\item[--] $K(\mathbf{x_i}, \mathbf{x}) = \alpha_1 K_1(\mathbf{x_i}, \mathbf{x}) + \alpha_2 K_2(\mathbf{x_i}, \mathbf{x})$ при  $\alpha_1, \alpha_2 > 0$
+\item[--] $\forall \psi: X \rightarrow \mathbb{R}$ \hspace{5mm}$K(\mathbf{x_i}, \mathbf{x}) = \psi(\mathbf{x_i}) \psi(\mathbf{x})$
+\item[--] $\forall \phi: X \rightarrow X$ \hspace{5mm}$K(\mathbf{x_i}, \mathbf{x}) = K_0(\phi(\mathbf{x_i}),  \phi(\mathbf{x}))$
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Достоинства и недостатки}
+\begin{itemize}
+\item[+] Задача имеет единственное решение
+\item[+] Число опорных векторов определяется автоматически
+\end{itemize}
+\begin{itemize}
+\item[--] Неустойчивость к шуму
+\item[--] Нет общих подходов к оптимизации ядра под задачу
+\item[--] Подбор константы C
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{На следующей лекции}
+
+\begin{itemize}
+\item[--] Ликбез по использованию Python, Numpy, \dots
+\item[--] Анонс соревнования
+\end{itemize}
+\end{frame}
 \end{document}
