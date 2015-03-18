@@ -81,6 +81,7 @@ $\frac{\vert f(\mathbf{x},\mathbf{w}, w_0) \vert}{\Vert \mathbf{w} \Vert}$
 ${X^l = (x_i,y_i)_{i = 1}^l}$\\ 
 ${Y=\left\{-1,+1\right\}}$\\
 \vspace{5mm}
+Линейный классификатор:\\
 $a(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w}, \mathbf{x}\rangle - w_0)$\\
 \end{frame}
 
@@ -132,7 +133,7 @@ $\exists \mathbf{w}: M_i(\mathbf{w}, w_0) = y_i  (\langle \mathbf{w}, \mathbf{x_
 \begin{frame}\frametitle{Оптимальная разделяющая гиперплоскость}
 Разделяющая полоса: $\left\{\mathbf{x}: -1 \leq \langle \mathbf{w}, \mathbf{x}\rangle - w_0 \leq 1\right\}$\\
 Ширина разделяющей полосы: $\frac{\langle \mathbf{x_{+}}, \mathbf{w} \rangle - \langle \mathbf{x_{-}}, \mathbf{w} \rangle}{\Vert \mathbf{w} \Vert} = \frac{2}{\Vert \mathbf{w} \Vert} \rightarrow \max$\\
-${\Vert \mathbf{w} \Vert^2 \rightarrow \min}$
+
 \begin{figure}[htbp]
   \includegraphics[height=100pt, keepaspectratio = true]{images/linearly_separable}   
 \end{figure}
@@ -157,17 +158,42 @@ $\begin{cases}
 \xi_i \geq 1 - M_i(\mathbf{w}, w_0) \\
 \xi_i \geq 0
 \end{cases} \Rightarrow \xi_i = 1 - M_i(\mathbf{w}, w_0) $\\
-
-\begin{figure}[htbp]
-  \includegraphics[height=100pt, keepaspectratio = true]{images/xi}   
-\end{figure}
+\textcolor{red}{TODO: картинка}
+%\begin{figure}[htbp]
+%  \includegraphics[height=100pt, keepaspectratio = true]{images/xi}   
+%\end{figure}
 \end{frame}
 
 
 \begin{frame}\frametitle{Задача безусловной минимизации}
+$\begin{cases}
+{\frac{1}{2}\Vert \mathbf{w} \Vert^2 + C \sum\limits_{i=1}^l \xi_i \rightarrow \min\limits_{\mathbf{w}, \xi}}\\
+\xi_i = 1 - M_i(\mathbf{w}, w_0)
+\end{cases}$\\
+\vspace{5mm}
+Задача безусловной минимизации:\\
 $ C \sum\limits_{i=1}^l (1 - M_i(\mathbf{w}, w_0)) + \frac{1}{2}\Vert \mathbf{w} \Vert^2 \rightarrow \min\limits_{\mathbf{w}}$
 \end{frame}
 
+\begin{frame}\frametitle{Вопрос}
+$ C \sum\limits_{i=1}^l (1 - M_i(\mathbf{w}, w_0)) + \frac{1}{2}\Vert \mathbf{w} \Vert^2 \rightarrow \min\limits_{\mathbf{w}}$\\
+\vspace{5mm}
+На что влияет параметр $C$?
+\end{frame}
+
+\begin{frame}\frametitle{Выбор параметра $C$}
+\begin{figure}[htbp]
+	\begin{minipage}{.5\textwidth}
+	  \includegraphics[height=120pt, keepaspectratio = true]{images/svm_reg} \\
+	  \centering Большой $C$\\ Слабая регуляризация\\
+    \end{minipage}%
+    \begin{minipage}{.5\textwidth}
+		\includegraphics[height=120pt, keepaspectratio = true]{images/svm_non_reg}   \\
+		\centering Маленький $C$\\ Сильная регуляризация\\
+	\end{minipage}%
+\end{figure}
+\textcolor{gray}{Пример из Python scikit-learn: http://scikit-learn.org/dev}
+\end{frame}
 
 \begin{frame}\frametitle{Минимизация эмпирического риска}
 ${Q(\mathbf{w}) = \sum\limits_{i=1}^l \left[ M_i(\mathbf{w}, w_0) < 0 \right] \leq\sum\limits_{i=1}^l \mathcal{L}(M_i(\mathbf{w}, w_0)) \rightarrow \min\limits_{\mathbf{w}} }$\\\vspace{3mm}
@@ -197,9 +223,10 @@ f(x) \rightarrow \min\\
 g_i(x) \leq 0 , i = 1, \dots, m\\
 h_j(x) = 0 , j = 1, \dots, k\\
 \end{cases}$\\
+\vspace{5mm}
 Двойственная задача:\\
 $\begin{cases}
-\mathcal{L}(x; \mu, \lambda) = f(x) + \sum\limits_{i = 1}^m \mu_ig_i(x) + \sum\limits_{j = 1}^k \lambda_jh_j(x)\\
+\mathcal{L}(x; \mu, \alpha) = f(x) + \sum\limits_{i = 1}^m \mu_ig_i(x) + \sum\limits_{j = 1}^k \alpha_jh_j(x)\\
 \frac{\partial \mathcal{L}}{\partial x} = 0\\
 g_i(x) \leq 0 , h_j(x) = 0\\
 \mu_i \geq 0\\
@@ -217,36 +244,40 @@ M_i(\mathbf{w}, w_0) \geq 1 - \xi_i\\
 \vspace{5mm}
 Двойственная задача:\\
 $\begin{cases}
-\mathcal{L} = \frac{1}{2} \Vert w \Vert^2 - \sum\limits_{i = 1}^l \lambda_i (M_i(\mathbf{w}, w_0) - 1) - \sum\limits_{i = 1}^l \xi_i (\lambda_i + \eta_i - C)\\
-\xi_i \geq 0,   \lambda_i \geq 0,    \eta_i \geq 0\\
-\lambda_i = 0$ либо $M_i(\mathbf{w}, w_0) = 1 - \xi_i , i = 1, \dots, l\\
+\mathcal{L} = \frac{1}{2} \Vert w \Vert^2 - \sum\limits_{i = 1}^l \alpha_i (M_i(\mathbf{w}, w_0) - 1) - \sum\limits_{i = 1}^l \xi_i (\alpha_i + \eta_i - C)\\
+\xi_i \geq 0,   \alpha_i \geq 0,    \eta_i \geq 0\\
+\alpha_i = 0$ либо $M_i(\mathbf{w}, w_0) = 1 - \xi_i , i = 1, \dots, l\\
 \eta_i = 0 $ либо $\xi_i = 0, i = 1, \dots, l
 \end{cases}$
 \end{frame}
 
 \begin{frame}\frametitle{Двойственная задача SVM}
-$\mathcal{L}(\mathbf{w}, w_0, \xi) = \frac{1}{2} \Vert \mathbf{w} \Vert^2 - \sum\limits_{i = 1}^l \lambda_i (M_i(\mathbf{w}, w_0) - 1) - \sum\limits_{i = 1}^l \xi_i (\lambda_i + \eta_i -C)$\\
+$\mathcal{L}(\mathbf{w}, w_0, \xi) = \frac{1}{2} \Vert \mathbf{w} \Vert^2 - \sum\limits_{i = 1}^l \alpha_i (M_i(\mathbf{w}, w_0) - 1) - \sum\limits_{i = 1}^l \xi_i (\alpha_i + \eta_i -C)$\\
 \vspace{5mm}
-$\frac{\partial \mathcal{L}}{\partial \mathbf{w}}  = \mathbf{w} - \sum\limits_{i=1}^l \lambda_iu_ix_i = 0 $ \hspace{5mm} $\Rightarrow \mathbf{w} = \sum\limits_{i=1}^l \lambda_iu_ix_i = 0$\\
-$\frac{\partial \mathcal{L}}{\partial w_0} = - \sum\limits_{i=1}^l \lambda_iy_i = 0$ \hspace{12mm} $\Rightarrow \sum\limits_{i=1}^l \lambda_iy_i = 0$\\
-$\frac{\partial \mathcal{L}}{\partial \xi_i} = -\lambda_i - \eta_i + C = 0$ \hspace{6mm}  $\Rightarrow \eta_i + \lambda_i = C$\\
+$\frac{\partial \mathcal{L}}{\partial \mathbf{w}}  = \mathbf{w} - \sum\limits_{i=1}^l \alpha_iu_i\mathbf{x_i} = 0 $ \hspace{5mm} $\Rightarrow \mathbf{w} = \sum\limits_{i=1}^l \alpha_iu_i\mathbf{x_i} = 0$\\
+$\frac{\partial \mathcal{L}}{\partial w_0} = - \sum\limits_{i=1}^l \alpha_iy_i = 0$ \hspace{12mm} $\Rightarrow \sum\limits_{i=1}^l \alpha_iy_i = 0$\\
+$\frac{\partial \mathcal{L}}{\partial \xi_i} = -\alpha_i - \eta_i + C = 0$ \hspace{6mm}  $\Rightarrow \eta_i + \alpha_i = C$\\
 \end{frame}
 
 \begin{frame}\frametitle{Понятие опорного вектора}
 \begin{itemize}
-\item[--] $\lambda_i = 0$, $\eta_i = C$, $\xi_i = 0$, $M_i \geq 1$ -- неинформативные объекты
-\item[--] $0 < \lambda_i < C$, $0 < \eta_i < C$, $\xi_i = 0$, $M_i = 1$ -- опорные объекты
-\item[--] $\lambda_i = C$, $\eta_i = C$, $\xi_i > 0$, $M_i < 1$ -- опорные объекты-нарушители
+\item[--] $\alpha_i = 0$, $\eta_i = C$, $\xi_i = 0$, $M_i \geq 1$ -- неинформативные объекты
+\item[--] $0 < \alpha_i < C$, $0 < \eta_i < C$, $\xi_i = 0$, $M_i = 1$ -- опорные объекты
+\item[--] $\alpha_i = C$, $\eta_i = C$, $\xi_i > 0$, $M_i < 1$ -- опорные объекты-нарушители
 \end{itemize}
-TODO == картинка
+
+\begin{figure}[htbp]
+  \includegraphics[height=100pt, keepaspectratio = true]{images/classification}   
+\end{figure}
+
 \end{frame}
 
 
 \begin{frame}\frametitle{Двойственная задача SVM}
 $\begin{cases}
--\mathcal{L}(\lambda) = - \sum\limits_{i = 1}^l \lambda_i  + \frac{1}{2} \sum\limits_{i = 1}^l\sum\limits_{j = 1}^l \lambda_i \lambda_j y_iy_j \langle \mathbf{x_i}, \mathbf{x_j} \rangle \rightarrow \min\limits_{\lambda}\\
-0 \leq \lambda_i \leq C\\
-\sum\limits_{i=1}^l \lambda_iy_i = 0
+-\mathcal{L}(\alpha) = - \sum\limits_{i = 1}^l \alpha_i  + \frac{1}{2} \sum\limits_{i = 1}^l\sum\limits_{j = 1}^l \alpha_i \alpha_j y_iy_j \langle \mathbf{x_i}, \mathbf{x_j} \rangle \rightarrow \min\limits_{\alpha}\\
+0 \leq \alpha_i \leq C\\
+\sum\limits_{i=1}^l \alpha_iy_i = 0
 \end{cases}$\\
 \end{frame}
 
@@ -254,19 +285,19 @@ $\begin{cases}
 
 Решение исходной задачи выражается через решение двойственной:\\
 $\begin{cases}
-\mathbf{w} = \sum\limits_{i = 1}^l \lambda_iy_ix_i\\
-w_0 = \langle \mathbf{w}, x_i \rangle y_i
+\mathbf{w} = \sum\limits_{i = 1}^l \alpha_iy_i\mathbf{x_i}\\
+w_0 = \langle \mathbf{w}, \mathbf{x_i} \rangle - y_i
 \end{cases}$\\
 \vspace{5mm}
 Линейный классификатор:\\
-$a(\mathbf{x}) = \sign(\sum\limits_{i=1}^l \lambda_iy_i \langle \mathbf{x_i}, \mathbf{x} \rangle - w_0)$
+$a(\mathbf{x}) = \sign(\sum\limits_{i=1}^l \alpha_iy_i \langle \mathbf{x_i}, \mathbf{x} \rangle - w_0)$
 
 \end{frame}
 
-\begin{frame}\frametitle{Переход к пространству более высокой размерности}
+\begin{frame}\frametitle{Kernel trick}
 $\langle \mathbf{x_i}, \mathbf{x} \rangle \rightarrow K(\mathbf{x_i}, \mathbf{x})$\\
 \vspace{5mm}
-$\psi: X \rightarrow H$\\
+$\psi: X \rightarrow H$, $H$ - гильбертово пространство\\
 $K(\mathbf{x_i}, \mathbf{x}) = \langle \mathbf{\psi(x_i)}, \mathbf{\psi(x)} \rangle_H$
 \begin{itemize}
 \item[--] $K(\mathbf{x_i}, \mathbf{x}) = K(\mathbf{x}, \mathbf{x_i})$
@@ -274,7 +305,60 @@ $K(\mathbf{x_i}, \mathbf{x}) = \langle \mathbf{\psi(x_i)}, \mathbf{\psi(x)} \ran
 \end{itemize}
 \end{frame}
 
+\begin{frame}\frametitle{Переход к более высокой размерности}
+\begin{figure}[htbp]
+	\begin{minipage}{.5\textwidth}
+	  \includegraphics[height=120pt, keepaspectratio = true]{images/data-r2} \\
+		\centering Данные в $\mathbb{R}^2$
+    \end{minipage}%
+    \begin{minipage}{.5\textwidth}
+		\includegraphics[height=120pt, keepaspectratio = true]{images/data-r3}   \\
+		\centering Данные в $\mathbb{R}^3$
+	\end{minipage}%
+
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Переход к более высокой размерности}
+\begin{figure}[htbp]
+	\begin{minipage}{.5\textwidth}
+	  \includegraphics[height=120pt, keepaspectratio = true]{images/data-r2-1} \\
+		\centering Данные в $\mathbb{R}^2$
+    \end{minipage}%
+    \begin{minipage}{.5\textwidth}
+		\includegraphics[height=120pt, keepaspectratio = true]{images/data-r3-1}   \\
+		\centering Данные в $\mathbb{R}^3$
+	\end{minipage}%
+
+\end{figure}
+\end{frame}
+
 \begin{frame}\frametitle{Примеры ядер}
+\begin{figure}[htbp]
+	\begin{minipage}{.3\textwidth}
+	  \includegraphics[height=70pt, keepaspectratio = true]{images/linear} \\
+	  \centering Линейное\\$\langle x, x'\rangle$
+    \end{minipage}%
+    \begin{minipage}{.3\textwidth}
+		\includegraphics[height=70pt, keepaspectratio = true]{images/poly}   \\
+		\centering Полиномиальное\\$(\langle x, x'\rangle + 1)^3$
+	\end{minipage}%
+    \begin{minipage}{.3\textwidth}
+		\includegraphics[height=70pt, keepaspectratio = true]{images/gauss}   \\
+		\centering Гауссовское\\$exp(-\beta \Vert x - x'\Vert^2 )$
+	\end{minipage}%
+
+\end{figure}
+\vspace{10mm}
+\textcolor{gray}{Пример из Python scikit-learn: http://scikit-learn.org/dev}
+
+\end{frame}
+
+\begin{frame}\frametitle{Примеры ядер}
+\begin{figure}[htbp]
+  \centering Гауссовское\\$exp(-\beta \Vert x - x'\Vert^2 )$\\
+  \includegraphics[height=160pt, keepaspectratio = true]{images/svm_spiral}
+\end{figure}
 \end{frame}
 
 \begin{frame}\frametitle{Конструктивные методы получения ядер}
@@ -304,7 +388,6 @@ $K(\mathbf{x_i}, \mathbf{x}) = \langle \mathbf{\psi(x_i)}, \mathbf{\psi(x)} \ran
 
 \begin{itemize}
 \item[--] Ликбез по использованию Python, Numpy, \dots
-\item[--] Анонс соревнования
 \end{itemize}
 \end{frame}
 \end{document}
