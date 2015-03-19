@@ -29,6 +29,67 @@
 \frame{\titlepage}
 
 \begin{frame}\frametitle{Разбор летучки}
+Почему линейная зависимость признаков приводит к переобучению?
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+$a(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w}, \mathbf{x}\rangle)$\\
+Линейная зависимость признаков:\\
+$\forall \mathbf{x} \exists \mathbf{u}: \langle \mathbf{u}, \mathbf{x}\rangle = 0$\\
+$\Rightarrow \forall \gamma: a(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w} + \gamma \mathbf{u}, \mathbf{x}\rangle)$\\
+\vspace{5mm}
+Алгоритм $a'$ работает точно также как исходный $a$.\\
+А значит мы можем получить любое решение из семейства $\mathbf{w} + \gamma \mathbf{u}$
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Каким способом оценивается функция потерь при стохастическом градиенте?
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Input: $X^l$, $\alpha$, $\eta$\\
+Output: $w_0, w_1, \dots, w_n$\\
+\vspace{3mm}
+Перемешать данные в $X^l$\\
+Инициализировать: $w_j$, $j=0,\dots, n$\\
+\hspace{35mm} ${Q}(\mathbf{w}) = \sum\limits_{i=1}^l \mathcal{L}(\langle \mathbf{w}, \mathbf{x_i} \rangle y_i)$\\
+Повторить пока $Q$ и/или $w$ не стабилизируются:\\
+\hspace{5mm} Взять $x_i$ из $X^l$\\
+\hspace{5mm} Потеря: $\varepsilon_i = \mathcal{L}(\langle \mathbf{w}, \mathbf{x_i} \rangle y_i)$\\
+\hspace{5mm} Градиентный шаг: $w =  w - \alpha \mathcal{L}'(\langle \mathbf{w}, \mathbf{x_i}\rangle y_i)\mathbf{x_i}y_i$\\
+\hspace{5mm} Оценить $Q = (1-\eta)Q + \eta \varepsilon_i$
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Каким образом сокращаются веса при градиентном спуске? И для чего?
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Штраф за увеличение нормы вектора весов:\\
+$Q_{\tau} = Q + \frac{\tau}{2}\Vert \mathbf{w} \Vert^2 \rightarrow \min\limits_{\mathbf{w}}$\\
+\vspace{5mm}
+Градиент:\\
+$\bigtriangledown Q_{\tau} = \bigtriangledown Q + \tau \mathbf{w}$\\
+\vspace{5mm}
+Градиентный шаг:\\
+$\mathbf{w} = \mathbf{w}(1-\alpha \tau) - \alpha \bigtriangledown Q(\mathbf{w})$\\
+$\tau$ -- параметр регуляризации
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Для чего можно делать пробные случайные шаги?
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Выбивание из локальных минимумов.
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Почему возникает необходимость в изобретении метода стохастического градиента? 
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+$\mathbf{w} =  \mathbf{w} - \alpha \sum\limits_{i=1}^l \mathcal{L}'(\langle \mathbf{w}, \mathbf{x_i} \rangle y_i)\mathbf{x_i}y_i$\\
 \end{frame}
 
 \begin{frame}\frametitle{Постановка задачи}
