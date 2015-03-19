@@ -90,7 +90,9 @@ $a(\mathbf{x}, \mathbf{w}) = sign(\langle \mathbf{w}, \mathbf{x}\rangle - w_0)$\
 \end{frame}
 
 \begin{frame}\frametitle{Линейно разделимая выборка}
-$\exists \mathbf{w}: M_i(\mathbf{w}, w_0) = y_i  (\langle \mathbf{w}, \mathbf{x_i} \rangle - w_0) > 0$, i=1, \dots , l\\
+Выборка линейно разделима, если отступ на каждом объекте положителен.\\
+\vspace{5mm}
+$\exists \mathbf{w}, w_0 : M_i(\mathbf{w}, w_0) = y_i  (\langle \mathbf{w}, \mathbf{x_i} \rangle - w_0) > 0$, i=1, \dots , l\\
 \end{frame}
 
 \begin{frame}\frametitle{Линейно разделимая выборка}
@@ -126,16 +128,16 @@ $\exists \mathbf{w}: M_i(\mathbf{w}, w_0) = y_i  (\langle \mathbf{w}, \mathbf{x_
 Разделяющая полоса: $\left\{\mathbf{x}: -1 \leq \langle \mathbf{w}, \mathbf{x}\rangle - w_0 \leq 1\right\}$\\
 Ширина разделяющей полосы?
 \begin{figure}[htbp]
-  \includegraphics[height=100pt, keepaspectratio = true]{images/linearly_separable}   
+  \includegraphics[height=100pt, keepaspectratio = true]{images/linearly_separable2}   
 \end{figure}
 \end{frame}
 
 \begin{frame}\frametitle{Оптимальная разделяющая гиперплоскость}
 Разделяющая полоса: $\left\{\mathbf{x}: -1 \leq \langle \mathbf{w}, \mathbf{x}\rangle - w_0 \leq 1\right\}$\\
-Ширина разделяющей полосы: $\frac{\langle \mathbf{x_{+}}, \mathbf{w} \rangle - \langle \mathbf{x_{-}}, \mathbf{w} \rangle}{\Vert \mathbf{w} \Vert} = \frac{2}{\Vert \mathbf{w} \Vert} \rightarrow \max$\\
+Ширина разделяющей полосы: $\frac{\langle \mathbf{x_{+}}, \mathbf{w} \rangle + \langle \mathbf{x_{-}}, \mathbf{w} \rangle}{\Vert \mathbf{w} \Vert} = \frac{2}{\Vert \mathbf{w} \Vert} \rightarrow \max$\\
 
 \begin{figure}[htbp]
-  \includegraphics[height=100pt, keepaspectratio = true]{images/linearly_separable}   
+  \includegraphics[height=100pt, keepaspectratio = true]{images/linearly_separable2}   
 \end{figure}
 \end{frame}
 
@@ -174,26 +176,6 @@ $\begin{cases}
 $ C \sum\limits_{i=1}^l (1 - M_i(\mathbf{w}, w_0)) + \frac{1}{2}\Vert \mathbf{w} \Vert^2 \rightarrow \min\limits_{\mathbf{w}}$
 \end{frame}
 
-\begin{frame}\frametitle{Вопрос}
-$ C \sum\limits_{i=1}^l (1 - M_i(\mathbf{w}, w_0)) + \frac{1}{2}\Vert \mathbf{w} \Vert^2 \rightarrow \min\limits_{\mathbf{w}}$\\
-\vspace{5mm}
-На что влияет параметр $C$?
-\end{frame}
-
-\begin{frame}\frametitle{Выбор параметра $C$}
-\begin{figure}[htbp]
-	\begin{minipage}{.5\textwidth}
-	  \includegraphics[height=120pt, keepaspectratio = true]{images/svm_reg} \\
-	  \centering Большой $C$\\ Слабая регуляризация\\
-    \end{minipage}%
-    \begin{minipage}{.5\textwidth}
-		\includegraphics[height=120pt, keepaspectratio = true]{images/svm_non_reg}   \\
-		\centering Маленький $C$\\ Сильная регуляризация\\
-	\end{minipage}%
-\end{figure}
-\textcolor{gray}{Пример из Python scikit-learn: http://scikit-learn.org/dev}
-\end{frame}
-
 \begin{frame}\frametitle{Минимизация эмпирического риска}
 ${Q(\mathbf{w}) = \sum\limits_{i=1}^l \left[ M_i(\mathbf{w}, w_0) < 0 \right] \leq\sum\limits_{i=1}^l \mathcal{L}(M_i(\mathbf{w}, w_0)) \rightarrow \min\limits_{\mathbf{w}} }$\\\vspace{3mm}
 Штраф за увеличение нормы вектора весов:\\
@@ -214,6 +196,26 @@ $ C\sum\limits_{i=1}^l (1 - M_i(\mathbf{w}, w_0)) + \frac{1}{2}\Vert \mathbf{w} 
 \item $S(M) = 2(1+e^M)^{-1}$ -- сигмоидная
 \item $V(M) = (1-M)_+$ -- кусочно-линейная
 \end{enumerate}
+\end{frame}
+
+\begin{frame}\frametitle{Вопрос}
+$ \sum\limits_{i=1}^l (1 - M_i(\mathbf{w}, w_0)) + \frac{1}{2C}\Vert \mathbf{w} \Vert^2 \rightarrow \min\limits_{\mathbf{w}}$\\
+\vspace{5mm}
+На что влияет параметр $C$?
+\end{frame}
+
+\begin{frame}\frametitle{Выбор параметра $C$}
+\begin{figure}[htbp]
+	\begin{minipage}{.5\textwidth}
+	  \includegraphics[height=120pt, keepaspectratio = true]{images/svm_reg} \\
+		\centering Маленький $C$\\ Сильная регуляризация\\
+    \end{minipage}%
+    \begin{minipage}{.5\textwidth}
+		\includegraphics[height=120pt, keepaspectratio = true]{images/svm_non_reg}   \\
+	  \centering Большой $C$\\ Слабая регуляризация\\
+	\end{minipage}%
+\end{figure}
+\textcolor{gray}{Пример из Python scikit-learn: http://scikit-learn.org/dev}
 \end{frame}
 
 \begin{frame}\frametitle{Условие Каруша-Куна-Такера}
@@ -243,34 +245,20 @@ M_i(\mathbf{w}, w_0) \geq 1 - \xi_i\\
 \vspace{5mm}
 Двойственная задача:\\
 $\begin{cases}
-\mathcal{L} = \frac{1}{2} \Vert w \Vert^2 - \sum\limits_{i = 1}^l \alpha_i (M_i(\mathbf{w}, w_0) - 1) - \sum\limits_{i = 1}^l \xi_i (\alpha_i + \eta_i - C)\\
-\xi_i \geq 0,   \alpha_i \geq 0,    \eta_i \geq 0\\
+\mathcal{L} = \frac{1}{2} \Vert w \Vert^2 - \sum\limits_{i = 1}^l \alpha_i (M_i(\mathbf{w}, w_0) - 1) - \sum\limits_{i = 1}^l \xi_i (\alpha_i + \mu_i - C)\\
+\xi_i \geq 0,   \alpha_i \geq 0,    \mu_i \geq 0\\
 \alpha_i = 0$ либо $M_i(\mathbf{w}, w_0) = 1 - \xi_i , i = 1, \dots, l\\
-\eta_i = 0 $ либо $\xi_i = 0, i = 1, \dots, l
+\mu_i = 0 $ либо $\xi_i = 0, i = 1, \dots, l
 \end{cases}$
 \end{frame}
 
 \begin{frame}\frametitle{Двойственная задача SVM}
-$\mathcal{L}(\mathbf{w}, w_0, \xi) = \frac{1}{2} \Vert \mathbf{w} \Vert^2 - \sum\limits_{i = 1}^l \alpha_i (M_i(\mathbf{w}, w_0) - 1) - \sum\limits_{i = 1}^l \xi_i (\alpha_i + \eta_i -C)$\\
+$\mathcal{L}(\mathbf{w}, w_0, \xi) = \frac{1}{2} \Vert \mathbf{w} \Vert^2 - \sum\limits_{i = 1}^l \alpha_i (M_i(\mathbf{w}, w_0) - 1) - \sum\limits_{i = 1}^l \xi_i (\alpha_i + \mu_i -C)$\\
 \vspace{5mm}
-$\frac{\partial \mathcal{L}}{\partial \mathbf{w}}  = \mathbf{w} - \sum\limits_{i=1}^l \alpha_iu_i\mathbf{x_i} = 0 $ \hspace{5mm} $\Rightarrow \mathbf{w} = \sum\limits_{i=1}^l \alpha_iu_i\mathbf{x_i} = 0$\\
+$\frac{\partial \mathcal{L}}{\partial \mathbf{w}}  = \mathbf{w} - \sum\limits_{i=1}^l \alpha_iy_i\mathbf{x_i} = 0 $ \hspace{5mm} $\Rightarrow \mathbf{w} = \sum\limits_{i=1}^l \alpha_iy_i\mathbf{x_i} = 0$\\
 $\frac{\partial \mathcal{L}}{\partial w_0} = - \sum\limits_{i=1}^l \alpha_iy_i = 0$ \hspace{12mm} $\Rightarrow \sum\limits_{i=1}^l \alpha_iy_i = 0$\\
-$\frac{\partial \mathcal{L}}{\partial \xi_i} = -\alpha_i - \eta_i + C = 0$ \hspace{6mm}  $\Rightarrow \eta_i + \alpha_i = C$\\
+$\frac{\partial \mathcal{L}}{\partial \xi_i} = -\alpha_i - \mu_i + C = 0$ \hspace{6mm}  $\Rightarrow \mu_i + \alpha_i = C$\\
 \end{frame}
-
-\begin{frame}\frametitle{Понятие опорного вектора}
-\begin{itemize}
-\item[--] $\alpha_i = 0$, $\eta_i = C$, $\xi_i = 0$, $M_i \geq 1$ -- неинформативные объекты
-\item[--] $0 < \alpha_i < C$, $0 < \eta_i < C$, $\xi_i = 0$, $M_i = 1$ -- опорные объекты
-\item[--] $\alpha_i = C$, $\eta_i = C$, $\xi_i > 0$, $M_i < 1$ -- опорные объекты-нарушители
-\end{itemize}
-
-\begin{figure}[htbp]
-  \includegraphics[height=100pt, keepaspectratio = true]{images/classification}   
-\end{figure}
-
-\end{frame}
-
 
 \begin{frame}\frametitle{Двойственная задача SVM}
 $\begin{cases}
@@ -293,10 +281,36 @@ $a(\mathbf{x}) = \sign(\sum\limits_{i=1}^l \alpha_iy_i \langle \mathbf{x_i}, \ma
 
 \end{frame}
 
+\begin{frame}\frametitle{Понятие опорного вектора}
+\begin{itemize}
+\item[--] $\alpha_i = 0$, $M_i \geq 1$ -- неинформативные объекты
+\item[--] $0 < \alpha_i < C$, $M_i = 1$ -- опорные объекты
+\item[--] $\alpha_i = C$, $M_i < 1$ -- опорные объекты-нарушители
+\end{itemize}
+
+\begin{figure}[htbp]
+  \includegraphics[height=100pt, keepaspectratio = true]{images/classification}   
+\end{figure}
+
+\end{frame}
+
+\begin{frame}\frametitle{Двойственная задача SVM}
+
+Решение исходной задачи выражается через решение двойственной:\\
+$\begin{cases}
+\mathbf{w} = \sum\limits_{i = 1}^l \alpha_iy_i\mathbf{x_i}\\
+w_0 = \langle \mathbf{w}, \mathbf{x_i} \rangle - y_i
+\end{cases}$\\
+\vspace{5mm}
+Линейный классификатор:\\
+$a(\mathbf{x}) = \sign(\sum\limits_{i=1}^l \alpha_iy_i \langle \mathbf{x_i}, \mathbf{x} \rangle - w_0)$
+
+\end{frame}
+
 \begin{frame}\frametitle{Kernel trick}
 $\langle \mathbf{x_i}, \mathbf{x} \rangle \rightarrow K(\mathbf{x_i}, \mathbf{x})$\\
 \vspace{5mm}
-$\psi: X \rightarrow H$, $H$ - гильбертово пространство\\
+$\psi: X \rightarrow H$, $H$ - Гильбертово пространство\\
 $K(\mathbf{x_i}, \mathbf{x}) = \langle \mathbf{\psi(x_i)}, \mathbf{\psi(x)} \rangle_H$
 \begin{itemize}
 \item[--] $K(\mathbf{x_i}, \mathbf{x}) = K(\mathbf{x}, \mathbf{x_i})$
