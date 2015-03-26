@@ -1,0 +1,161 @@
+\documentclass[12pt]{beamer}
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{ifluatex}
+\usefonttheme[onlymath]{serif}
+\usepackage{svg}
+\usepackage{enumerate}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\setbeamertemplate{footline}[frame number]
+\definecolor{beamer@darkgreen}{rgb}{0,0.6,0}
+\setbeamercolor{normal text}{fg=black,bg=white}
+\setbeamercolor{title}{fg=black,bg=beamer@darkgreen}
+\setbeamercolor{frametitle}{fg=black,bg=beamer@darkgreen}
+\setbeamercolor{background canvas}{parent=normal text}
+
+\usepackage[english,russian]{babel}
+\usepackage{graphicx}
+\usepackage{listings}
+\DeclareMathOperator{\sign}{sign}
+
+\author{Катя Тузова}
+\title{Машинное обучение}
+\subtitle{Лекция 8. Логические алгоритмы классификации.}
+\date{}
+
+\begin{document}	
+\frame{\titlepage}
+
+\begin{frame}\frametitle{Разбор летучки}
+
+\end{frame}
+
+
+\begin{frame}\frametitle{Логические закономерности}
+${X^l = \left( x_i, y_i \right)_{i=1}^l}$ - обучающая выборка.\\
+Логическая закономерность (правило) -- предикат ${R: X \rightarrow \left\{ 0, 1 \right\} }$, который удовлетворяет двум требованиям:\\
+\begin{enumerate}
+	\item Интерпретируемость
+	\item Информативность относительно одного из классов ${c \in Y}$
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}\frametitle{Интерпретируемость}
+	\begin{itemize}
+		\item[--] Записывается на естественном языке
+		\item[--] Зависит от небольшого числа признаков
+	\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Информативность}
+	\begin{itemize}
+		\item[--] ${ p_c(R) = \# \left\{ x_i: R(x_i) = 1 , y_i = c \rightarrow \max \right\} }$
+		\item[--] ${ n_c(R) = \# \left\{ x_i: R(x_i) = 1 , y_i \neq c \rightarrow \min \right\} }$
+	\end{itemize}
+	\textcolor{red}{TODO: example}
+\end{frame}
+
+\begin{frame}\frametitle{Основные проблемы}
+	\begin{itemize}
+		\item[--] Как изобретать признаки? 
+		\item[--] Какого вида закономерности $R$ нужны?
+		\item[--] Как определить информативность		
+		\item[--] Как искать закономерности		
+		\item[--] \textcolor{red}{TODO}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Оценивание информативности}
+	Как свернуть 2 критерия в один?\\
+	Очевидные свертки:\\
+	\begin{itemize}
+		\item[--] \textcolor{red}{TODO}
+		\item[--] 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Пример свертки двух критериев}
+\textcolor{red}{TODO: picture}
+\end{frame}
+
+\begin{frame}\frametitle{Используемые критерии информативности}
+\textcolor{red}{TODO}
+\end{frame}
+
+\begin{frame}\frametitle{Энтропийный критерий информативности}
+\textcolor{red}{TODO}
+\end{frame}
+
+
+\begin{frame}\frametitle{Тест Фишера}
+\textcolor{red}{TODO}
+\end{frame}
+
+\begin{frame}\frametitle{Критерий Джини}
+\textcolor{red}{TODO}
+\end{frame}
+
+\begin{frame}\frametitle{Виды правил}
+\begin{itemize}
+\item[--] Пороговое условие
+\item[--] Конъюнкция пороговых условий
+\item[--] Синдром -- выполнение не менее d условий из J
+\item[--] Полуплоскость — линейная пороговая функция
+\item[--] Шар -- пороговая функция близости
+\end{itemize}
+\textcolor{red}{TODO}
+\end{frame}
+
+\begin{frame}\frametitle{Поиск информативных закономерностей}
+\textcolor{red}{TODO}
+\end{frame}
+
+\begin{frame}\frametitle{Критерий Парето}
+\textcolor{red}{TODO}
+\end{frame}
+
+\begin{frame}\frametitle{Жадный алгоритм построения решающего списка}
+\textcolor{red}{TODO}
+\end{frame}
+
+\begin{frame}\frametitle{Недостатки}
+\textcolor{red}{TODO}
+\end{frame}
+
+\begin{frame}\frametitle{Бинарное решающее дерево}
+\textcolor{red}{TODO}
+\end{frame}
+
+\begin{frame}\frametitle{Пример}
+\textcolor{red}{TODO}
+\end{frame}
+
+\begin{frame}\frametitle{Алгоритм построения ID3}
+\textcolor{red}{TODO}
+\end{frame}
+
+\begin{frame}\frametitle{Достоинства и недостатки}
+\textcolor{red}{TODO}
+\end{frame}
+
+\begin{frame}\frametitle{Усечение дерева C4.5}
+\textcolor{red}{TODO}
+\end{frame}
+
+\begin{frame}\frametitle{ODT}
+\textcolor{red}{TODO}
+\end{frame}
+
+\begin{frame}\frametitle{Random forest}
+\textcolor{red}{TODO}
+\end{frame}
+
+\begin{frame}\frametitle{На следующей лекции}
+\begin{itemize}
+\item[--] Байесовские методы классификации
+\end{itemize}
+\end{frame}
+\end{document}
