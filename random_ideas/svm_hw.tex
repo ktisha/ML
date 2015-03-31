@@ -1,0 +1,176 @@
+%% -*- TeX-engine: luatex; ispell-language: "russian" -*-
+
+\documentclass[a4paper,12pt]{article}
+\usepackage{subcaption}
+\input{handout-base}
+
+\begin{document}
+\subsection*{Домашнее задание №6: <<Ядра SVM>>}
+
+\begin{tabular}{@{}lr}
+  \textbf{Дедлайн 1} (20 баллов): & 26 марта, 23:59 \\
+  \textbf{Дедлайн 2} (10 баллов): & 2 апреля, 23:59
+\end{tabular}
+
+Домашнее задание нужно написать на Python и сдать в виде одного файла.
+Правило именования файла: \texttt{name\_surname\_6.py}. Например, если
+вас зовут Иван Петров, то имя файла должно быть: \texttt{ivan\_petrov\_6.py}.
+
+\makebox[\linewidth]{\hrulefill}
+
+Что может быть проще в современном мире, чем отличить ядовитые грибы от съедобных? Тем более у нас и датасет есть подходящий \footnote{\url{https://archive.ics.uci.edu/ml/datasets/Mushroom}} Обратите внимание, что все признаки в этом задании являются номинальными.В первой колонке стоит либо 'e' - съедобный, либо 'p -- ядовитый.
+
+\paragraph{1} Реализуйте функцию \pythoninline{read_data(path, attributes_paths)}, которая принимает путь к файлу с данными, преобразует их для работы SVM  и возвращает пару из двух массивов NumPy2. Первый элемент пары — матрица признаков X. Второй элемент пары — вектор y, в котором -1 означает ядовитый гриб, а 1 съедобный. Здесь вам может быть полезен класс \pythoninline{DictVectorizer} из пакета \pythoninline{sklearn.feature_extraction}
+
+\paragraph{2} Реализуйте Линейный SVM через решение прямой задачи QP для SVM. Рекомендуется воспользоваться пакетом cvxopt \footnote{\url{http://cvxopt.org/userguide/index.html}}. Также обратите внимание на разреженное представление матрицы  \pythoninline{cvxopt.spmatrix}, qp-солвер работает быстрее с разреженными матрицами.
+Функция \pythoninline{solvers.qp()} решает задачу следующего вида:
+
+\begin{gather}
+    \frac{1}{2}x^TPx + q^Tx \to \min_{x} \\
+    \begin{aligned}
+        \text{s.t.} \quad & Gx \le h \\
+        & Ax = b
+    \end{aligned}
+\end{gather}
+
+
+Необходимо решить следующую задачу оптимизации:
+
+
+\begin{gather}
+    \frac{1}{2}w^Tw + C\sum_{n} \xi_n \to \min_{w, w_0, \xi} \\
+    \text{s.t.} \quad \xi_n \ge 0, \quad y_n (w^Tx_n + w_0) \ge 1 - \xi_n \quad \forall n = 1\dots N
+\end{gather}
+
+
+Сформулируем ее в виде задачи для QP-солвера:
+$$x = (w, w_0, \xi)$$
+$$
+\begin{aligned}
+&P = \left[ 
+    \begin{array}{c|c}
+        I & 0 \\
+        \hline
+        0 & 0
+    \end{array}
+\right]
+\quad
+&q = \left[ 
+\begin{array}{c}
+    0 \\
+    \hline
+    C \cdot 1
+\end{array}
+\right] \\
+&G = \left[
+    \begin{array}{c|c|c}
+        0 & 0 & -I \\
+        \hline
+        -y \odot X & -y & -I
+    \end{array}
+\right]
+\quad
+&h = \left[
+    \begin{array}{c}
+        0 \\
+        \hline
+        -1
+    \end{array}
+\right]
+\end{aligned}
+$$
+
+Объект $x_n$ является опорным, если в оптимальной точке для задачи линейного SVM неравенство отступов переходит в равенство:
+$$y_n (w^Tx_n + w_0) = 1 - \xi_n.$$
+
+
+Структура класса приведена ниже:
+\begin{python3}
+class LinearSVM:
+    def __init__(self, C):
+        self.C = C
+		...
+
+    def fit(self, X, y):
+        ...
+    
+    def predict(self, X):
+        ...
+
+\end{python3}
+Обратите внимание, что на приведенных данных алгоритм должен работать не более 1 минуты.
+\paragraph{3} Реализуйте Ядровой SVM через решение двойственной задачи QP для SVM.
+
+Необходимо решить следующую задачу оптимизации:
+\begin{gather}
+    \sum_{n} \alpha_n - \frac{1}{2}\sum_{n}\sum_{n'} \alpha_{n}\alpha_{n'} y_{n}y_{n'} k(x_{n}, x_{n'}) \to \max_{\alpha} \\
+    \begin{aligned}
+        \text{s.t. } \quad  
+        & 0 \le \alpha_n \le C, \quad \forall n = 1, \dots, N \\
+        & \sum_{n} \alpha_n y_n = 0
+    \end{aligned}
+\end{gather}
+
+Сформулируем ее в виде задачи для QP-солвера:
+$$
+\begin{aligned}
+    &P = \left[ y_{n}y_{n'}k(x_{n}, x_{n'}) \right] \quad
+    &q = \left[ -1 \right] \\
+    &G = \left[ \begin{array}{c} I \\ \hline -I \end{array} \right] \quad
+    &h = \left[ \begin{array}{c} C\cdot 1 \\ \hline 0 \end{array} \right] \\
+    &A = y^T\quad
+    &w_0 = 0
+\end{aligned}
+$$
+
+Объект $x_n$ является опорным, если $\alpha_n > 0$.
+
+Предсказание вычисляется по следующему правилу:
+$$\hat{y}(x) = \text{sign}\left(\sum_{n}\alpha_{n}y_{n}k(x, x_{n}) + w_0\right).$$
+
+Для предсказания необходимо оценить значение $w_0$. Известно, что для любого опорного объекта, который классифицируется безошибочно верно:
+$$y_n = \sum_{n'}\alpha_{n}y_{n}k(x_{n}, x_{n'}) + w_0,$$
+значит для любого такого объекта:
+$$w_0 = y_n - \sum_{n'}\alpha_{n}y_{n}k(x_{n}, x_{n'}).$$
+
+В случае наличия ошибок классификации обучающей выборки предлагается усреднять значение $w_0$ по всем опорным векторам:
+$$w_0 = \frac{1}{N_\text{SV}}\sum_{n \in \text{SV}}\left(y_n - \sum_{n'}\alpha_{n}y_{n}k(x_{n}, x_{n'})\right).$$
+Интуиция здесь такова, что суммарные ошибки в положительную сторону примерно равны суммарным ошибкам в отрицательную сторону.
+
+Структура класса аналогична:
+\begin{python3}
+class KernelSVM:
+    def __init__(self, C, kernel=None, sigma=1.0, degree=2):
+        pass
+    
+    def fit(self, X, y):
+        pass
+    
+    def predict(self, X):
+        pass
+\end{python3}
+
+Обратите внимание, что на приведенных данных алгоритм должен работать не более 1 минуты.
+
+\paragraph{4} Реализуйте полиномиальное и гауссовское ядра. Функция должна принимать на вход две матрицы объектов X и возвращать матрицу K.
+
+Например, линейное ядро выглядит следующим образом:
+\begin{python3}
+import numpy as np
+
+def linear_kernel(X1, X2):
+    return np.dot(X1, X2)
+\end{python3}
+
+\paragraph{5} 
+С помощью реализованных классификаторов, ответьте на вопросы:
+
+1. Как зависит результат линейного SVM от параметра C?
+
+2. Какой классификатор показывает лучший результат на предложенном датасете?
+
+3. Какие параметры каждого классификатора кажутся вам оптимальными для решения задачи?
+
+4. Что можно сказать о линейной разделимости данных по полученным результатам?
+
+\end{document}
