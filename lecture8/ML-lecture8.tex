@@ -8,7 +8,75 @@
 \frame{\titlepage}
 
 \begin{frame}\frametitle{Разбор летучки}
+Какие условия должны выполняться для того, чтобы объект считался опорным?
+\end{frame}
 
+\begin{frame}\frametitle{Разбор летучки}
+$a(\mathbf{x}) = \sign(\sum\limits_{i=1}^l \alpha_iy_i \langle \mathbf{x_i}, \mathbf{x} \rangle - w_0)$\\
+\begin{itemize}
+\item[--] $\alpha_i = 0$, $M_i \geq 1$ -- неинформативные объекты
+\item[--] $0 < \alpha_i < C$, $M_i = 1$ -- опорные объекты
+\item[--] $\alpha_i = C$, $M_i < 1$ -- опорные объекты-нарушители
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+$ \sum\limits_{i=1}^l (1 - M_i(\mathbf{w}, w_0)) + \frac{1}{2C}\Vert \mathbf{w} \Vert^2 \rightarrow \min\limits_{\mathbf{w}}$\\
+  На что влияет параметр $C$?
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+\begin{figure}[htbp]
+	\begin{minipage}{.5\textwidth}
+	  \includegraphics[height=120pt, keepaspectratio = true]{images/svm_reg} \\
+		\centering Маленький $C$\\ Сильная регуляризация\\
+    \end{minipage}%
+    \begin{minipage}{.5\textwidth}
+		\includegraphics[height=120pt, keepaspectratio = true]{images/svm_non_reg}   \\
+	  \centering Большой $C$\\ Слабая регуляризация\\
+	\end{minipage}%
+\end{figure}
+\footnotesize\textcolor{gray}{Пример из Python scikit-learn: http://scikit-learn.org/dev}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Что такое kernel trick?
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Переход в другое пространство с заменой скалярного произведения\\
+$\langle \mathbf{x_i}, \mathbf{x} \rangle \rightarrow K(\mathbf{x_i}, \mathbf{x})$\\
+\vspace{5mm}
+$\psi: X \rightarrow H$, $H$ - Гильбертово пространство\\
+$K(\mathbf{x_i}, \mathbf{x}) = \langle \mathbf{\psi(x_i)}, \mathbf{\psi(x)} \rangle_H$
+\begin{itemize}
+\item[--] $K(\mathbf{x_i}, \mathbf{x}) = K(\mathbf{x}, \mathbf{x_i})$
+\item[--] неотрицательно определена
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Покажите, что линейный SVM устойчив к добавлению шумовых признаков. Пусть при обучении
+на $n$ признаках результатом работы линейного SVM является разделяющая полоса некоторой
+ширины. Покажите, что при добавлении шумового $(n + 1)$-го признака, не способного увеличить
+ширину разделяющей полосы, SVM присвоит ему нулевой вес.
+\end{frame}
+
+%\begin{frame}\frametitle{Разбор летучки}
+%$ \sum\limits_{i=1}^l (1 - M_i(\mathbf{w}, w_0)) + \frac{1}{2C} \sum\limits_{j=1}^n \vert w \vert \rightarrow \min\limits_{\mathbf{w}}$\\
+%\vspace{5mm}
+%Замена переменных: $u_j =\frac{1}{2} (\vert w_j \vert + w_j)$, $v_j =\frac{1}{2} (\vert w_j \vert + w_j)$\\
+%Тогда $w_j = u_j - v_j$ и $\vert w_j \vert = u_j + v_j$\\
+%\vspace{5mm}
+%$ \sum\limits_{i=1}^l (1 - M_i(u-v, w_0)) + \frac{1}{2C} \sum\limits_{j=1}^n (u_j + v_j) \rightarrow \min\limits_{u, v}$\\
+%Чем меньше С, тем больше индексов $j$ таких, что $u_j = v_j = 0$,
+%но тогда $w_j = 0$, значит, признак не учитывается
+%\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+\begin{figure}[htbp]
+  \includegraphics[height=200pt, keepaspectratio = true]{images/svm}
+\end{figure}
 \end{frame}
 
 \begin{frame}\frametitle{Обзор уже известных подходов}
@@ -425,19 +493,18 @@ $X^k$ -- независимая контрольная выборка, $k \appro
 \hspace{20mm} Сохранить поддерево $v$\\
 \hspace{20mm} Заменить поддерево $v$ поддеревом $L_v$\\
 \hspace{20mm} Заменить поддерево $v$ поддеревом $R_v$\\
-\hspace{20mm} Заменить $v$ листом $c_v = \min\limits{c \in Y} r_c(v)$\\
+\hspace{20mm} Заменить $v$ листом $c_v = \min\limits_{c \in Y} r_c(v)$\\
 \end{frame}
 
-\begin{frame}\frametitle{Небрежные деревья}
-\textcolor{red}{TODO?}
-Input: Выборка $X^l$, семейство правил $\mathcal{B}$, глубина дерева $H$\\
-Output: условия $\beta_h$, $h = 1, \dots, H$, таблица $T$ : $\left\{0, 1\right\}^H \rightarrow Y$\\
-Для всех $h = 1, \dots, H$:\\
-\hspace{10mm} $\beta_h = \max\limits_{\beta \in \mathcal{B}} I(\beta_1, \dots, \beta_{h-1}, X^l)$\\
-Для всех $b = (b_1, \dots, b_H ) \in {0, 1}$\\
-\hspace{10mm} $T(b_1,\dots, b_H ) = \max\limits_{c \in Y} \sum\limits_{i=1}^l \left[y_i = c\right] \prod\limits_{h=1}^H \left[ \beta_h(x_i) = b_h \right]$
-
-\end{frame}
+%\begin{frame}\frametitle{Небрежные деревья}
+%\textcolor{red}{TODO?}
+%Input: Выборка $X^l$, семейство правил $\mathcal{B}$, глубина дерева $H$\\
+%Output: условия $\beta_h$, $h = 1, \dots, H$, таблица $T$ : $\left\{0, 1\right\}^H \rightarrow Y$\\
+%Для всех $h = 1, \dots, H$:\\
+%\hspace{10mm} $\beta_h = \max\limits_{\beta \in \mathcal{B}} I(\beta_1, \dots, \beta_{h-1}, X^l)$\\
+%Для всех $b = (b_1, \dots, b_H ) \in {0, 1}$\\
+%\hspace{10mm} $T(b_1,\dots, b_H ) = \max\limits_{c \in Y} \sum\limits_{i=1}^l \left[y_i = c\right] \prod\limits_{h=1}^H \left[ %\beta_h(x_i) = b_h \right]$
+%\end{frame}
 
 \begin{frame}\frametitle{Композиции алгоритмов}
 \begin{enumerate} [--]
@@ -470,7 +537,7 @@ Output: условия $\beta_h$, $h = 1, \dots, H$, таблица $T$ : $\left
 \begin{frame}\frametitle{Bootstrapping}
 Выборка $X^l$\\
 \vspace{5mm}
-Сгенерируем много датасетов так: будем выбирать из $X$ $l$ точек с замещением, т.е. в новом датасете
+Сгенерируем много датасетов так: будем из $X$ выбирать $l$ точек с замещением, т.е. в новом датасете
 некоторые точки будут повторяться
 \end{frame}
 
