@@ -188,12 +188,12 @@ ${ fp(\beta) = \# \left\{ x_i: \beta(x_i) = 1 , y_i \neq c \right\} \rightarrow 
 \begin{frame}\frametitle{Используемые критерии информативности}
 \begin{enumerate}[--]
 \item Энтропийный информационный критерий\\
-$IGain(p,n) = h(\frac{P}{l}) - \frac{tp+tp}{l}h(\frac{tp}{tp+fp}) - \frac{l-tp-fp}{l}h(\frac{P-tp}{l-tp-fp}) \rightarrow \max$\\
+$IGain(tp,fp) = h(\frac{P}{l}) - \frac{tp+tp}{l}h(\frac{tp}{tp+fp}) - \frac{l-tp-fp}{l}h(\frac{P-tp}{l-tp-fp}) \rightarrow \max$\\
 где $h(q) = -q\log_2q - (1-q)\log_2(1-q)$
 \item Критерий Джини\\
-$IGini(p,n)=IGain(p,n)$, где $h(q)=4q(1-q)$
+$IGini(tp,fp)=IGain(tp,fp)$, где $h(q)=4q(1-q)$
 \item Fisher’s Exact Test\\
-$IStat(p,n) = -\frac{1}{l}\log_2\frac{C_P^{tp}C_N^{fp}}{C_{P+N}^{tp+fp}} \rightarrow \max$
+$IStat(tp,fp) = -\frac{1}{l}\log_2\frac{C_P^{tp}C_N^{fp}}{C_{P+N}^{tp+fp}} \rightarrow \max$
 %\item Критерий Донского\\
 %$I(\beta,X^l)= \# \left\{ (x_i, x_j): \beta(x_i) \neq \beta(x_j), y_i \neq y_j \right\}$
 
@@ -202,7 +202,9 @@ $IStat(p,n) = -\frac{1}{l}\log_2\frac{C_P^{tp}C_N^{fp}}{C_{P+N}^{tp+fp}} \righta
 %\item Boosting\\
 %$\sqrt{p} - \sqrt{n} \rightarrow \max$
 \end{enumerate}
-
+\vspace{5mm}
+$P$ - общее количество объектов искомого класса\\
+ $N$ -- количество остальных объектов
 \end{frame}
 
 %\begin{frame}\frametitle{Закономерности в pn области}
