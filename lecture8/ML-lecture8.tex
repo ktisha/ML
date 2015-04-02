@@ -34,6 +34,8 @@ ${X^l = \left( x_i, y_i \right)_{i=1}^l}$ - обучающая выборка.\\
 	\item Интерпретируемость
 	\item Информативность относительно одного из классов ${c \in Y}$
 \end{enumerate}
+\vspace{5mm}
+Алгоритм: $a(X, \beta) \rightarrow y$
 \end{frame}
 
 
@@ -128,9 +130,13 @@ ${X^l = \left( x_i, y_i \right)_{i=1}^l}$ - обучающая выборка.\\
 		\item[--] Как изобретать признаки? 
 		\item[--] Какого вида закономерности $\beta(x)$ нужны?
 		\item[--] Как определять информативность? 
-		\item[--] Как искать закономерности?
+		\item[--] Как выбирать закономерности?
 		\item[--] Как объединять закономерности в алгоритм?
 	\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Как изобретать признаки}
+Какие признаки выбрать для задачи кредитного скоринга?
 \end{frame}
 
 \begin{frame}\frametitle{Виды правил}
@@ -150,23 +156,23 @@ $\beta(x) = \left[\sum\limits_{j \in J} \left[a_j \leq f_j(x) \leq b_j \right] \
 \begin{frame}\frametitle{Оценивание информативности}
 Идея: Хотим получить один критерий из двух:\\
 \vspace{5mm}
-${ p(\beta) = \# \left\{ x_i: \beta(x_i) = 1 , y_i = c \right\} \rightarrow \max  }$ 
-${ n(\beta) = \# \left\{ x_i: \beta(x_i) = 1 , y_i \neq c \right\} \rightarrow \min}$ \\
+${ tp(\beta) = \# \left\{ x_i: \beta(x_i) = 1 , y_i = c \right\} \rightarrow \max  }$ 
+${ fp(\beta) = \# \left\{ x_i: \beta(x_i) = 1 , y_i \neq c \right\} \rightarrow \min}$ \\
 \vspace{5mm}
 	Очевидные свертки:\\
 	\begin{itemize}
-		\item[--] $I(p, n) = \frac{p}{p+n} \rightarrow \max$
-		\item[--] $I(p, n) = p-n \rightarrow \max$
-		\item[--] $I(p, n) = p-Cn \rightarrow \max$			
+		\item[--] $I(tp, fp) = \frac{tp}{tp+fp} \rightarrow \max$
+		\item[--] $I(tp, fp) = tp-fp \rightarrow \max$
+		\item[--] $I(tp, fp) = tp-Cfp \rightarrow \max$			
 	\end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Пример свертки двух критериев}
-Пусть число примеров искомого класса P = 200 и число остальных объектов N=100\\
+Пусть число примеров искомого класса 200 и число остальных объектов 100\\
 \vspace{5mm}
 \begin{tabular}{|r l|l|l|l|}
   \hline 
-  $p$ & $n$ & $p-n$ & $p-5n$ & $\frac{p}{p+n}$\\ 
+  $tp$ & $fp$ & $tp-fp$ & $tp-5fp$ & $\frac{tp}{tp+fp}$\\ 
   \hline \hline
   50 & 0 & \textcolor{red}{50} & 50 & 1\\
   \hline
@@ -181,15 +187,20 @@ ${ n(\beta) = \# \left\{ x_i: \beta(x_i) = 1 , y_i \neq c \right\} \rightarrow \
 
 \begin{frame}\frametitle{Используемые критерии информативности}
 \begin{enumerate}[--]
-\item Information gain
-$IGain(p,n) = h(\frac{P}{l}) - \frac{p+n}{l}h(\frac{p}{p+n}) - \frac{l-p-n}{l}h(\frac{P-p}{l-p-n}) \rightarrow \max$\\
+\item Энтропийный информационный критерий
+$IGain(p,n) = h(\frac{P}{l}) - \frac{tp+tp}{l}h(\frac{tp}{tp+fp}) - \frac{l-tp-fp}{l}h(\frac{P-tp}{l-tp-fp}) \rightarrow \max$\\
 где $h(q) = -q\log_2q - (1-q)\log_2(1-q)$
-\item Gini impurity\\
-$IGini(p,n)=IGain(p,n)$, где $h(q)=4q(1-q)$
 \item Fisher’s Exact Test\\
-$IStat(p,n) = -\frac{1}{l}\log_2\frac{C_P^pC_N^n}{C_{P+N}^{p+n}} \rightarrow \max$
-\item Boosting\\
-$\sqrt{p} - \sqrt{n} \rightarrow \max$
+$IStat(p,n) = -\frac{1}{l}\log_2\frac{C_P^{tp}C_N^{fp}}{C_{P+N}^{tp+fp}} \rightarrow \max$
+\item Критерий Джини\\
+$I(\beta,X^l)= \# \left\{ (x_i, x_j): \beta(x_i) = \beta(x_j), y_i = y_j \right\}$
+\item Критерий Донского\\
+$I(\beta,X^l)= \# \left\{ (x_i, x_j): \beta(x_i) \neq \beta(x_j), y_i \neq y_j \right\}$
+
+%\item Gini impurity\\
+%$IGini(p,n)=IGain(p,n)$, где $h(q)=4q(1-q)$
+%\item Boosting\\
+%$\sqrt{p} - \sqrt{n} \rightarrow \max$
 \end{enumerate}
 
 \end{frame}
@@ -247,24 +258,24 @@ Output: Множество закономерностей $\mathcal{B}$\\
 Возьмем $\beta_1(x), \beta_2(x), \dots, \beta_T(x)$ закономерностей и будем по порядку применять на объекте. 
 Как только предикат $\beta_i$ сработал -- вернем соответствующий класс $c_i$.\\
 \vspace{5mm}
-$E(\beta_i, X^l) = \frac{n(\beta_i)}{n(\beta_i)+p(\beta_i)} \rightarrow \min$ -- доля ошибок $\beta_i$ на $X^l$\\
+$E(\beta_i, X^l) = \frac{fp(\beta_i)}{fp(\beta_i)+tp(\beta_i)} \rightarrow \min$ -- доля ошибок $\beta_i$ на $X^l$\\
 \vspace{5mm}
 Т.к. каждое правило принимает окончательное решение $\Rightarrow$ ошибка правила равна ошибке всего алгоритма
 \end{frame}
 
-\begin{frame}\frametitle{Жадный алгоритм для решающего списка}
-Input: $X^l$, семейство предикатов $\mathcal{B}$, $T_{max}$, $I_{min}$, $E_{max}$, $l_0$\\
-Output: Решающий список $\left\{ \beta_i, c_i \right\}_{i=1}^T$\\
-\vspace{5mm}
-$U = X^l$\\
-Для всех $i = 1,2,\dots,T_{max}$\\
-\hspace{10mm} Выбрать класс $c_i$\\
-\hspace{10mm} Максимизировать информативность при \\
-\hspace{40mm} ограничении на число ошибок\\
-\hspace{10mm} Если $I(\beta_i, U) < I_{min}$ выйти\\
-\hspace{10mm} Убрать объекты, покрытые правилом $\beta_i$\\
-\hspace{10mm} Если $\vert U \vert \leq l_0$ выйти
-\end{frame}
+%\begin{frame}\frametitle{Жадный алгоритм для решающего списка}
+%Input: $X^l$, семейство предикатов $\mathcal{B}$, $T_{max}$, $I_{min}$, $E_{max}$, $l_0$\\
+%Output: Решающий список $\left\{ \beta_i, c_i \right\}_{i=1}^T$\\
+%\vspace{5mm}
+%$U = X^l$\\
+%Для всех $i = 1,2,\dots,T_{max}$\\
+%\hspace{10mm} Выбрать класс $c_i$\\
+%\hspace{10mm} Максимизировать информативность при \\
+%\hspace{40mm} ограничении на число ошибок\\
+%\hspace{10mm} Если $I(\beta_i, U) < I_{min}$ продолжить\\
+%\hspace{10mm} Убрать объекты, покрытые правилом $\beta_i$\\
+%\hspace{10mm} Если $\vert U \vert \leq l_0$ выйти
+%\end{frame}
 
 \begin{frame}\frametitle{Жадный алгоритм для решающего списка}
 Input: $X^l$, семейство предикатов $\mathcal{B}$, $T_{max}$, $I_{min}$, $E_{max}$, $l_0$\\
@@ -274,7 +285,7 @@ $U = X^l$\\
 Для всех $i = 1,2,\dots,T_{max}$\\
 \hspace{10mm} Выбрать класс $c_i$\\
 \hspace{10mm} $\beta_i = \max\limits_{E(\beta, U) \leq E_{max}} I(\beta, U)$\\
-\hspace{10mm} Если $I(\beta_i, U) < I_{min}$ выйти\\
+\hspace{10mm} Если $I(\beta_i, U) < I_{min}$ продолжить\\
 \hspace{10mm} $U = \left\{ x \in U: \beta_i(x) = 0 \right\}$\\
 \hspace{10mm} Если $\vert U \vert \leq l_0$ выйти
 \end{frame}
@@ -283,7 +294,7 @@ $U = X^l$\\
 \begin{enumerate}[--]
 \item Низкое качество классификации
 \item Разные стратегии выбора класса $c_i$
-\item Подбор параметра $E_{max}$
+\item Подбор параметров
 \end{enumerate}
 \end{frame}
 
@@ -291,11 +302,12 @@ $U = X^l$\\
 \begin{enumerate}[--]
 \item Низкое качество классификации
 \item Разные стратегии выбора класса $c_i$
-\item Подбор параметра $E_{max}$
+\item Подбор параметров
 \end{enumerate}
 \vspace{5mm}
 Параметр $E_{max}$ влияет на сложность списка:\\
-$E_{max} \downarrow$ $\Rightarrow$ $p(\beta_i) \downarrow, T \uparrow$
+$E_{max} \downarrow$ $\Rightarrow$ $tp(\beta_i) \downarrow, T \uparrow$\\
+$E_{max} \uparrow$, $T_{max} \uparrow$ $\Rightarrow$ переобучение
 \end{frame}
 
 \begin{frame}\frametitle{Бинарное решающее дерево}
@@ -328,31 +340,31 @@ $E_{max} \downarrow$ $\Rightarrow$ $p(\beta_i) \downarrow, T \uparrow$
 
 \end{frame}
 
-\begin{frame}\frametitle{Алгоритм построения ID3}
-Input: $X^l$, $\mathcal{B}$\\
-Output: Решающее дерево \\
-\vspace{3mm}
-Если все объекты из $U$ лежат в одном классе $c \in Y$,\\ 
-\hspace{10mm} вернуть новый лист $v$, $c_v = c$\\
-Найти предикат с максимальной информативностью\\
-Разбить выборку на две части $U = U_0 \cup U_1$ по предикату $\beta$\\
-Если $U_0$ или $U_1$ пуст, то вернуть новый лист $v$,\\ $c_v$ = Мажоритарный класс(U)\\
-Создать новую внутреннюю вершину $v$: $\beta_v = \beta$\\
-Рекурсивно построить левое и правое поддеревья
-\end{frame}
+%\begin{frame}\frametitle{Алгоритм построения ID3}
+%Input: $X^l$, $\mathcal{B}$\\
+%Output: Решающее дерево \\
+%\vspace{3mm}
+%Если все объекты из $U$ лежат в одном классе $c \in Y$,\\ 
+%\hspace{10mm} вернуть новый лист $v$, $c_v = c$\\
+%Найти предикат с максимальной информативностью\\
+%Разбить выборку на две части $U = U_0 \cup U_1$ по предикату $\beta$\\
+%Если $U_0$ или $U_1$ пуст, то вернуть новый лист $v$,\\ $c_v$ = Мажоритарный класс(U)\\
+%Создать новую внутреннюю вершину $v$: $\beta_v = \beta$\\
+%Рекурсивно построить левое и правое поддеревья
+%\end{frame}
 
 \begin{frame}\frametitle{Алгоритм построения ID3}
 LearnID3 (U, $\mathcal{B}$):\\
 \hspace{10mm} Если все объекты из $U$ лежат в одном классе $c \in Y$: \\
 \hspace{20mm} Вернуть новый лист $v$, $c_v = c$\\
 \vspace{3mm}
-\hspace{10mm} $\beta = \max\limits_{\beta \in \mathcal{B}} I(\beta, U)$\\
+\hspace{10mm} $\beta^* = \max\limits_{\beta \in \mathcal{B}} I(\beta, U)$\\
 \vspace{3mm}
 \hspace{10mm} $U_0 = \left\{ x \in U : \beta(x) = 0\right\}$	\\
 \hspace{10mm} $U_1 = \left\{ x \in U : \beta(x) = 1\right\}$	\\
 \vspace{3mm}
 \hspace{10mm} Если $U_0 = \oslash$ или $U_1 = \oslash$:\\ 
-\hspace{20mm} Вернуть $v$, $c_v$ = major\_class(U)\\
+\hspace{20mm} Вернуть $v$, $c_v$ = Majority(U)\\
 \vspace{3mm}
 \hspace{10mm} Создать новую внутреннюю вершину $v$: $\beta_v = \beta$\\
 \vspace{3mm}
@@ -361,19 +373,19 @@ LearnID3 (U, $\mathcal{B}$):\\
 \hspace{10mm} Вернуть $v$
 \end{frame}
 
-\begin{frame}\frametitle{Критерий информативности}
-\begin{enumerate}[--]
+%\begin{frame}\frametitle{Критерий информативности}
+%\begin{enumerate}[--]
 %\item Отделение одного класса\\
 %$I(\beta,X^l) = \max\limits_{c \in Y} I_c (\beta,X^l)$
-\item Многоклассовый энтропийный критерий
-$I(\beta,X^l) = \sum\limits_{c \in Y} h(\frac{P_c}{l}) - \frac{p}{l}h(\frac{p_c}{p}) - \frac{l-p}{l}h(\frac{P_c-p_c}{l-p})$\\
-где $P_c = \# \left\{ x_i: y_i =c \right\} $, $p = \# \left\{ x_i: \beta(x_i)= 1 \right\} $, $h(z) = -z log_2 z$
-\item Критерий Джини\\
-$I(\beta,X^l)= \# \left\{ (x_i, x_j): \beta(x_i) = \beta(x_j), y_i = y_j \right\}$
-\item Критерий Донского\\
-$I(\beta,X^l)= \# \left\{ (x_i, x_j): \beta(x_i) \neq \beta(x_j), y_i \neq y_j \right\}$
-\end{enumerate}
-\end{frame}
+%\item Многоклассовый энтропийный критерий
+%$I(\beta,X^l) = \sum\limits_{c \in Y} h(\frac{P_c}{l}) - \frac{p}{l}h(\frac{p_c}{p}) - \frac{l-p}{l}h(\frac{P_c-p_c}{l-p})$\\
+%где $P_c = \# \left\{ x_i: y_i =c \right\} $, $p = \# \left\{ x_i: \beta(x_i)= 1 \right\} $, $h(z) = -z log_2 z$
+%\item Критерий Джини\\
+%$I(\beta,X^l)= \# \left\{ (x_i, x_j): \beta(x_i) = \beta(x_j), y_i = y_j \right\}$
+%\item Критерий Донского\\
+%$I(\beta,X^l)= \# \left\{ (x_i, x_j): \beta(x_i) \neq \beta(x_j), y_i \neq y_j \right\}$
+%\end{enumerate}
+%\end{frame}
 
 \begin{frame}\frametitle{Плюсы и минусы}
 \begin{enumerate}[+]
@@ -403,7 +415,7 @@ $X^k$ -- независимая контрольная выборка, $k \appro
 Для всех $v \in V_{inner}$:\\
 \hspace{10mm} $S_v$ = подмножество объектов $X^k$, дошедших до $v$\\
 \hspace{10mm} Если $S_v = \oslash$:\\
-\hspace{20mm} Вернуть новый лист $v$, $c_v$ = major\_class(U)\\
+\hspace{20mm} Вернуть новый лист $v$, $c_v$ = Majority(U)\\
 \hspace{10mm} Вычислить число ошибок четырьмя способами:\\
 \hspace{20mm} $r(v)$ -- поддеревом, растущим из вершины $v$\\
 \hspace{20mm} $r_L(v)$ -- левой дочерней вершины $L_v$\\
