@@ -1,29 +1,6 @@
 \documentclass[12pt]{beamer}
-\usepackage{cmap}
-\usepackage[T2A]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage{ifluatex}
-\usefonttheme[onlymath]{serif}
-\usepackage{svg}
-\usepackage{enumerate}
-\usepackage{hyperref}
-\usepackage{mathtools}
-\setbeamertemplate{footline}[frame number]
-\definecolor{beamer@darkgreen}{rgb}{0,0.6,0}
-\setbeamercolor{normal text}{fg=black,bg=white}
-\setbeamercolor{title}{fg=black,bg=beamer@darkgreen}
-\setbeamercolor{frametitle}{fg=black,bg=beamer@darkgreen}
-\setbeamercolor{background canvas}{parent=normal text}
-
-\usepackage[english,russian]{babel}
-\usepackage{graphicx}
-\usepackage{listings}
-\DeclareMathOperator{\sign}{sign}
-
-\author{Катя Тузова}
-\title{Машинное обучение}
+\input{../base}
 \subtitle{Лекция 5. Линейные методы классификации.}
-\date{}
 
 \begin{document}	
 \frame{\titlepage}
@@ -282,8 +259,8 @@ $\mathcal{L}$ должна мажорировать $\left[M_i(\mathbf{w}) < 0 \
 \end{figure}
 \begin{enumerate}
 \item $\left[M_i(\mathbf{w}) < 0 \right]$
-\item $L(M) = \log_2(1+e^{-M})$ -- логарифмическая
 \item $S(M) = 2(1+e^M)^{-1}$ -- сигмоидная
+\item $L(M) = \log_2(1+e^{-M})$ -- логарифмическая
 \item $V(M) = (1-M)_+$ -- кусочно-линейная
 \end{enumerate}
 \end{frame}
