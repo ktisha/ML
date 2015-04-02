@@ -11,74 +11,6 @@
 Какие условия должны выполняться для того, чтобы объект считался опорным?
 \end{frame}
 
-\begin{frame}\frametitle{Разбор летучки}
-$a(\mathbf{x}) = \sign(\sum\limits_{i=1}^l \alpha_iy_i \langle \mathbf{x_i}, \mathbf{x} \rangle - w_0)$\\
-\begin{itemize}
-\item[--] $\alpha_i = 0$, $M_i \geq 1$ -- неинформативные объекты
-\item[--] $0 < \alpha_i < C$, $M_i = 1$ -- опорные объекты
-\item[--] $\alpha_i = C$, $M_i < 1$ -- опорные объекты-нарушители
-\end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{Разбор летучки}
-$ \sum\limits_{i=1}^l (1 - M_i(\mathbf{w}, w_0)) + \frac{1}{2C}\Vert \mathbf{w} \Vert^2 \rightarrow \min\limits_{\mathbf{w}}$\\
-  На что влияет параметр $C$?
-\end{frame}
-
-\begin{frame}\frametitle{Разбор летучки}
-\begin{figure}[htbp]
-	\begin{minipage}{.5\textwidth}
-	  \includegraphics[height=120pt, keepaspectratio = true]{images/svm_reg} \\
-		\centering Маленький $C$\\ Сильная регуляризация\\
-    \end{minipage}%
-    \begin{minipage}{.5\textwidth}
-		\includegraphics[height=120pt, keepaspectratio = true]{images/svm_non_reg}   \\
-	  \centering Большой $C$\\ Слабая регуляризация\\
-	\end{minipage}%
-\end{figure}
-\footnotesize\textcolor{gray}{Пример из Python scikit-learn: http://scikit-learn.org/dev}
-\end{frame}
-
-\begin{frame}\frametitle{Разбор летучки}
-Что такое kernel trick?
-\end{frame}
-
-\begin{frame}\frametitle{Разбор летучки}
-Переход в другое пространство с заменой скалярного произведения\\
-$\langle \mathbf{x_i}, \mathbf{x} \rangle \rightarrow K(\mathbf{x_i}, \mathbf{x})$\\
-\vspace{5mm}
-$\psi: X \rightarrow H$, $H$ - Гильбертово пространство\\
-$K(\mathbf{x_i}, \mathbf{x}) = \langle \mathbf{\psi(x_i)}, \mathbf{\psi(x)} \rangle_H$
-\begin{itemize}
-\item[--] $K(\mathbf{x_i}, \mathbf{x}) = K(\mathbf{x}, \mathbf{x_i})$
-\item[--] неотрицательно определена
-\end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{Разбор летучки}
-Покажите, что линейный SVM устойчив к добавлению шумовых признаков. Пусть при обучении
-на $n$ признаках результатом работы линейного SVM является разделяющая полоса некоторой
-ширины. Покажите, что при добавлении шумового $(n + 1)$-го признака, не способного увеличить
-ширину разделяющей полосы, SVM присвоит ему нулевой вес.
-\end{frame}
-
-%\begin{frame}\frametitle{Разбор летучки}
-%$ \sum\limits_{i=1}^l (1 - M_i(\mathbf{w}, w_0)) + \frac{1}{2C} \sum\limits_{j=1}^n \vert w \vert \rightarrow \min\limits_{\mathbf{w}}$\\
-%\vspace{5mm}
-%Замена переменных: $u_j =\frac{1}{2} (\vert w_j \vert + w_j)$, $v_j =\frac{1}{2} (\vert w_j \vert + w_j)$\\
-%Тогда $w_j = u_j - v_j$ и $\vert w_j \vert = u_j + v_j$\\
-%\vspace{5mm}
-%$ \sum\limits_{i=1}^l (1 - M_i(u-v, w_0)) + \frac{1}{2C} \sum\limits_{j=1}^n (u_j + v_j) \rightarrow \min\limits_{u, v}$\\
-%Чем меньше С, тем больше индексов $j$ таких, что $u_j = v_j = 0$,
-%но тогда $w_j = 0$, значит, признак не учитывается
-%\end{frame}
-
-\begin{frame}\frametitle{Разбор летучки}
-\begin{figure}[htbp]
-  \includegraphics[height=200pt, keepaspectratio = true]{images/svm}
-\end{figure}
-\end{frame}
-
 \begin{frame}\frametitle{Обзор уже известных подходов}
 \begin{enumerate} 
 	\item Метрический
@@ -137,10 +69,10 @@ ${X^l = \left( x_i, y_i \right)_{i=1}^l}$ - обучающая выборка.\\
 \begin{frame}\frametitle{Информативность}
 	\begin{itemize}
 		\item[--] Максимизировать количество правильно распознанных объектов класса $c$\\
-		${ p_c(\beta) = \# \left\{ x_i: \beta(x_i) = 1 , y_i = c \right\} \rightarrow \max }$\\
+		${ tp(\beta) = \# \left\{ x_i: \beta(x_i) = 1 , y_i = c \right\} \rightarrow \max }$\\
 
 		\item[--] Минимизировать количество объектов, ошибочно классифицированных как класс $c$\\
-		${ n_c(\beta) = \# \left\{ x_i: \beta(x_i) = 1 , y_i \neq c \right\} \rightarrow \min }$\\
+		${ fp(\beta) = \# \left\{ x_i: \beta(x_i) = 1 , y_i \neq c \right\} \rightarrow \min }$\\
 		
 	\end{itemize}
 \end{frame}
@@ -255,15 +187,15 @@ ${ fp(\beta) = \# \left\{ x_i: \beta(x_i) = 1 , y_i \neq c \right\} \rightarrow 
 
 \begin{frame}\frametitle{Используемые критерии информативности}
 \begin{enumerate}[--]
-\item Энтропийный информационный критерий
+\item Энтропийный информационный критерий\\
 $IGain(p,n) = h(\frac{P}{l}) - \frac{tp+tp}{l}h(\frac{tp}{tp+fp}) - \frac{l-tp-fp}{l}h(\frac{P-tp}{l-tp-fp}) \rightarrow \max$\\
 где $h(q) = -q\log_2q - (1-q)\log_2(1-q)$
+\item Критерий Джини\\
+$IGini(p,n)=IGain(p,n)$, где $h(q)=4q(1-q)$
 \item Fisher’s Exact Test\\
 $IStat(p,n) = -\frac{1}{l}\log_2\frac{C_P^{tp}C_N^{fp}}{C_{P+N}^{tp+fp}} \rightarrow \max$
-\item Критерий Джини\\
-$I(\beta,X^l)= \# \left\{ (x_i, x_j): \beta(x_i) = \beta(x_j), y_i = y_j \right\}$
-\item Критерий Донского\\
-$I(\beta,X^l)= \# \left\{ (x_i, x_j): \beta(x_i) \neq \beta(x_j), y_i \neq y_j \right\}$
+%\item Критерий Донского\\
+%$I(\beta,X^l)= \# \left\{ (x_i, x_j): \beta(x_i) \neq \beta(x_j), y_i \neq y_j \right\}$
 
 %\item Gini impurity\\
 %$IGini(p,n)=IGain(p,n)$, где $h(q)=4q(1-q)$
@@ -374,12 +306,12 @@ $U = X^l$\\
 \end{enumerate}
 \vspace{5mm}
 Параметр $E_{max}$ влияет на сложность списка:\\
-$E_{max} \downarrow$ $\Rightarrow$ $tp(\beta_i) \downarrow, T \uparrow$\\
+$E_{max} \downarrow$ $\Rightarrow$ $tp(\beta_i) \downarrow$\\
 $E_{max} \uparrow$, $T_{max} \uparrow$ $\Rightarrow$ переобучение
 \end{frame}
 
 \begin{frame}\frametitle{Бинарное решающее дерево}
-Бинарное решающее дерево -- алгоритм классификации a(x), задающийся бинарным деревом:\\
+Бинарное решающее дерево -- алгоритм классификации $a(x, \beta)$, задающийся бинарным деревом:\\
 \begin{enumerate}[--]
 \item $\forall v \in V_{inner} \rightarrow \beta_v: X \rightarrow \left\{ 0,1\right\}$, $\beta \in \mathcal{B}$
 \item $\forall v \in V_{leaf} \rightarrow $ имя класса $c_v \in Y$\\
@@ -441,19 +373,19 @@ LearnID3 (U, $\mathcal{B}$):\\
 \hspace{10mm} Вернуть $v$
 \end{frame}
 
-%\begin{frame}\frametitle{Критерий информативности}
-%\begin{enumerate}[--]
+\begin{frame}\frametitle{Критерий информативности}
+\begin{enumerate}[--]
 %\item Отделение одного класса\\
 %$I(\beta,X^l) = \max\limits_{c \in Y} I_c (\beta,X^l)$
 %\item Многоклассовый энтропийный критерий
 %$I(\beta,X^l) = \sum\limits_{c \in Y} h(\frac{P_c}{l}) - \frac{p}{l}h(\frac{p_c}{p}) - \frac{l-p}{l}h(\frac{P_c-p_c}{l-p})$\\
 %где $P_c = \# \left\{ x_i: y_i =c \right\} $, $p = \# \left\{ x_i: \beta(x_i)= 1 \right\} $, $h(z) = -z log_2 z$
-%\item Критерий Джини\\
-%$I(\beta,X^l)= \# \left\{ (x_i, x_j): \beta(x_i) = \beta(x_j), y_i = y_j \right\}$
-%\item Критерий Донского\\
-%$I(\beta,X^l)= \# \left\{ (x_i, x_j): \beta(x_i) \neq \beta(x_j), y_i \neq y_j \right\}$
-%\end{enumerate}
-%\end{frame}
+\item Критерий Джини\\
+$I(\beta,X^l)= \# \left\{ (x_i, x_j): \beta(x_i) = \beta(x_j), y_i = y_j \right\}$
+\item Критерий Донского\\
+$I(\beta,X^l)= \# \left\{ (x_i, x_j): \beta(x_i) \neq \beta(x_j), y_i \neq y_j \right\}$
+\end{enumerate}
+\end{frame}
 
 \begin{frame}\frametitle{Плюсы и минусы}
 \begin{enumerate}[+]
@@ -509,7 +441,7 @@ $X^k$ -- независимая контрольная выборка, $k \appro
 \begin{frame}\frametitle{Композиции алгоритмов}
 \begin{enumerate} [--]
 \item Можно использовать результаты нескольких	алгоритмов, а не одного.
-\item В подавляющем большинстве случаев композиция алгоритмов даёт лучший результат, нежели какой-то один
+\item Часто композиция алгоритмов может давать не худший или даже лучший результат
 \end{enumerate}
 \end{frame}
 
@@ -537,8 +469,7 @@ $X^k$ -- независимая контрольная выборка, $k \appro
 \begin{frame}\frametitle{Bootstrapping}
 Выборка $X^l$\\
 \vspace{5mm}
-Сгенерируем много датасетов так: будем из $X$ выбирать $l$ точек с замещением, т.е. в новом датасете
-некоторые точки будут повторяться
+Сгенерируем много датасетов так: будем из $X$ выбирать $l$ объектов с повторениями
 \end{frame}
 
 \begin{frame}\frametitle{Баггинг}
