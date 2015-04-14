@@ -1,0 +1,161 @@
+\documentclass[12pt]{beamer}
+\input{../base}
+\usepackage{gensymb}
+
+\subtitle{Лекция 11. Нейронные сети.}
+
+\begin{document}	
+\frame{\titlepage}
+
+\begin{frame}\frametitle{Разбор летучки}
+
+\end{frame}
+
+\begin{frame}\frametitle{Линейная модель нейрона}
+Модель МакКаллока-Питтса:\\
+$f_j: X \rightarrow R, j = 1,\dots, n$ — числовые признаки\\
+$a(x,w) = \sigma(\langle w, x_i \rangle) = \sigma(\sum\limits_{j=1}^n w_j f_j(x) - w_0)$\\
+где $w_0, w_1, \dots,w_n \in R$ -- веса признаков\\
+$\sigma(s)$ -- функция активации (например, $\sign$)
+
+TODO: картинка
+\end{frame}
+
+\begin{frame}\frametitle{Линейные алгоритмы классификации и регрессии}
+Задача классификации: \\
+$Y = \left\{ \pm1 \right\}, a(x,w) = \sign \langle w, x_i \rangle $\\
+$Q(w;X^l) = \sum\limits_{i=1}^l \mathcal{L} \langle w, x_i\rangle y_i \rightarrow \min\limits_w$
+Задача регрессии:\\
+$Y = R, a(x,w) = \sigma(\langle w, x_i \rangle)$\\
+$Q(w;X^l) = \sum\limits_{i=1}^l (\sigma(\langle w, x_i \rangle) - y_i)^2 \rightarrow \min\limits_w $
+\end{frame}
+
+\begin{frame}\frametitle{Нейронная реализация логических функций}
+
+\end{frame}
+
+
+\begin{frame}\frametitle{Логическая функция XOR}
+
+\end{frame}
+
+
+\begin{frame}\frametitle{Любую ли функцию можно представить нейросетью?}
+\begin{enumerate}[--]
+\item Двухслойная сеть в $\left\{0, 1 \right\}^n$ позволяет реализовать произвольную булеву функцию.
+\item Двухслойная сеть в $\mathbb{R}^n$ позволяет отделить произвольный выпуклый многогранник.
+\item Трёхслойная сеть $\mathbb{R}^n$ позволяет отделить произвольную многогранную область, не обязательно выпуклую, и даже не обязательно связную.
+\item С помощью линейных операций и одной нелинейной функции активации $\phi$ можно приблизить любую непрерывную функцию с любой желаемой точностью
+\end{enumerate}
+\end{frame}
+
+\begin{frame}\frametitle{Практические рекомендации}
+\begin{enumerate}[--]
+\item Двух-трёх слоёв обычно достаточно.
+\item Можно достраивать нейроны в произвольных местах сети по необходимости, вообще не заботясь о числе слоёв.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}\frametitle{Многослойная нейронная сеть}
+Пусть для общности $Y = \mathbb{R}^M$, для простоты слоёв только два.\\
+TODO: картинка
+\end{frame}
+
+\begin{frame}\frametitle{Стохастический градиент}
+\end{frame}
+
+
+\begin{frame}\frametitle{Задача дифференцирования суперпозиции функций}
+\end{frame}
+
+\begin{frame}\frametitle{Быстрое вычисление градиента}
+\end{frame}
+
+
+\begin{frame}\frametitle{Алгоритм обратного распространения ошибки}
+\end{frame}
+
+\begin{frame}\frametitle{Особенности}
+\begin{enumerate}[+]
+\item Эффективность: градиент вычисляется за время, сравнимое со временем вычисления самой сети
+\item Легко обобщается на любые $\sigma$, $\mathcal{L}$
+\item Возможно динамическое (потоковое) обучение
+\item На сверхбольших выборках не обязательно брать все $x_i$
+\item возможность распараллеливания
+\end{enumerate}
+
+\begin{enumerate}[--]
+\item возможна медленная сходимость
+\item застревание в локальных минимумах
+\item проблема переобучения
+\item подбор комплекса эвристик является искусством
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}\frametitle{Стандартные эвристики для метода SG}
+Применимы все те же эвристики, что и в обычном SG.\\
+
+Напомните.
+\end{frame}
+
+\begin{frame}\frametitle{Стандартные эвристики для метода SG}
+\begin{enumerate}[--]
+\item Инициализация весов
+\item Порядок предъявления объектов
+\item Оптимизация величины градиентного шага
+\item Регуляризация (сокращение весов)
+\end{enumerate}
+\end{frame}
+
+\begin{frame}\frametitle{Новые проблемы}
+\begin{enumerate}[--]
+\item Выбор функций активации в каждом нейроне
+\item Выбор числа слоёв и числа нейронов;
+\item Выбор значимых связей;
+\end{enumerate}
+\end{frame}
+
+\begin{frame}\frametitle{Ускорение сходимости}
+\begin{enumerate}[--]
+\item Тщательный подбор начального приближения
+\item Выбивание из локальных минимумов
+\item Адаптивный градиентный шаг
+\item Метод сопряжённых градиентов и chunking -- разбиение суммы $Q(w) = \sum\limits_{i=1}^l \mathcal{L}_(w)$ на блоки
+\end{enumerate}
+\end{frame}
+
+\begin{frame}\frametitle{Начальное приближение}
+Нейроны настраиваются как отдельные линейные алгоритмы:
+\begin{enumerate}[--]
+\item либо по случайной подвыборке $X' \subseteq X^l$
+\item либо по случайному подмножеству входов
+\item либо из различных случайных начальных приближений
+\end{enumerate}
+Tем самым обеспечивается различность нейронов.
+\end{frame}
+
+\begin{frame}\frametitle{Улучшение сходимости}
+Левенберга-Марквардта
+\end{frame}
+
+\begin{frame}\frametitle{Оптимизация структуры сети}
+Динамическое наращивание сети.\\
+
+\end{frame}
+
+\begin{frame}\frametitle{Оптимизация структуры сети}
+Прореживание сети.\\
+\end{frame}
+
+
+\begin{frame}\frametitle{Специальные нейронные сети}
+%
+\end{frame}
+
+\begin{frame}\frametitle{На следующей лекции}
+\begin{itemize}
+\item[--] 
+\end{itemize}
+\end{frame}
+\end{document}
