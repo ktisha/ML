@@ -11,6 +11,30 @@
 Какие условия должны выполняться для того, чтобы объект считался опорным?
 \end{frame}
 
+\begin{frame}\frametitle{Разбор летучки}
+$ \sum\limits_{i=1}^l (1 - M_i(\mathbf{w}, w_0)) + \frac{1}{2C}\Vert \mathbf{w} \Vert^2 \rightarrow \min\limits_{\mathbf{w}}$\\
+  На что влияет параметр $C$?
+
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Что такое kernel trick?
+\end{frame}
+
+\begin{frame}\frametitle{Разбор летучки}
+Покажите, что линейный SVM устойчив к добавлению шумовых признаков. Пусть при обучении
+на $n$ признаках результатом работы линейного SVM является разделяющая полоса некоторой
+ширины. Покажите, что при добавлении шумового $(n + 1)$-го признака, не способного увеличить
+ширину разделяющей полосы, SVM присвоит ему нулевой вес.
+\end{frame}
+
+
+\begin{frame}\frametitle{Разбор летучки}
+\begin{figure}[htbp]
+  \includegraphics[height=200pt, keepaspectratio = true]{images/svm}
+\end{figure}
+\end{frame}
+
 \begin{frame}\frametitle{Обзор уже известных подходов}
 \begin{enumerate} 
 	\item Метрический
@@ -246,16 +270,12 @@ Output: Множество закономерностей $\mathcal{B}$\\
 \end{frame}
 
 \begin{frame}\frametitle{Решающий список}
-Множество классов $c_1,c_2,\dots, c_T \in Y$\\
-\vspace{5mm}
 Идея:\\
 Возьмем $\beta_1(x), \beta_2(x), \dots, \beta_T(x)$ закономерностей и будем по порядку применять на объекте. 
 Как только предикат $\beta_i$ сработал -- вернем соответствующий класс $c_i$.
 \end{frame}
 
 \begin{frame}\frametitle{Решающий список}
-Множество классов $c_1,c_2,\dots, c_T \in Y$\\
-\vspace{5mm}
 Идея:\\
 Возьмем $\beta_1(x), \beta_2(x), \dots, \beta_T(x)$ закономерностей и будем по порядку применять на объекте. 
 Как только предикат $\beta_i$ сработал -- вернем соответствующий класс $c_i$.\\
@@ -309,7 +329,7 @@ $U = X^l$\\
 \vspace{5mm}
 Параметр $E_{max}$ влияет на сложность списка:\\
 $E_{max} \downarrow$ $\Rightarrow$ $tp(\beta_i) \downarrow$, $T \uparrow$\\
-$E_{max} \uparrow$, $T_{max} \uparrow$ $\Rightarrow$ underfitting
+$E_{max} \uparrow$ $\Rightarrow$ underfitting
 \end{frame}
 
 \begin{frame}\frametitle{Бинарное решающее дерево}
@@ -478,8 +498,18 @@ $X^k$ -- независимая контрольная выборка, $k \appro
 Выборка $X^l$\\
 \vspace{5mm}
 Сделаем путем bootstrapping $M$ датасетов размера $l$, потом обучим $M$ моделей, а потом усредним\\
-$y(x) = \frac{1}{M} \sum\limits_{i=1}^l y_i(x)$
+$y(x) = Majority(y_i(x))$%\frac{1}{M} \sum\limits_{i=1}^l y_i(x)$
 
+\end{frame}
+
+\begin{frame}\frametitle{Random forest}
+Голосование деревьев классификации, $Y = \left\{ -1, +1 \right\}$\\
+$a(t) = Majority(b_t(x))$%\sign \frac{1}{T} \sum\limits_{t=1}^T b_t(x)$\\
+\begin{enumerate}[--]
+\item Каждое дерево $b_t(x)$ обучается по случайной выборке с повторениями
+\item В каждой вершине предикат выбирается из случайного подмножества $\sqrt{n}$ предикатов
+%\item Признаки и пороги выбираются по критерию Джини
+\end{enumerate}
 \end{frame}
 
 \begin{frame}\frametitle{Бустинг}
@@ -489,15 +519,6 @@ $y(x) = \frac{1}{M} \sum\limits_{i=1}^l y_i(x)$
 \end{enumerate}
 \end{frame}
 
-\begin{frame}\frametitle{Random forest}
-Голосование деревьев классификации, $Y = \left\{ -1, +1 \right\}$\\
-$a(t) = \sign \frac{1}{T} \sum\limits_{t=1}^T b_t(x)$\\
-\begin{enumerate}[--]
-\item Каждое дерево $b_t(x)$ обучается по случайной выборке с повторениями
-\item В каждой вершине признак выбирается из случайного подмножества $\sqrt{n}$ признаков
-\item Признаки и пороги выбираются по критерию Джини
-\end{enumerate}
-\end{frame}
 
 \begin{frame}\frametitle{На следующей лекции}
 \begin{itemize}
