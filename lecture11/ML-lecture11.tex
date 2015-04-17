@@ -17,13 +17,240 @@
 \end{frame}
 
 \begin{frame}\frametitle{Регрессия}
+$X$-- объекты в $\mathbb{R}^n$; Y — ответы в $\mathbb{R}$\\
+$X^l = (x_i, y_i)_{i=1}^l$ -- обучающая выборка\\
+$y_i = y(x_i)$,  $y : X \rightarrow Y$ -- неизвестная зависимость\\
+\vspace{5mm}
+$a(x) = f (x, \alpha)$ -- модель зависимости,\\
+$\alpha \in \mathbb{R}^p$ -- вектор параметров модели.\\
+\vspace{5mm}
+Метод наименьших квадратов (МНК):\\
+$Q(\alpha,X^l) = \sum\limits_{i=1}^l w_i (f (x_i, \alpha) - y_i)^2 \rightarrow \min\limits_{\alpha}$\\
+где $w_i$ -- вес, степень важности i-го объекта.\\
+$Q(\alpha^*,X^l)$ — остаточная сумма квадратов
 
+\end{frame}
+
+\begin{frame}\frametitle{Метод максимума правдоподобия}
+Модель данных с некоррелированным гауссовским шумом:\\
+$y(x_i) = f (x_i, \alpha) + \varepsilon_i$, $\varepsilon_i \in N (0, \sigma_i^2), i = 1, \dots, l$\\
+Метод максимума правдоподобия (ММП):\\
+$L(\varepsilon_1, \dots, \varepsilon_l | \alpha) = \prod\limits_{i=1}^l \frac{1}{\sigma_i \sqrt{2\pi}} \exp (-\frac{1}{2\sigma_i^2} \varepsilon_i^2 ) \rightarrow \max\limits_{\alpha}$\\
+$- \ln L(\varepsilon_1, \dots, \varepsilon_l| \alpha) = const(\alpha) + \frac{1}{2} \sum\limits_{i=1}^l \frac{1}{\sigma_i^2} (f(x_i, \alpha) - y_i)^2 \rightarrow \min\limits_{\alpha}$\\
+\vspace{5mm}
+Постановки МНК и ММП, совпадают, причём веса объектов
+обратно пропорциональны дисперсии шума, $w_i = \sigma_i^{-2}$
+\end{frame}
+
+\begin{frame}\frametitle{Многомерная линейная регрессия}
+$f_1(x), \dots, f_n(x)$ -- числовые признаки\\
+Модель многомерной линейной регрессии:\\
+$$f (x, \alpha) = \sum\limits_{i=1}^l \alpha_j f_j(x), \alpha \in \mathbb{R}$$\\
+\vspace{5mm}
+Функционал квадрата ошибки:\\
+$$Q(\alpha,X^l) = \sum\limits_{i=1}^l (f (x_i, \alpha) - y_i)^2  = \Vert F\alpha - y \Vert^2 \rightarrow \min\limits_{\alpha}$$\\
+
+\end{frame}
+
+\begin{frame}\frametitle{Нормальная система уравнений}
+Необходимое условие минимума в матричном виде:\\
+$$\frac{\partial Q}{\partial \alpha} (\alpha) = 2 F^T(F \alpha - y) = 0$$\\
+Откуда следует нормальная система задачи МНК:\\
+$$F^TF\alpha = F^Ty$$\\
+$F^TF$ -- ковариационная матрица набора признаков $f_1, \dots, f_n$\\
+\vspace{5mm}
+Решение системы:\\
+$$\alpha^* = (F^TF)^{-1}F^Ty = F^+y$$\\
+Значение функционала: $Q(\alpha^*) = \Vert P_F y - y \Vert^2$,\\
+где $P_F = FF^+ = F(F^TF)^{-1}F^T$ -- проекционная матрица
+\end{frame}
+
+\begin{frame}\frametitle{Сингулярное разложение}
+Произвольная $l \times n$-матрица представима в виде сингулярного разложения:\\
+$F = VDU^T$\\
+Основные свойства сингулярного разложения:\\
+\begin{enumerate}[--]
+\item $l \times n$-матрица $V = (v_1, \dots, v_n)$ ортогональна, $V^TV = I_n$, столбцы $v_j$ - собственные векторы матрицы $FF$
+\item $n \times n$-матрица $U = (u_1, \dots, u_n)$ ортогональна, $U^TU = I_n$, столбцы $u_j$ - собственные векторы матрицы $F^TF$
+\item $n \times n$-матрица $D$ диагональна, $D = diag (\sqrt{\lambda_1}, \dots, \sqrt{\lambda_n})$, $\lambda_j > 0$ - собственные значения матриц $F^TF$ и $FF^T$
+\end{enumerate}
+\end{frame}
+
+\begin{frame}\frametitle{Решение МНК через сингулярное разложение}
+Псевдообратная $F^+$, вектор МНК-решения $\alpha^*$,
+МНК-аппроксимация целевого вектора $F\alpha^*$\\
+$F^+ = (UDV^TVDU^T)UDV^T = UD^{-1}V^T = \sum\limits_{j=1}^n \frac{1}{\sqrt{\lambda_j}}  u_j v_j^T$\\
+$ \alpha^* = F^+y = UD^{-1}V^Ty = \sum\limits_{j=1}^n \frac{1}{\sqrt{\lambda_j}}  u_j (v_j^Ty)$\\
+$F \alpha^* = P_F y = (VDU^T)UD^{-1}V^Ty = VV^Ty = \sum\limits_{j=1}^n v_j (v_j^Ty)$\\
+$\Vert \alpha^* \Vert^2  = \Vert D^{-1}V^Ty \Vert^2 = \sum\limits_{j=1}^n \frac{1}{\sqrt{\lambda_j}} (v_j^Ty)^2$
+\end{frame}
+
+\begin{frame}\frametitle{Проблема мультиколлинеарности}
+Если $\exists \gamma \in \mathbb{R}^n: F\gamma \approx 0$, то некоторые $\lambda_j$ близки к нулю.\\
+Число обусловленности $n \times n$-матрицы $\Sigma$:
+$$\mu(\Sigma) = \Vert \Sigma \Vert \Vert \Sigma^{-1} \Vert = \frac{\max\limits_{u: \Vert u \Vert = 1} \Vert \Sigma u \Vert}{\min\limits_{u: \Vert u \Vert = 1} \Vert \Sigma u \Vert} = \frac{\lambda_{max}}{\lambda_{min}}$$\\
+При умножении обратной матрицы на вектор, $z = \Sigma^{-1}u$, относительная погрешность усиливается в $\mu(\Sigma)$ раз:\\
+$$\frac{\Vert \delta z \Vert}{\Vert z \Vert } \leq \mu(\Sigma) \frac{\Vert \delta u \Vert}{\Vert u \Vert }$$
+\end{frame}
+
+\begin{frame}\frametitle{Проблема мультиколлинеарности}
+Если матрица $\Sigma$ плохо обусловлена, то: % кто такая сигма
+\begin{enumerate}[--]
+\item решение становится неустойчивым и неинтерпретируемым, $\Vert \alpha^* \Vert $ велико
+\item на обучении $Q(\alpha^*, X^l) = \Vert F\alpha^* -y \Vert$ -- мало   % и что из этого
+\item на контроле $Q(\alpha^*, X^k) = \Vert F'\alpha^* -y' \Vert$ -- велико
+\end{enumerate}
+\end{frame}
+
+\begin{frame}\frametitle{Проблема мультиколлинеарности}
+Стратегии устранения мультиколлинеарности и переобучения:
+\begin{enumerate}[--]
+\item Отбор признаков
+\item Регуляризация: $\Vert \alpha \Vert \rightarrow \min$
+\item Преобразование признаков
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}\frametitle{Гребневая регрессия}
+Штраф за увеличение нормы вектора весов $\Vert \alpha \Vert$\\
+$$Q_{\tau} (\alpha) = \Vert F \alpha - y \Vert^2 + \frac{1}{\sigma} \Vert \alpha \Vert^2$$\\
+где $\tau = \frac{1}{\sigma}$ -- неотрицательный параметр регуляризации.\\
+Вероятностная интерпретация: \\
+Априорное распределение вектора $\alpha$ -- гауссовское с ковариационной матрицей $\sigma I_n$.\\
+Модифицированное МНК-решение ($\tau I_n$ — «гребень»)\\
+$$\alpha^*_{\tau} = (F^TF + \tau I_n)^{-1}F^Ty$$\\
+Преимущество сингулярного разложения:\\
+можно подбирать параметр $\tau$ , вычислив SVD только один раз.
+\end{frame}
+
+\begin{frame}\frametitle{Регуляризованный МНК через сингулярное разложение}
+Вектор регуляризованного МНК-решения $\alpha_{tau}^*$ и МНК-аппроксимация целевого вектора $F\alpha_{\tau}^*$:\\
+$$\alpha_{tau}^*= U(D^2 + \tau I_n)^{-1}DV^Ty = \sum\limits_{j=1}^n \frac{\sqrt{\lambda_j}}{\lambda_j + \tau} u_j(v_j^Ty)$$\\
+$$F\alpha_{\tau}^* = VDU^T\alpha_{\tau}^* = V diag (\frac{\lambda_j}{\lambda_j + \tau}) V^Ty = \sum\limits_{j=1}^n \frac{\sqrt{\lambda_j}}{\lambda_j + \tau} v_j (v_j^Ty)$$\\
+$$\Vert \alpha_{tau}^* \Vert^2 = \Vert (D^2 + \tau I_n)^{-1} DV^T y \Vert^2 \sum\limits_{j=1}^n \frac{\sqrt{\lambda_j}}{\lambda_j + \tau} (v^T_j y)^2$$\\
+$F \alpha_{\tau}^* \neq F\alpha^*$ -- зато решение становится более устойчивым
+\end{frame}
+
+\begin{frame}\frametitle{Выбор параметра регуляризации $\tau$}
+Контрольная выборка: $X^k = (x'_i, y)_{i=1}^k$\\
+Вычисление функционала $Q$ на контрольных данных $T$ раз потребует $O(kn^2 + knT)$ операций:\\
+$$Q(\alpha_{\tau}^*,X^k) = \Vert F' \alpha_{\tau}^* - y' \Vert^2 = \Vert F'U diag (\frac{\lambda_j}{\lambda_j + \tau}) V^T y -y' \Vert^2$$\\
+Зависимость $Q(\tau)$ обычно имеет характерный минимум.
+\end{frame}
+
+\begin{frame}\frametitle{Регуляризация сокращает «эффективную размерность»}
+Сокращение весов:\\
+$$\Vert \alpha_{tau}^* \Vert^2 = \sum\limits_{j=1}^n \frac{\sqrt{\lambda_j}}{\lambda_j + \tau} (v^T_j y)^2 < \Vert \alpha^* \Vert^2  = \sum\limits_{j=1}^n \frac{1}{\sqrt{\lambda_j}} (v_j^Ty)^2$$\\
+Роль размерности играет след проекционной матрицы:\\
+$$tr F(F^TF)^{-1}F^T = tr(F^TF)^{-1}F^TF = tr I_n = n$$\\
+При использовании регуляризации:\\
+$$tr F(F^TF + \tau I_n)^{-1}F^T = tr \hspace{1mm}  diag(\frac{\sqrt{\lambda_j}}{\lambda_j + \tau})= \sum\limits_{j=1}^n \frac{\sqrt{\lambda_j}}{\lambda_j + \tau } < n $$
+\end{frame}
+
+\begin{frame}\frametitle{LASSO}
+LASSO -- Least Absolute Shrinkage and Selection Operator\\
+$$
+\begin{cases} Q(\alpha,X^l) = \Vert F\alpha - y \Vert^2 \rightarrow \min\limits_{\alpha} \\
+\sum_{j=1}^n \vert \alpha_j \vert \leq \kappa
+\end{cases}
+$$\\
+После замены переменных:\\
+$$
+\begin{cases} \alpha_j = \alpha_j^+ - \alpha_j^-\\
+\vert \alpha_j \vert = \alpha_j^+ + \alpha_j^-\\
+\alpha_j^+, \alpha_j^- \geq 0\\
+\end{cases}
+$$\\
+ограничения принимают канонический вид:\\
+$$\sum\limits_{j=1}^n \alpha_j^+ + \alpha_j^- \leq \kappa$$\\
+Чем меньше $\kappa$, тем больше $j$ таких, что $\alpha_j^+ = \alpha_j^- = 0$
+\end{frame}
+
+\begin{frame}\frametitle{Негладкие регуляризаторы}
+Elastic Net:\\
+$$\frac{1}{2} \Vert F\alpha - y \Vert^2 + \mu \sum\limits_{j=1}^n \vert \alpha_j \vert + \frac{\tau}{2} \sum\limits_{j=1}^n \rightarrow \min\limits_{\alpha}$$\\
+Support Features Machine:\\
+$$\frac{1}{2} \Vert F\alpha - y \Vert^2 + \tau \sum\limits_{j=1}^n R_{mu}(\alpha_j) \rightarrow \min\limits_{\alpha}$$\\
+$$ R_{\mu}(\alpha_j) = \begin{cases} 2 \mu \vert \alpha_j \vert, \hspace{2mm} \vert \alpha_j \vert \leq \mu\\
+\mu^2 + \alpha_j^2, \hspace{2mm} \vert \alpha_j \vert \geq \mu
+\end{cases}$$\\
+Применение этих методов требует выбора траектории регуляризации в пространстве $(\mu, \tau )$
+\end{frame}
+
+\begin{frame}\frametitle{Метод главных компонент}
+$f_1(x), \dots, f_n(x)$ -- исходные числовые признаки\\
+$g_1(x), \dots, g_m(x)$ -- новые числовые признаки, $m \times n$\\
+Как сформулировать требование к новым признакам?
+\end{frame}
+
+
+\begin{frame}\frametitle{Метод главных компонент}
+$f_1(x), \dots, f_n(x)$ -- исходные числовые признаки\\
+$g_1(x), \dots, g_m(x)$ -- новые числовые признаки, $m \times n$\\
+Требование: старые признаки должны линейно
+восстанавливаться по новым:\\
+$$\hat{f}_j(x) = \sum\limits_{s=1}^m g_s(x) u_{js} , \hspace{2mm} j = 1,\dots , n, \hspace{2mm} \forall x \in X$$\\
+как можно точнее на обучающей выборке $x_1, \dots, x_l$:\\
+$$\sum\limits_{i=1}^l \sum\limits_{j=1}^n (\hat{f}_j(x_i) - f_j(x_i))^2 \rightarrow \min\limits_{g_s(x_i), u_{js}}$$
+\end{frame}
+
+\begin{frame}\frametitle{Матричные обозначения}
+$U$ -- матрица линейного преобразования новых признаков в старые\\
+$$\hat{F} = GU^T \approx F$$\\
+Найти: и новые признаки $G$, и преобразование $U$:\\
+$$\sum\limits_{i=1}^l \sum\limits_{j=1}^n (\hat{f}_j(x_i) - f_j(x_i))^2 = \Vert GU^T - F \Vert^2 \rightarrow \min\limits_{G, U}$$
+\end{frame}
+
+\begin{frame}\frametitle{Основная теорема}
+Если $m < rk F$, то минимум $\Vert GU^T - F \Vert^2$ достигается, когда столбцы $U$ - это с.в. матрицы $F^TF$, соответствующие $m$ максимальным с.з. $\lambda_1,\dots, \lambda_m$, а матрица $G = FU$.\\
+При этом:\\
+\begin{enumerate}[--]
+\item матрица $U$ ортонормирована: $U^TU = I_m$
+\item матрица $G$ ортогональна: $G^TG = \Lambda = diag(\lambda_1, \dots, \lambda_m)$
+\item $U\Lambda = F^TFU$,  $G\Lambda = FF^TG$
+\item $\Vert GU^T - F \Vert^2 = \Vert F \Vert^2 - tr \Lambda = \sum\limits_{j=m+1}^n \lambda_j$
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}\frametitle{Связь с сингулярным разложением}
+Если взять $m = n$, то:\\
+\begin{enumerate}[--]
+\item $\Vert GU^T - F \Vert^2 = 0$
+\item представление $\hat{F} = GU^T = F$ точное и совпадает с сингулярным разложением при $G = V \sqrt{\Lambda}$
+$$F = GU^T = V\sqrt{\Lambda}U^T, \hspace{2mm} U^TU = I_m, \hspace{2mm} V^TV = I_m$$
+\item линейное преобразование $U$ работает в обе стороны:\\
+$$F= GU^T, \hspace{4mm} G=FU$$
+Поскольку новые признаки некоррелированы ($G^TG = \Lambda$), преобразование $U$ называется декоррелирующим
+\end{enumerate}
+\end{frame}
+
+\begin{frame}\frametitle{Эффективная размерность выборки}
+Упорядочим с.з. $F^TF$ по убыванию: $\lambda_1 > \dots > \lambda_n > 0$\\
+Эффективная размерность выборки -- это наименьшее целое $m$, при котором\\
+$$E_m = \frac{\Vert GU^T - F \Vert^2}{\Vert F \Vert^2} = \frac{\lambda_{m+1} + \dots + \lambda_{n}}{\lambda_1 + \dots + \lambda_n} \leq \varepsilon$$\\
+Критерий «крутого склона»: находим $m: E_m-1 >> E_m$:
+TODO:картинка
+\end{frame}
+
+\begin{frame}\frametitle{Решение задачи НК в новых признаках}
+Заменим $F$ на её приближение $GU^T$:\\
+$$\Vert GU^T\alpha -y \Vert^2 = \Vert G\beta -y \Vert^2 \rightarrow \min\limits_{\beta}$$\\
+Связь нового и старого вектора коэффициентов:\\
+$$\alpha = U\beta, \hspace{5mm} \beta = U^T \alpha$$\\
+Решение задачи наименьших квадратов относительно $\beta$ (единственное отличие -- $m$ слагаемых вместо $n$):\\
+$$\beta^* = D^{-1}V^Ty = \sum\limits_{j=1}^m \frac{1}{\sqrt{\lambda_j}} u_j (v_j^Ty)$$\\
+$$G\beta^* = VV^Ty = \sum\limits_{j=1}^m v_j (v_j^Ty)$$
+\end{frame}
+
+\begin{frame}\frametitle{ROC кривая}
 \end{frame}
 
 
 \begin{frame}\frametitle{На следующей лекции}
 \begin{itemize}
-\item[--] 
+\item[--] Нейронные сети
 \end{itemize}
 \end{frame}
 \end{document}
