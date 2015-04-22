@@ -44,10 +44,18 @@ $$y(x_i) = f (x_i, w) + \varepsilon_i, \hspace{5mm} \varepsilon_i \in N (0, \sig
 \end{figure}
 \end{frame}
 
+
 \begin{frame}\frametitle{Метод максимума правдоподобия}
 Метод максимума правдоподобия (ММП):\\
-$$L(\varepsilon_1, \dots, \varepsilon_l | w) = \prod\limits_{i=1}^l \frac{1}{\sigma_i \sqrt{2\pi}} \exp (-\frac{\varepsilon_i^2}{2\sigma_i^2}  ) \rightarrow \max\limits_{w}$$\\
+$$L(\varepsilon_1, \dots, \varepsilon_l | w) = \prod\limits_{i=1}^l p(\varepsilon_i) = \prod\limits_{i=1}^l \frac{1}{\sigma_i \sqrt{2\pi}} \exp (-\frac{\varepsilon_i^2}{2\sigma_i^2}  ) \rightarrow \max\limits_{w}$$\\
 $$- \ln L(\varepsilon_1, \dots, \varepsilon_l| w) = const(w) + \frac{1}{2} \sum\limits_{i=1}^l \frac{(f(x_i, w) - y_i)^2}{\sigma_i^2}  \rightarrow \min\limits_{w}$$\\
+\end{frame}
+
+\begin{frame}\frametitle{Метод максимума правдоподобия}
+Метод максимума правдоподобия (ММП):\\
+$$- \ln L(\varepsilon_1, \dots, \varepsilon_l| w) = const(w) + \frac{1}{2} \sum\limits_{i=1}^l \frac{(f(x_i, w) - y_i)^2}{\sigma_i^2}  \rightarrow \min\limits_{w}$$\\
+\vspace{2mm}
+Метод наименьших квадратов: $$Q(w,X^l) = \sum\limits_{i=1}^l \alpha_i (f (x_i, w) - y_i)^2 \rightarrow \min\limits_{w}$$\\
 \vspace{5mm}
 \textbf{Удивительный факт}: Постановки МНК и ММП, совпадают, причём веса объектов
 обратно пропорциональны дисперсии шума, $\alpha_i = \sigma_i^{-2}$
@@ -113,9 +121,9 @@ $F^+$ -- псевдообратная матрица\\
 $$F = VDU^T$$\\
 Основные свойства сингулярного разложения:\\
 \begin{enumerate}[--]
-\item $V_{l \times n} = (v_1, \dots, v_n)$ ортогональна, $V^TV = I_n$, \\столбцы $v_j$ - собственные векторы матрицы $FF$
+\item $V_{l \times n} = (v_1, \dots, v_n)$ ортогональна, $V^TV = I_n$, \\столбцы $v_j$ - собственные векторы матрицы $FF^T$
 \item $U_{n \times n} = (u_1, \dots, u_n)$ ортогональна, $U^TU = I_n$, \\столбцы $u_j$ - собственные векторы матрицы $F^TF$
-\item $D$ диагональна, $D_{n \times n} = diag (\sqrt{\lambda_1}, \dots, \sqrt{\lambda_n})$, \\$\lambda_j > 0$ - собственные значения матриц $F^TF$ и $FF^T$
+\item $D$ диагональна, $D_{n \times n} = \operatorname{diag} (\sqrt{\lambda_1}, \dots, \sqrt{\lambda_n})$, \\$\lambda_j > 0$ - собственные значения матриц $F^TF$ и $FF^T$
 \end{enumerate}
 \end{frame}
 
@@ -178,7 +186,7 @@ $$w^*_{\tau} = (F^TF + \tau I_n)^{-1}F^Ty$$\\
 
 \begin{frame}\frametitle{Сингулярное разложение}
 $$w_{\tau}^*= U(D^2 + \tau I_n)^{-1}DV^Ty = \sum\limits_{j=1}^n \frac{\sqrt{\lambda_j}}{\lambda_j + \tau} u_j(v_j^Ty)$$\\
-$$Fw_{\tau}^* = VDU^Tw_{\tau}^* = V diag \left(\frac{\lambda_j}{\lambda_j + \tau}\right) V^Ty = \sum\limits_{j=1}^n \frac{\lambda_j}{\lambda_j + \tau} v_j (v_j^Ty)$$\\
+$$Fw_{\tau}^* = VDU^Tw_{\tau}^* = V \operatorname{diag} \left(\frac{\lambda_j}{\lambda_j + \tau}\right) V^Ty = \sum\limits_{j=1}^n \frac{\lambda_j}{\lambda_j + \tau} v_j (v_j^Ty)$$\\
 $$\Vert w_{\tau}^* \Vert^2 = \Vert (D^2 + \tau I_n)^{-1} DV^T y \Vert^2 = \sum\limits_{j=1}^n \frac{\lambda_j}{(\lambda_j + \tau)^2} (v^T_j y)^2$$\\
 $F w_{\tau}^* \neq Fw^*$ -- зато решение становится более устойчивым
 \end{frame}
@@ -186,7 +194,7 @@ $F w_{\tau}^* \neq Fw^*$ -- зато решение становится бол�
 \begin{frame}\frametitle{Выбор параметра регуляризации $\tau$}
 Контрольная выборка: $X^k = (x'_i, y'_i)_{i=1}^k$\\
 %Вычисление функционала $Q$ на контрольных данных $T$ раз потребует $O(kn^2 + knT)$ операций:\\
-$$Q(w_{\tau}^*,X^k) = \Vert F' w_{\tau}^* - y' \Vert^2 = \Vert F'U diag \left(\frac{\lambda_j}{\lambda_j + \tau}\right) V^T y -y' \Vert^2$$\\
+$$Q(w_{\tau}^*,X^k) = \Vert F' w_{\tau}^* - y' \Vert^2 = \Vert F'U \operatorname{diag} \left(\frac{\lambda_j}{\lambda_j + \tau}\right) V^T y -y' \Vert^2$$\\
 Зависимость $Q(\tau)$ обычно имеет характерный минимум.
 \end{frame}
 
@@ -196,7 +204,7 @@ $$\Vert w_{\tau}^* \Vert^2 = \sum\limits_{j=1}^n \frac{\lambda_j}{(\lambda_j + \
 Роль размерности играет след проекционной матрицы:\\
 $$tr F(F^TF)^{-1}F^T = tr(F^TF)^{-1}F^TF = tr I_n = n$$\\
 При использовании регуляризации:\\
-$$tr F(F^TF + \tau I_n)^{-1}F^T = tr \hspace{1mm}  diag\left(\frac{\lambda_j}{\lambda_j + \tau}\right)= \sum\limits_{j=1}^n \frac{\lambda_j}{\lambda_j + \tau } < n $$
+$$tr F(F^TF + \tau I_n)^{-1}F^T = tr \hspace{1mm}  \operatorname{diag} \left(\frac{\lambda_j}{\lambda_j + \tau}\right)= \sum\limits_{j=1}^n \frac{\lambda_j}{\lambda_j + \tau } < n $$
 \end{frame}
 
 \begin{frame}\frametitle{LASSO}
@@ -275,7 +283,7 @@ $$\sum\limits_{i=1}^l \sum\limits_{j=1}^n (\hat{f}_j(x_i) - f_j(x_i))^2 = \Vert 
 При этом:\\
 \begin{enumerate}[--]
 \item матрица $U$ ортонормирована: $U^TU = I_m$
-\item матрица $G$ ортогональна: $G^TG = \Lambda = diag(\lambda_1, \dots, \lambda_m)$
+\item матрица $G$ ортогональна: $G^TG = \Lambda = \operatorname{diag}(\lambda_1, \dots, \lambda_m)$
 \item $U\Lambda = F^TFU$,  $G\Lambda = FF^TG$
 \item $\Vert GU^T - F \Vert^2 = \Vert F \Vert^2 - tr \Lambda = \sum\limits_{j=m+1}^n \lambda_j$
 \end{enumerate}
@@ -344,6 +352,94 @@ $\frac{\partial^2 Q(w)}{\partial w_j \partial w_k} = 2 \sum\limits_{i=1}^l \frac
 Линеаризация $f(x_i, w)$ в окрестности текущего $w^{(t)}$:\\
 $f(x_i, w) = f(x_i, w^{(t)}) + \sum\limits_{j=1}^p \frac{\partial(f(x_i, w))}{\partial w_j} (w_j - w_j^{(t)}) + o(w_j -w_j^{(t)})$\\
 $\Rightarrow$ второе слагаемое в гессиане обнулилось
+\end{frame}
+
+\begin{frame}\frametitle{Метод Ньютона-Рафсена}
+\begin{figure}[htbp]
+  \includegraphics[height=150pt, keepaspectratio = true]{images/newton-1}   
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Метод Ньютона-Рафсена}
+\begin{figure}[htbp]
+  \includegraphics[height=150pt, keepaspectratio = true]{images/newton-2}   
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Метод Ньютона-Рафсена}
+\begin{figure}[htbp]
+  \includegraphics[height=150pt, keepaspectratio = true]{images/newton-3}   
+\end{figure}
+\end{frame}
+\begin{frame}\frametitle{Метод Ньютона-Рафсена}
+\begin{figure}[htbp]
+  \includegraphics[height=150pt, keepaspectratio = true]{images/newton-4}   
+\end{figure}
+\end{frame}
+\begin{frame}\frametitle{Метод Ньютона-Рафсена}
+\begin{figure}[htbp]
+  \includegraphics[height=150pt, keepaspectratio = true]{images/newton-5}   
+\end{figure}
+\end{frame}
+\begin{frame}\frametitle{Метод Ньютона-Рафсена}
+\begin{figure}[htbp]
+  \includegraphics[height=150pt, keepaspectratio = true]{images/newton-6}   
+\end{figure}
+\end{frame}
+\begin{frame}\frametitle{Метод Ньютона-Рафсена}
+\begin{figure}[htbp]
+  \includegraphics[height=150pt, keepaspectratio = true]{images/newton-7}   
+\end{figure}
+\end{frame}
+\begin{frame}\frametitle{Метод Ньютона-Рафсена}
+\begin{figure}[htbp]
+  \includegraphics[height=150pt, keepaspectratio = true]{images/newton-8}   
+\end{figure}
+\end{frame}
+\begin{frame}\frametitle{Метод Ньютона-Рафсена}
+\begin{figure}[htbp]
+  \includegraphics[height=150pt, keepaspectratio = true]{images/newton-9}   
+\end{figure}
+\end{frame}
+\begin{frame}\frametitle{Метод Ньютона-Рафсена}
+\begin{figure}[htbp]
+  \includegraphics[height=150pt, keepaspectratio = true]{images/newton-10}   
+\end{figure}
+\end{frame}
+\begin{frame}\frametitle{Метод Ньютона-Рафсена}
+\begin{figure}[htbp]
+  \includegraphics[height=150pt, keepaspectratio = true]{images/newton-11}   
+\end{figure}
+\end{frame}
+\begin{frame}\frametitle{Метод Ньютона-Рафсена}
+\begin{figure}[htbp]
+  \includegraphics[height=150pt, keepaspectratio = true]{images/newton-12}   
+\end{figure}
+\end{frame}
+\begin{frame}\frametitle{Метод Ньютона-Рафсена}
+\begin{figure}[htbp]
+  \includegraphics[height=150pt, keepaspectratio = true]{images/newton-13}   
+\end{figure}
+\end{frame}
+\begin{frame}\frametitle{Метод Ньютона-Рафсена}
+\begin{figure}[htbp]
+  \includegraphics[height=150pt, keepaspectratio = true]{images/newton-14}   
+\end{figure}
+\end{frame}
+\begin{frame}\frametitle{Метод Ньютона-Рафсена}
+\begin{figure}[htbp]
+  \includegraphics[height=150pt, keepaspectratio = true]{images/newton-15}   
+\end{figure}
+\end{frame}
+\begin{frame}\frametitle{Метод Ньютона-Рафсена}
+\begin{figure}[htbp]
+  \includegraphics[height=150pt, keepaspectratio = true]{images/newton-16}   
+\end{figure}
+\end{frame}
+\begin{frame}\frametitle{Метод Ньютона-Рафсена}
+\begin{figure}[htbp]
+  \includegraphics[height=150pt, keepaspectratio = true]{images/newton-17}   
+\end{figure}
 \end{frame}
 
 \begin{frame}\frametitle{Матричные обозначения}
