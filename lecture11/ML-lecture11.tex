@@ -1,8 +1,8 @@
-\documentclass[12pt]{beamer}
+\documentclass[12pt, aspectratio=169]{beamer}
 \input{../base}
 \usepackage{gensymb}
 \DeclareMathOperator{\rank}{rank}
-\subtitle{Лекция 11. Линейная регрессия. PCA. AUC.}
+\subtitle{Лекция 11. Линейная регрессия. PCA.}
 
 \begin{document}	
 \frame{\titlepage}
@@ -64,7 +64,7 @@ $$- \ln L(\varepsilon_1, \dots, \varepsilon_l| w) = const(w) + \frac{1}{2} \sum\
 \begin{frame}\frametitle{Многомерная линейная регрессия}
 $f_1(x), \dots, f_n(x)$ -- числовые признаки\\
 Модель многомерной линейной регрессии:\\
-$$f (x, w) = \sum\limits_{i=1}^l w_j f_j(x), \hspace{5mm} w \in \mathbb{R}$$\\
+$$f (x, w) = \sum\limits_{j=1}^n w_j f_j(x), \hspace{5mm} w \in \mathbb{R}$$\\
 \vspace{5mm}
 Функционал квадрата ошибки:\\
 $$Q(w,X^l) = \sum\limits_{i=1}^l (f (x_i, w) - y_i)^2  \rightarrow \min\limits_{w}$$\\
@@ -130,7 +130,7 @@ $$F = VDU^T$$\\
 \begin{frame}\frametitle{Решение МНК через сингулярное разложение}
 Псевдообратная $F^+$, вектор МНК-решения $w^*$,
 МНК-аппроксимация целевого вектора $Fw^*$\\
-$F^+ = (UDV^TVDU^T)UDV^T = UD^{-1}V^T = \sum\limits_{j=1}^n \frac{1}{\sqrt{\lambda_j}}  u_j v_j^T$\\
+$F^+ = (UDV^TVDU^T)^{-1}UDV^T = UD^{-1}V^T = \sum\limits_{j=1}^n \frac{1}{\sqrt{\lambda_j}}  u_j v_j^T$\\
 $ w^* = F^+y = UD^{-1}V^Ty = \sum\limits_{j=1}^n \frac{1}{\sqrt{\lambda_j}}  u_j (v_j^Ty)$\\
 $F w^* = P_F y = (VDU^T)UD^{-1}V^Ty = VV^Ty = \sum\limits_{j=1}^n v_j (v_j^Ty)$\\
 $\Vert w^* \Vert^2  = \Vert D^{-1}V^Ty \Vert^2 = \sum\limits_{j=1}^n \frac{1}{\lambda_j} (v_j^Ty)^2$
@@ -187,7 +187,7 @@ $$w^*_{\tau} = (F^TF + \tau I_n)^{-1}F^Ty$$\\
 \begin{frame}\frametitle{Сингулярное разложение}
 $$w_{\tau}^*= U(D^2 + \tau I_n)^{-1}DV^Ty = \sum\limits_{j=1}^n \frac{\sqrt{\lambda_j}}{\lambda_j + \tau} u_j(v_j^Ty)$$\\
 $$Fw_{\tau}^* = VDU^Tw_{\tau}^* = V \operatorname{diag} \left(\frac{\lambda_j}{\lambda_j + \tau}\right) V^Ty = \sum\limits_{j=1}^n \frac{\lambda_j}{\lambda_j + \tau} v_j (v_j^Ty)$$\\
-$$\Vert w_{\tau}^* \Vert^2 = \Vert (D^2 + \tau I_n)^{-1} DV^T y \Vert^2 = \sum\limits_{j=1}^n \frac{\lambda_j}{(\lambda_j + \tau)^2} (v^T_j y)^2$$\\
+$$\Vert w_{\tau}^* \Vert^2 = \Vert U(D^2 + \tau I_n)^{-1} DV^T y \Vert^2 = \sum\limits_{j=1}^n \frac{\lambda_j}{(\lambda_j + \tau)^2} (v^T_j y)^2$$\\
 $F w_{\tau}^* \neq Fw^*$ -- зато решение становится более устойчивым
 \end{frame}
 
@@ -306,7 +306,7 @@ $$F= GU^T, \hspace{4mm} G=FU$$
 Упорядочим с.з. $F^TF$ по убыванию: $\lambda_1 > \dots > \lambda_n > 0$\\
 Эффективная размерность выборки -- это наименьшее целое $m$, при котором\\
 $$E_m = \frac{\Vert GU^T - F \Vert^2}{\Vert F \Vert^2} = \frac{\lambda_{m+1} + \dots + \lambda_{n}}{\lambda_1 + \dots + \lambda_n} \leq \varepsilon$$\\
-Критерий «крутого склона»: находим $m: E_m-1 >> E_m$:
+Критерий «крутого склона»: находим $m: E_{m-1} >> E_m$:
 \begin{figure}[htbp]
   \includegraphics[height=100pt, keepaspectratio = true]{images/edge}   
 \end{figure}
@@ -339,19 +339,31 @@ $h_t$ -- величина шага
 \end{frame}
 
 \begin{frame}\frametitle{Метод Ньютона-Рафсена}
-$\frac{\partial Q(w)}{\partial w_j} = 2 \sum\limits_{i=1}^l (f(x_i, w) - y_i ) \frac{\partial(f(x_i, w))}{\partial w_j}$\\
-$\frac{\partial^2 Q(w)}{\partial w_j \partial w_k} = 2 \sum\limits_{i=1}^l \frac{\partial(f(x_i, w))}{\partial w_j} \frac{\partial(f(x_i, w))}{\partial w_k} - 2 \sum\limits_{i=1}^l (f(x_i, w) - y_i ) \frac{\partial^2 (f(x_i, w))}{\partial w_j \partial w_k}$\\
+$$Q(w,X^l) = \sum\limits_{i=1}^l (f (x_i, w) - y_i)^2 \rightarrow \min\limits_{w}$$\\
+
+$$\frac{\partial Q(w)}{\partial w_j} = 2 \sum\limits_{i=1}^l (f(x_i, w) - y_i ) \frac{\partial(f(x_i, w))}{\partial w_j}$$\\
+$$\frac{\partial^2 Q(w)}{\partial w_j \partial w_k} = 2 \sum\limits_{i=1}^l \frac{\partial(f(x_i, w))}{\partial w_j} \frac{\partial(f(x_i, w))}{\partial w_k} - 2 \sum\limits_{i=1}^l (f(x_i, w) - y_i ) \frac{\partial^2 (f(x_i, w))}{\partial w_j \partial w_k}$$\\
 \vspace{5mm}
 \textbf{Вопрос:} Какая часть самая тяжелая?
 \end{frame}
 
 \begin{frame}\frametitle{Метод Ньютона-Рафсена}
-$\frac{\partial Q(w)}{\partial w_j} = 2 \sum\limits_{i=1}^l (f(x_i, w) - y_i ) \frac{\partial(f(x_i, w))}{\partial w_j}$\\
-$\frac{\partial^2 Q(w)}{\partial w_j \partial w_k} = 2 \sum\limits_{i=1}^l \frac{\partial(f(x_i, w))}{\partial w_j} \frac{\partial(f(x_i, w))}{\partial w_k} - 2 \sum\limits_{i=1}^l (f(x_i, w) - y_i ) \frac{\partial^2 (f(x_i, w))}{\partial w_j \partial w_k}$\\
+$$\frac{\partial Q(w)}{\partial w_j} = 2 \sum\limits_{i=1}^l (f(x_i, w) - y_i ) \frac{\partial(f(x_i, w))}{\partial w_j}$$\\
+$$\frac{\partial^2 Q(w)}{\partial w_j \partial w_k} = 2 \sum\limits_{i=1}^l \frac{\partial(f(x_i, w))}{\partial w_j} \frac{\partial(f(x_i, w))}{\partial w_k} - 2 \sum\limits_{i=1}^l (f(x_i, w) - y_i ) \frac{\partial^2 (f(x_i, w))}{\partial w_j \partial w_k}$$\\
 \vspace{5mm}
 Линеаризация $f(x_i, w)$ в окрестности текущего $w^{(t)}$:\\
-$f(x_i, w) = f(x_i, w^{(t)}) + \sum\limits_{j=1}^p \frac{\partial(f(x_i, w))}{\partial w_j} (w_j - w_j^{(t)}) + o(w_j -w_j^{(t)})$\\
+$$f(x_i, w) = f(x_i, w^{(t)}) + \sum\limits_{j=1}^p \frac{\partial(f(x_i, w))}{\partial w_j} (w_j - w_j^{(t)}) + o(w_j -w_j^{(t)})$$\\
 $\Rightarrow$ второе слагаемое в гессиане обнулилось
+\end{frame}
+
+\begin{frame}\frametitle{Матричные обозначения}
+$F_t = \left(\frac{\partial(f(x_i, w))}{\partial w_j^{(t)}}\right)_{l \times p}$ -- матрица первых производных\\
+$f_t = \left( f(x_i, w^{(t)}) \right)_{l \times 1}$ -- вектор значений $f$\\
+\vspace{5mm}
+Формула $t$-й итерации метода Ньютона–Гаусса:\\
+$$w^{(t+1)} = w^{(t)} - h_t \underbrace{\left( F^T_tF_t \right)^{-1} F_t^T(f_t -y)}_{\beta}$$\\
+где $\beta$ -- решение многомерной линейной регрессии\\
+$$\Vert F_t\beta - (f_t-y) \Vert^2 \rightarrow \min_{\beta}$$ 
 \end{frame}
 
 \begin{frame}\frametitle{Метод Ньютона-Рафсена}
@@ -442,15 +454,6 @@ $\Rightarrow$ второе слагаемое в гессиане обнулил
 \end{figure}
 \end{frame}
 
-\begin{frame}\frametitle{Матричные обозначения}
-$F_t = \left(\frac{\partial(f(x_i, w))}{\partial w_j^{(t)}}\right)_{l \times p}$ -- матрица первых производных\\
-$f_t = \left( f(x_i, w^{(t)}) \right)_{l \times 1}$ -- вектор значений $f$\\
-\vspace{5mm}
-Формула $t$-й итерации метода Ньютона–Гаусса:\\
-$$w^{(t+1)} = w^{(t)} - h_t \underbrace{\left( F^T_tF_t \right)^{-1} F_t^T(f_t -y)}_{\beta}$$\\
-где $\beta$ -- решение многомерной линейной регрессии\\
-$$\Vert F_t\beta - (f_t-y) \Vert^2 \rightarrow \min_{\beta}$$ 
-\end{frame}
 
 %\begin{frame}\frametitle{ROC кривая}
 %\end{frame}
