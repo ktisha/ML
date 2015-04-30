@@ -2,7 +2,7 @@
 \input{../base}
 \usepackage{gensymb}
 
-\subtitle{Лекция 11. Нейронные сети.}
+\subtitle{Лекция 12. Нейронные сети.}
 
 \begin{document}	
 \frame{\titlepage}
@@ -21,7 +21,7 @@
 
 \begin{frame}\frametitle{Линейная модель нейрона}
 Модель МакКаллока-Питтса:\\
-$f_j: X \rightarrow R, j = 1,\dots, n$ — числовые признаки\\
+$f_j: X \rightarrow R, \hspace{10mm} j = 1,\dots, n$ — числовые признаки\\
 $a(x,w) = \sigma(\langle w, x_i \rangle) = \sigma(\sum\limits_{j=1}^n w_j f_j(x) - w_0)$\\
 где $w_0, w_1, \dots,w_n \in R$ -- веса признаков\\
 $\sigma(s)$ -- функция активации (например, $\sign$)
@@ -34,10 +34,11 @@ $\sigma(s)$ -- функция активации (например, $\sign$)
 
 \begin{frame}\frametitle{Линейные алгоритмы классификации и регрессии}
 Задача классификации: \\
-$Y = \left\{ \pm1 \right\}, a(x,w) = \sign \langle w, x_i \rangle $\\
-$Q(w;X^l) = \sum\limits_{i=1}^l \mathcal{L} \langle w, x_i\rangle y_i \rightarrow \min\limits_w$
+$Y = \left\{ \pm1 \right\}, \hspace{10mm} a(x,w) = \sign \langle w, x_i \rangle $\\
+$Q(w;X^l) = \sum\limits_{i=1}^l \mathcal{L} \langle w, x_i\rangle y_i \rightarrow \min\limits_w$\\
+\vspace{5mm}
 Задача регрессии:\\
-$Y = R, a(x,w) = \sigma(\langle w, x_i \rangle)$\\
+$Y = \mathbb{R}, \hspace{10mm} a(x,w) = \sigma(\langle w, x_i \rangle)$\\
 $Q(w;X^l) = \sum\limits_{i=1}^l (\sigma(\langle w, x_i \rangle) - y_i)^2 \rightarrow \min\limits_w $
 \end{frame}
 
@@ -84,7 +85,7 @@ $x_1 \oplus x_2 = [(x_1 \vee x_2) - (x_1 \wedge x_2) - \frac{1}{2} > 0]$
 \item Двухслойная сеть в $\left\{0, 1 \right\}^n$ позволяет реализовать произвольную булеву функцию.
 \item Двухслойная сеть в $\mathbb{R}^n$ позволяет отделить произвольный выпуклый многогранник.
 \item Трёхслойная сеть $\mathbb{R}^n$ позволяет отделить произвольную многогранную область, не обязательно выпуклую, и даже не обязательно связную.
-\item С помощью линейных операций и одной нелинейной функции активации $\phi$ можно приблизить любую непрерывную функцию с любой желаемой точностью
+\item С помощью линейных операций и одной нелинейной функции активации $\sigma$ можно приблизить любую непрерывную функцию с любой желаемой точностью
 \end{enumerate}
 \end{frame}
 
@@ -132,8 +133,8 @@ $$\frac {\partial \mathcal{L}_i(w)}{\partial a^m} \hspace{5mm} \frac {\partial \
 \begin{frame}\frametitle{Быстрое вычисление градиента}
 Промежуточная задача: частные производные\\
 $$\frac{\partial \mathcal{L}_i(w)}{\partial a^m} = a^m (x_i) - y_i^m = \varepsilon^m_i$$ -- это ошибка на выходном слое\\
-$$\frac{\partial \mathcal{L}_i(w)}{\partial u^h} = \sum\limits_{m=1}^M (a^m(x_i) - y_i^m) \sigma'_m w_{hm} = \sum\limits_{m=1}^M \varepsilon^m_i \sigma'_m w_{hm} = \varepsilon^h_i$$ -- назовём это ошибкой на выходном слое. \\
-Похоже, что $\varepsilon_i^h$ вычисляется по $\varepsilon_i^m$, если запустить сеть «задом наперёд»:\\
+$$\frac{\partial \mathcal{L}_i(w)}{\partial u^h} = \sum\limits_{m=1}^M (a^m(x_i) - y_i^m) \sigma'_m w_{hm} = \sum\limits_{m=1}^M \varepsilon^m_i \sigma'_m w_{hm} = \varepsilon^h_i$$ -- это ошибка на скрытом слое. \\
+$\varepsilon_i^h$ вычисляется по $\varepsilon_i^m$, если запустить сеть «задом наперёд»:\\
 
 \begin{figure}[htbp]
   \includegraphics[height=50pt, keepaspectratio = true]{images/backpropagation}   
@@ -150,7 +151,7 @@ $$\frac{\partial \mathcal{L}_i(w)}{\partial u^h} = \sum\limits_{m=1}^M (a^m(x_i)
 \begin{frame}\frametitle{Быстрое вычисление градиента}
 Теперь, имея частные производные $\mathcal{L}_i(w)$ по $a^m$ и $u^h$, легко выписать градиент $\mathcal{L}_i(w)$ по весам $w$:\\
 
-$$\frac {\partial \mathcal{L}_i(w)}{\partial w_{hm}} = \frac {\partial \mathcal{L}_i(w)}{\partial a^m} \frac {\partial a^m}{\partial w_{hm}} = \varepsilon^m_i \sigma'_m u^h()x_i, \hspace{2mm} m = 1,\dots,M, \hspace{2mm} h = 0,\dots, H$$\\
+$$\frac {\partial \mathcal{L}_i(w)}{\partial w_{hm}} = \frac {\partial \mathcal{L}_i(w)}{\partial a^m} \frac {\partial a^m}{\partial w_{hm}} = \varepsilon^m_i \sigma'_m u^h(x_i), \hspace{2mm} m = 1,\dots,M, \hspace{2mm} h = 0,\dots, H$$\\
 
 $$\frac {\partial \mathcal{L}_i(w)}{\partial w_{jh}} = \frac {\partial \mathcal{L}_i(w)}{\partial u^h} \frac {\partial u^h}{\partial w_{jh}} = \varepsilon_i^h \sigma'_h f_j(x_i), \hspace{2mm} h = 1,\dots,H, \hspace{2mm} j = 0,\dots, n$$ \\
 
@@ -159,7 +160,7 @@ $$\frac {\partial \mathcal{L}_i(w)}{\partial w_{jh}} = \frac {\partial \mathcal{
 
 \begin{frame}\frametitle{Алгоритм обратного распространения ошибки}
 Input: $X^l = (x_i, y_i)_{i=1}^l \subset \mathbb{R}^n \times \mathbb{R}^M$, $H$, $\lambda$, $\eta$\\
-Output: синаптические веса $w_{jh}$, $w{hm}$\\
+Output: синаптические веса $w_{jh}$, $w_{hm}$\\
 Повторять пока $Q$ не стабилизируется:\\
 \hspace{5mm} выбрать объект $x_i$ из $X^l$\\
 $\begin{cases}
@@ -233,10 +234,10 @@ $\begin{cases} \hspace{5mm} w_{hm} = w_{hm} - \eta \varepsilon_i^m \sigma'_m u_i
 Tем самым обеспечивается различность нейронов.
 \end{frame}
 
-\begin{frame}\frametitle{Улучшение сходимости}
-Левенберга-Марквардта
-TODO
-\end{frame}
+%\begin{frame}\frametitle{Улучшение сходимости}
+%Левенберга-Марквардта
+%TODO
+%\end{frame}
 
 \begin{frame}\frametitle{Оптимизация структуры сети}
 Динамическое наращивание сети.\\
